@@ -1,7 +1,0 @@
-@function r($px, $isFixed:true) {
-	@if $px != 0 {
-		@return if($isFixed, $px + 0.01, $px) / 14 * 1rem;
-	} @else {
-		@return 0;
-	}
-}

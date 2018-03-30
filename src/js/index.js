@@ -1,4 +1,7 @@
 import validata from './utils/validate';
+import controller from './utils/controller';
+
+
 console.log(123)
 function aa() {
 	alert(123)
@@ -9,7 +12,6 @@ var abc = () => {
 	console.log(acc)
 }
 
-abc();
 
 class Page {
 
@@ -29,3 +31,13 @@ class Page {
 
 
 }
+
+$(function(){
+  $("#successBtn").click(function(){
+    controller.tips("123adfasdf")
+  })
+
+  $("#loadingBtn").click(function(){
+    controller.loadingShow();
+  })
+})

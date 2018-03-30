@@ -49,6 +49,10 @@ var config = {
     ]
   },
 
+  externals: {
+    "jquery": 'window.$',
+  },
+
   plugins: [
     new ExtractTextPlugin('css/[name].[hash:8].css'),
     new webpack.optimize.CommonsChunkPlugin({name: 'common'}),

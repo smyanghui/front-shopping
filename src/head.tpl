@@ -14,7 +14,7 @@
 <div class="top_box">
   <p class="top_menu">
     <a href="#">我的工作台</a>
-    <a href="#">我的任务</a>
+    <a href="#" class="cur">我的任务</a>
     <a href="#">关于我们</a>
   </p>
 </div>
@@ -24,7 +24,7 @@
   <!-- 左侧菜单 -->
   <div class="left_box">
 
-    <dl>
+    <dl id="leftMenu">
       <dt><i class="iconfont icon-app"></i>静态页1</dt>
       <dd>
         <ul>
@@ -34,8 +34,6 @@
           <li><a href="#">栏目</a></li>
         </ul>
       </dd>
-    </dl>
-    <dl>
       <dt><i class="iconfont icon-browser"></i>静态页2</dt>
       <dd>
         <ul>
