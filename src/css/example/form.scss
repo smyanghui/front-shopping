@@ -1,5 +1,41 @@
 @charset "utf-8";
 
+// 表格样式
 .ui_table {
-  width: 100%; border-collapse: collapse;
+  width: 100%; border-collapse: collapse; background-color: #fff;
+}
+
+.table_list {
+  border: 1px solid #e9e9e9; border-radius: 5px;
+  th, td {
+    border-bottom: 1px solid #e9e9e9; padding: 15px; text-align: left;
+  }
+  th { background-color: #f7f7f7;}
+  a { color: blue;}
+  tr:nth-of-type(odd) { background-color: #fdfbfb;}
+  tr:hover { background-color: #e6f7ff;}
+}
+
+.crumbs {
+  background-color: #fafafa; line-height: 35px;
+  a { margin: 0 10px;}
+}
+
+
+input[type="checkbox"] { cursor: pointer;}
+
+.page_box { margin: 10px 0;}
+.ui_ipage {
+  float: right; margin-left: 5px; font-family: verdana;
+  li {
+    float: left; background-color: #fff; color: #666;
+    padding: 0px 11px; margin-left: 5px; line-height: 28px; cursor: pointer;
+    border: 1px solid #E6E6E6; border-radius: 3px;
+    &:hover { border-color: #ff5f08;}
+    &.pointpage { border-color: #fff !important;}
+    &.curpage {
+      padding: 0px 12px; color: #fff;
+      background: #F5692F; border-color: #ff5f08;
+    }
+  }
 }

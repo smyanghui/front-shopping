@@ -3,54 +3,54 @@ import $ from 'jquery';
 // 翻页
 class Ipage {
 
-	constructor(options) {
+  constructor(options) {
 
-		// 初始化
-		this.options = $.extend({
-			'dom': null,
-			'pageTotal': 0, //总页数
-			'perPage': 10, //显示几页
-			'currentPage': 1, //当前页码
-			'callback': null
-		}, options || {});
+    // 初始化
+    this.options = $.extend({
+      'dom': null,
+      'pageTotal': 0, //总页数
+      'perPage': 10, //显示几页
+      'currentPage': 1, //当前页码
+      'callback': null
+    }, options || {});
 
-		this.init();
-	}
+    this.init();
+  }
 
     init() {
 
-    	// 只有一页return
-		if(this.options.pageTotal < 2) return;
-		if(!this.options.dom) return;
+      // 只有一页return
+    if(this.options.pageTotal < 2) return;
+    if(!this.options.dom) return;
 
-		this.container = $('<ul class="ipage-box">');
-		$(this.options.dom).html(this.container);
+    this.container = $('<ul class="ui_ipage">');
+    $(this.options.dom).html(this.container);
 
-		this.index = parseInt(this.options.currentPage);
-		this.createPage();
-		this.bindEvent();
+    this.index = parseInt(this.options.currentPage);
+    this.createPage();
+    this.bindEvent();
 
-	}
+  }
 
-	createPage() {
+  createPage() {
 
-		let sPage = '',
-			arr = this.pageResult();
-		this.container.empty();
+    let sPage = '',
+      arr = this.pageResult();
+    this.container.empty();
 
-		for (let i in arr){
-			let _0 = arr[i][0],
-			_1 = arr[i][1];
-			if(!_1){
-				sPage += '<li class="ui-page-point">'+ _0 +'</li>';
-			} else if(_1 == this.index){
-				sPage += '<li class="cur-ipage">'+ _1 +'</li>';
-			} else {
-				sPage += '<li data-ipage="'+ _1 +'">'+ _0 +'</li>';
-			}
-		}
+    for (let i in arr){
+      let _0 = arr[i][0],
+      _1 = arr[i][1];
+      if(!_1){
+        sPage += '<li class="pointpage">'+ _0 +'</li>';
+      } else if(_1 == this.index){
+        sPage += '<li class="curpage">'+ _1 +'</li>';
+      } else {
+        sPage += '<li data-ipage="'+ _1 +'">'+ _0 +'</li>';
+      }
+    }
 
-		this.container.append(sPage);
+    this.container.append(sPage);
     }
 
     pageResult() {
