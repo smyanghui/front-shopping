@@ -6,7 +6,7 @@ var config = {
 
   entry: {
     'index': ['./src/js/index.js', './src/css/index.css'],
-    'company/aboutus': ['./src/js/company/aboutus.js', './src/css/company/aboutus.scss'],
+    'example/form': ['./src/js/example/form.js', './src/css/example/form.scss'],
     'common': ['./src/css/common/index.scss']
   },
 
