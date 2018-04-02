@@ -1,10 +1,21 @@
 @charset "utf-8";
+@import "./config.scss";
 
 // 页面顶部
-.top_box { height: 45px; line-height: 45px; background-color: #333; color: #fff;}
-.top_menu a {
-  display: inline-block; margin: 0 10px; color: #fff;
-  &.cur { background-color: #494949;}
+.top_box {
+  height: 45px; line-height: 45px;
+  background-color: #333; color: #fff; display: flex;
+}
+.top_tit {
+  width: $leftWidth; font-size: 24px;
+  text-align: center; color: $red;
+}
+.top_menu {
+  flex: 1;
+  a {
+    display: inline-block; padding: 0 30px; color: #fff;
+    &.cur { background-color: #494949;}
+  }
 }
 
 // 页面主体
@@ -15,21 +26,23 @@
 
   // 左侧导航
   .left_box {
-    width: 200px; background-color: rgb(238, 238, 238);
+    width: $leftWidth; background-color: #394a59;
+     color: #fff;
     dt {
-      cursor: pointer; line-height: 35px;
-      padding-left: 15px; border-bottom: 1px solid #e5e5e5;
+      cursor: pointer; line-height: 45px;
+      padding-left: 15px; border-bottom: 1px solid #d7d7d7;
       i { margin-right: 5px;}
     }
-    dd { line-height: 32px;}
-    ul {}
-    li { padding-left: 30px; border-bottom: 1px dashed #e5e5e5;}
-    li.cur a { color: #1b83f8;}
+    dd {}
+    ul { line-height: 40px;}
+    li { padding-left: 35px; border-bottom: 1px solid #d7d7d7;}
+    li a { color: #fff; display: block;}
+    li:hover { background-color: #2e3b46;}
   }
 
   // 右侧
   .right_box {
-    flex: 1;
+    flex: 1; background-color: #ecf0f5;
     .content { padding: 10px; width: 100%;}
   }
 }
@@ -37,8 +50,8 @@
 .btn {
   line-height: 30px; padding: 0 15px; border: 0; border-radius: 3px; cursor: pointer;
   i { margin-right: 5px;}
-  &.blue { background-color: #1b83f8; color: #fff;}
-  &.red { background-color: #dd514c; color: #fff;}
+  &.blue { background-color: $blur; color: #fff;}
+  &.red { background-color: $red; color: #fff;}
 }
 
 
