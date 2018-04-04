@@ -8,8 +8,8 @@ for (var i in config.entry) {
     template: './src/' + i + '.html',
     filename: i + '.html',
     minify: {
-      removeComments: true, //移除HTML中的注释
-      collapseWhitespace: false //删除空白符与换行符
+      removeComments: true, // 移除HTML中的注释
+      collapseWhitespace: false // 删除空白符与换行符
     },
     chunks: ['common', i]
     // publicPath: config.output.publicPath
