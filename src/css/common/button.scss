@@ -1,0 +1,7 @@
+@import "./config.scss";
+.btn {
+  line-height: 30px; padding: 0 15px; border: 0; border-radius: 3px; cursor: pointer;
+  i { margin-right: 5px;}
+  &.blue { background-color: $blur; color: #fff;}
+  &.red { background-color: $red; color: #fff;}
+}

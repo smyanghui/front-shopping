@@ -38,3 +38,34 @@
   .modal_body { padding: 10px; border: 1px solid #ccc;}
   .modal_footer {}
 }
+
+
+// 弹层提示
+.ui_tips {
+  display: none;
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%; z-index: 30;
+  .ui_tips_box {
+    display: flex;
+    width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.1);
+    align-items: center; justify-content: center;
+  }
+  .ui_tips_content {
+    min-width: 100px; max-width: 80%; height: 60px;
+    background-color: #fff; border-radius: 5px; box-shadow: 2px 2px 5px #888;
+  }
+  .ui_tips_txt {
+    line-height: 32px; text-align: center; color: #333;
+  }
+
+  .ui_tips_warning {}
+  .ui_tips_wrong {}
+  .ui_tips_success {}
+}
+
+// 加载效果
+.ui_loading {
+  width: 100%; height: 100%;
+  background: url('../../images/common/loading.gif') center center no-repeat;
+  background-color: rgba(0, 0, 0, 0.1);
+}

@@ -6,7 +6,9 @@ var config = {
 
   entry: {
     'index': ['./src/js/index.js', './src/css/index.css'],
-    'example/form': ['./src/js/example/form.js', './src/css/example/form.scss'],
+    'example/form': ['./src/js/example/exampleForm.js', './src/css/example/form.scss'],
+    'example/button': [],
+    'example/modal': ['./src/js/example/exampleModal.js'],
     'common': ['./src/css/common/index.scss']
   },
 

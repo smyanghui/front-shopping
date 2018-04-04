@@ -19,6 +19,9 @@
     <a href="#">商城</a>
     <a href="#">配置</a>
   </p>
+  <p class="top_right">
+    欢迎登录：admin <a href="javascript:;">退出</a>
+  </p>
 </div>
 
 <div class="main_box" id="mainBox">
@@ -30,9 +33,9 @@
       <dt><i class="iconfont icon-app"></i>表单</dt>
       <dd>
         <ul>
-          <li><a href="#">常用元素</a></li>
-          <li class="cur"><a href="#">按钮</a></li>
-          <li><a href="#">表格</a></li>
+          <li><a href="/index.html">常用元素</a></li>
+          <li class="cur"><a href="/example/button.html">按钮</a></li>
+          <li><a href="/example/form.html">表格</a></li>
           <li><a href="#">翻页</a></li>
         </ul>
       </dd>
@@ -41,12 +44,12 @@
         <ul>
           <li><a href="#">弹窗提示</a></li>
           <li><a href="#">alert/confirm</a></li>
-          <li><a href="#">弹出层</a></li>
-          <li><a href="#">栏目</a></li>
-          <li><a href="#">栏目</a></li>
-          <li><a href="#">栏目</a></li>
-          <li><a href="#">栏目</a></li>
-          <li><a href="#">栏目</a></li>
+          <li><a href="/example/modal.html">弹出层</a></li>
+          <li><a href="#">页面</a></li>
+          <li><a href="#">页面</a></li>
+          <li><a href="#">页面</a></li>
+          <li><a href="#">页面</a></li>
+          <li><a href="#">页面</a></li>
         </ul>
       </dd>
     </dl>
@@ -55,6 +58,3 @@
 
   <!-- 主体内容 -->
   <div class="right_box">
-
-  
-      
