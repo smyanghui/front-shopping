@@ -90,80 +90,142 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var MOBILE_REG = /^1\d{10}$/,
-    EMAIL_REG = /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/,
-    CHINESE_REG = /^[\u4e00-\u9fa5]+$/,
-    CHIENG_REG = /^[\u4e00-\u9fa5a-zA-Z]+$/,
-    IDCARD_REG = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
-    MONEY_REG = /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/;
+var INTEGER = /^\d+$/; // 是否0/正整数
+var MONEY = /^([1-9][\d]{0,7}|0)(\.[\d]{1,2})?$/; // 金额
+var MOBILE = /^1\d{10}$/; // 手机号码
+var EMAIL = /^([\w-\.])+@([\w-])+(\.[a-zA-Z]{2,4}){1,2}$/; // 邮箱
+var ORGANIZATION = /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]$/; // 织机构代码
+var UNISOCIALCRECODE = /^[a-zA-Z0-9]{18}$/; // 统一社会信用代码
+var ENGNUM = /^[0-9a-zA-Z]+$/; // 数字和英文
+var USERNAME = /^[^~!@#$%^*+|}{"?/'\\=`]*$/; // 用户姓名（非特殊字符）
+var CHINESE = /^[\u4e00-\u9fa5\s]+$/; // 中文（含空格）
+var IDCARD = /(^\d{15})|(^\d{17}(\d|X|x)$)/; // 身份证
+var URL = /^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/; // 网址
 
-var validate = function () {
-  function validate() {
-    _classCallCheck(this, validate);
+var trim = function trim(val) {
+  return String.prototype.trim ? val.trim() : val.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+};
+
+var Validate = function () {
+  function Validate() {
+    _classCallCheck(this, Validate);
   }
 
-  _createClass(validate, null, [{
-    key: "isNumber",
+  _createClass(Validate, null, [{
+    key: 'isBlank',
 
 
-    // 是否数值
+    // 是否为空
+    value: function isBlank(val) {
+      if (val == undefined || val == '' || val == null) return true;
+      return trim(val + '') == '';
+    }
+
+    // 是否是数值(正负0小数)
+
+  }, {
+    key: 'isNumber',
     value: function isNumber(val) {
-      return !isNaN(val);
+      return val != null && !isNaN(val);
     }
-
-    // 是否为手机号码
-
   }, {
-    key: "isMobile",
-    value: function isMobile(val) {
-      return MOBILE_REG.test(val);
+    key: 'isInteger',
+    value: function isInteger(val) {
+      return INTEGER.test(val);
     }
-
-    // 是否为邮箱
-
   }, {
-    key: "isEmail",
-    value: function isEmail(val) {
-      return EMAIL_REG.test(val);
-    }
-
-    // 是否为身份证
-
-  }, {
-    key: "isIdCard",
-    value: function isIdCard(val) {
-      return IDCARD_REG.test(val);
-    }
-
-    // 是否为金额
-
-  }, {
-    key: "isMoney",
+    key: 'isMoney',
     value: function isMoney(val) {
-      return MONEY_REG.test(val);
+      return MONEY.test(val);
     }
-
-    // 中英文字符
-
   }, {
-    key: "isChiEng",
-    value: function isChiEng(val) {
-      return CHIENG_REG.test(val);
+    key: 'isMobile',
+    value: function isMobile(val) {
+      return MOBILE.test(val);
     }
-
-    // 是否为中文
-
   }, {
-    key: "isChinese",
+    key: 'isEmail',
+    value: function isEmail(val) {
+      return EMAIL.test(val);
+    }
+  }, {
+    key: 'isOrganizationCode',
+    value: function isOrganizationCode(val) {
+      return ORGANIZATION.test(val);
+    }
+  }, {
+    key: 'isUniSocialCreCode',
+    value: function isUniSocialCreCode(val) {
+      return UNISOCIALCRECODE.test(val);
+    }
+  }, {
+    key: 'isEngNum',
+    value: function isEngNum(val) {
+      return ENGNUM.test(val);
+    }
+  }, {
+    key: 'isName',
+    value: function isName(val) {
+      return USERNAME.test(val);
+    }
+  }, {
+    key: 'isChinese',
     value: function isChinese(val) {
-      return CHINESE_REG.test(val);
+      return CHINESE.test(val);
+    }
+  }, {
+    key: 'isIdCardSimple',
+    value: function isIdCardSimple(val) {
+      return IDCARD.test(val);
+    }
+  }, {
+    key: 'isUrl',
+    value: function isUrl(val) {
+      return URL.test(val);
+    }
+
+    // 身份证校验
+
+  }, {
+    key: 'isIdCard',
+    value: function isIdCard(val) {
+      var num = val.toUpperCase();
+      switch (num.length) {
+        case 15:
+          if (!this.isInteger(num)) return false;
+
+          var re = new RegExp(/^(\d{6})(\d{2})(\d{2})(\d{2})(\d{3})$/);
+          var arrSplit = num.match(re);
+
+          //检查生日日期是否正确
+          var dtmBirth = new Date('19' + arrSplit[2] + '/' + arrSplit[3] + '/' + arrSplit[4]);
+
+          var bGoodDay = false;
+          bGoodDay = dtmBirth.getYear() == Number(arrSplit[2]) && dtmBirth.getMonth() + 1 == Number(arrSplit[3]) && dtmBirth.getDate() == Number(arrSplit[4]);
+          return bGoodDay;
+
+        case 18:
+          if (!this.isInteger(num.substr(0, 17))) return false;
+
+          var arrInt = ['7', '9', '10', '5', '8', '4', '2', '1', '6', '3', '7', '9', '10', '5', '8', '4', '2']; //加权因子
+          var code = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2', '1']; //效验码
+
+          var checknum = 0;
+          for (var i = 0; i < 17; i++) {
+            checknum += num.substr(i, 1) * arrInt[i];
+          }
+          return code[checknum % 11] == num.substr(17, 1);
+
+        default:
+          return false;
+      }
     }
   }]);
 
-  return validate;
+  return Validate;
 }();
 
-exports.default = validate;
+exports.default = Validate;
 
 /***/ }),
 /* 4 */
