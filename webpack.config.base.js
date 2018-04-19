@@ -5,11 +5,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 var config = {
 
   entry: {
-    'index': ['./src/js/index.js', './src/css/index.css'],
-    'example/form': ['./src/js/example/exampleForm.js', './src/css/example/exampleForm.scss'],
-    'example/button': ['./src/css/example/exampleButton.scss'],
-    'example/modal': ['./src/js/example/exampleModal.js'],
-    'common': ['./src/css/common/index.scss']
+    'index': ['./src/js/index.js', './src/css/index.scss'],
+    'cart': ['./src/js/cart.js', './src/css/cart.scss'],
+    'common': ['./src/js/main.js', './src/css/main.scss'],
   },
 
   output: {

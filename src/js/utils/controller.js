@@ -1,7 +1,4 @@
-import $ from 'jquery';
-//import { Message, Loading, Toast } from 'js/components';
-import tips from './tips.js';
-import loading from './loading.js';
+
 class Controller {
 
   constructor() {}
@@ -22,9 +19,9 @@ class Controller {
   //  newTips.hide();
   // }
 
-  static tips(msg, mType = 'warning', t = 3) {
-    tips.show(msg, mType, t);
-  }
+  // static tips(msg, mType = 'warning', t = 3) {
+  //   tips.show(msg, mType, t);
+  // }
 
   // 定时提示
   // static showToast(msg) {
@@ -34,9 +31,9 @@ class Controller {
   //  newTips.hide();
   // }
 
-  static loadingShow() {
-    loading.show();
-  }
+  // static loadingShow() {
+  //   loading.show();
+  // }
 
   // // 加载效果
   // static showLoading(...data) {
@@ -86,26 +83,13 @@ class Controller {
   static ajax(options, success, error) {
 
     options.success = options.success || function(data) {
-      Controller.hideLoading();
-      if (parseInt(data.code) >= 20000) {
-        // 请求超时刷新页面
-        if (parseInt(data.code) == 20002) {
-          //Controller.showMessage(data.message);
-          setTimeout(function(){
-            window.location.reload();
-          }, 1000);
-        }
-        console.log(data);
-        Controller.showMessage(data.message);
-      } else {
-        success(data);
-      }
+      console.log(data);
+      // if (parseInt(data.code) >= 20000) {
+      // } else {}
     }
 
     options.error = options.error || function(data) {
       console.log(data);
-      //Controller.hideLoading();
-      Controller.showMessage('网络异常，请稍后重试');
     }
 
     $.ajax(options);
