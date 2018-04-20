@@ -7,7 +7,7 @@ var config = {
   entry: {
     'index': ['./src/js/index.js', './src/css/index.scss'],
     'cart': ['./src/js/cart.js', './src/css/cart.scss'],
-    'common': ['./src/js/main.js', './src/css/main.scss'],
+    'common': ['./src/js/main.js'],
   },
 
   output: {
