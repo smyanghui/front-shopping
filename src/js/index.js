@@ -7,24 +7,48 @@ class Index {
   }
 
   init() {
-    console.log(12345);
+    this.arrItem = [
+      {
+        code: 'xiangcai',
+        name: '湘菜',
+        list:[
+          {
+            imgUrl: 'adfasdf',
+            name: 'adf',
+            text: 'asdfasdf',
+          }
+        ]
+      },
+    ];
+    this.renderItem();
+    this.listScroll = new IScroll('#itemBox');
   }
 
   bindEvent() {
     //aa
   }
 
-  // 渲染菜单
-  renderMenu() {
-    const pathName = window.location.pathname;
-    console.log(pathName);
+  // 渲染商品
+  renderItem() {
+
+    let sortHTML = '';
+    let itemHTML = '';
+    for (let i in this.arrItem) {
+      let items = this.arrItem[i];
+      sortHTML += `<li id="${items.code}"><p>${items.name}</p></li>`;
+
+      let listHTML = '<ul>';
+      for (let j in items.list) {
+        let list = items.list[j];
+        listHTML += `<li>${list.name}</li>`;
+      }
+      listHTML += '</ul>';
+      itemHTML += listHTML;
+    }
+
+    console.log(sortHTML, itemHTML);
   }
 
 }
-console.log(123, IScroll);
 
-var myScroll = new IScroll('#wrapper');
-$("#myclik").click(function(){
-	myScroll.scrollToElement("#poia")
-})
 // new Index();
