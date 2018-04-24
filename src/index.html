@@ -7,7 +7,7 @@ ${require('./head.tpl')}
 
   <!-- 顶部导航 -->
   <div class="top_box">
-    <p class="cur"><a href="#">选蛋糕</a></p>
+    <p class="cur"><a href="javascript:;">选蛋糕</a></p>
     <p><a href="#">订单</a></p>
     <p><a href="#">我的</a></p>
   </div>
@@ -33,15 +33,21 @@ ${require('./head.tpl')}
     <!-- 商品列表 -->
     <div class="content_main" id="iScrollItem">
       <div>
-        <ul class="item_list">
+        <ul>
           <li>
             <p class="image_box"><img src="/src/images/item.png" /></p>
             <div class="text_box">
-              <p class="item_tit">adsfasd</p>
-              <p class="item_remark">asdfa</p>
+              <p class="item_tit">精品生日水果蛋糕</p>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
               <div class="price_box">
                 <p class="item_price">￥100.00</p>
-                <p class="item_choice">-12+</p>
+                <p class="item_choice">
+                  <i class="iconfont icon-minus"></i>
+                  <b>2</b>
+                  <i class="iconfont icon-add"></i>
+                </p>
               </div>
             </div>
           </li>

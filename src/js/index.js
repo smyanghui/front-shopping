@@ -20,7 +20,7 @@ class Index {
         ]
       },
     ];
-    this.renderItem();
+    // this.renderItem();
     this.listScroll = new IScroll('#iScrollItem');
   }
 
@@ -51,4 +51,4 @@ class Index {
 
 }
 
-// new Index();
+new Index();

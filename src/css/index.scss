@@ -4,14 +4,6 @@
 // 纵向排列
 .page_box { display: flex; flex-direction: column; height: 100%;}
 
-// 顶部导航
-.top_box {
-  height: 45px; line-height: 45px; display: flex; background-color: #fff;
-  border-bottom: 1px solid #E5E5E5; font-size: 16px;
-  p { width: 33.33%; text-align: center;}
-  p.cur { border-bottom: 2px solid #2396FF;}
-}
-
 // 商品内容
 .content_box { flex: 1; display: flex;}
 
@@ -31,24 +23,34 @@
 }
 
 // 商品列表
-.content_main { flex: 1; overflow: hidden;}
-.item_list {
-  display: table; width: 100%;
+.content_main {
+  flex: 1; overflow: hidden;
+  ul { padding: 10px;}
   li {
-    display: table-row;
-    .image_box, .text_box { display: table-cell; vertical-align: top;}
+    display: flex; padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px solid #fafafa;
+    // .image_box, .text_box { display: table-cell; vertical-align: top;}
   }
-  .image_box {
-    width: 140px;
-    img { width: 100%; height: 100%;}
-  }
-  .text_box { padding: 0 10px;}
-  .item_tit { font-size: 16px;}
-  .item_remark { font-size: 12px; color: #666;}
+}
+.image_box {
+  width: 150px;
+  img { width: 140px; height: 140px; display: block;}
+}
+.text_box {
+  flex: 1;
+  .item_tit { font-size: 16px; text-overflow:ellipsis; white-space: nowrap; overflow: hidden;}
+  .item_remark { font-size: 12px; color: #666; max-height: 80px; overflow: hidden;}
   .price_box {
-    display: flex;
-    .item_price { width: 100px;}
-    .item_choice { flex: 1; text-align: right;}
+    display: flex; line-height: 24px; margin-top: 10px;
+    .item_price { width: 100px; font-size: 18px;}
+    .item_choice {
+      flex: 1; text-align: right;
+      i, b { display: inline-block; font-size: 16px; text-align: center;}
+      b { width: 30px;}
+      i {
+        width: 24px; height: 24px; cursor: pointer;
+        border-radius: 24px; background-color: #59D178; color: #fff;
+      }
+    }
   }
 }
 

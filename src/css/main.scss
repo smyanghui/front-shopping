@@ -16,6 +16,11 @@ table { border-collapse: collapse; border-spacing: 0;}
 .clear { float: none; clear: both;}
 .clearfix:after { display: block; clear: both; content: " "; height: 0; overflow: hidden;}
 
+.page_box { width: 100%; max-width: 800px; margin: 0 auto;}
 
-
-
+.top_box {
+  height: 45px; line-height: 45px; display: flex; background-color: #fff;
+  border-bottom: 1px solid #e5e5e5; font-size: 16px;
+}
+.top_box p { width: 33.33%; text-align: center;}
+.top_box p.cur { border-bottom: 2px solid #2396FF;}
