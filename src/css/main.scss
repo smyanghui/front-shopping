@@ -24,3 +24,8 @@ table { border-collapse: collapse; border-spacing: 0;}
 }
 .top_box p { width: 33.33%; text-align: center;}
 .top_box p.cur { border-bottom: 2px solid #2396FF;}
+
+.page_mask {
+  position: fixed; left: 0; top: 0; z-index: 1; display: none;
+  width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);
+}

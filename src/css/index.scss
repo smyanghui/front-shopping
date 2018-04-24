@@ -2,7 +2,7 @@
 @import url("main.scss");
 
 // 纵向排列
-.page_box { display: flex; flex-direction: column; height: 100%;}
+.page_box { display: flex; flex-direction: column; height: 100%; position: relative;}
 
 // 商品内容
 .content_box { flex: 1; display: flex;}
@@ -44,8 +44,8 @@
     .item_price { width: 100px; font-size: 18px;}
     .item_choice {
       flex: 1; text-align: right;
-      i, b { display: inline-block; font-size: 16px; text-align: center;}
-      b { width: 30px;}
+      i, strong { display: inline-block; font-size: 16px; text-align: center;}
+      strong { width: 30px;}
       i {
         width: 24px; height: 24px; cursor: pointer;
         border-radius: 24px; background-color: #59D178; color: #fff;
@@ -64,3 +64,28 @@
   width: 100px; background-color: #59D178;
   text-align: center; font-size: 18px;
 }
+
+// 购物车
+.cart_box {
+  position: absolute; left: 0; bottom: 0; z-index: 2;
+  width: 100%; max-height: 80%; overflow: auto;
+}
+.cart_tit { background-color: #ddd; line-height: 24px;}
+.cart_list {
+  display: table; padding: 0 10px;
+  li { display: table-row;}
+  .cart_choice {
+    display: table-cell; text-align: right;
+    i, strong { display: inline-block; font-size: 14px; text-align: center;}
+    strong { width: 30px;}
+    i {
+      width: 20px; height: 20px; cursor: pointer;
+      border-radius: 20px; background-color: #59D178; color: #fff;
+    }
+  }
+
+}
+
+
+
+

@@ -45,7 +45,7 @@ ${require('./head.tpl')}
                 <p class="item_price">￥100.00</p>
                 <p class="item_choice">
                   <i class="iconfont icon-minus"></i>
-                  <b>2</b>
+                  <strong>2</strong>
                   <i class="iconfont icon-add"></i>
                 </p>
               </div>
@@ -62,6 +62,27 @@ ${require('./head.tpl')}
     <p class="cart">购(2) <span>￥100.00</span></p>
     <p class="buy">去结算</p>
   </div>
+
+  <!-- 购物车 -->
+  <div class="cart_box" id="cartBox">
+    <p class="cart_tit"><span>清空</span>已选商品</p>
+    <ul class="cart_list">
+      <li>
+        <div class="cart_item">
+            <p>商品名称</p>
+            <p>商品规格</p>
+        </div>
+        <div class="cart_choice">
+          <i class="iconfont icon-minus"></i>
+          <strong>2</strong>
+          <i class="iconfont icon-add"></i>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 遮罩层 -->
+  <div class="page_mask" id="pageMask"></div>
 
 </div>
 
