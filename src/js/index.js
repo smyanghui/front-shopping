@@ -21,7 +21,7 @@ class Index {
       },
     ];
     this.renderItem();
-    this.listScroll = new IScroll('#itemBox');
+    this.listScroll = new IScroll('#iScrollItem');
   }
 
   bindEvent() {

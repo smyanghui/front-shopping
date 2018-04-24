@@ -12,6 +12,7 @@ var config = {
 
   output: {
     filename: 'js/[name].[hash:8].js',
+    publicPath: '/',
     // publicPath: 'http://abc.com/static/'
     path: path.resolve(__dirname, 'dist') // 输出文件目录
   },

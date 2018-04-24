@@ -4,12 +4,18 @@ ${require('./head.tpl')}
 <body>
 
 <div class="page_box">
+
+  <!-- 顶部导航 -->
   <div class="top_box">
     <p class="cur"><a href="#">选蛋糕</a></p>
     <p><a href="#">订单</a></p>
     <p><a href="#">我的</a></p>
   </div>
+
+  <!-- 商品内容 -->
   <div class="content_box">
+
+    <!-- 左侧分类 -->
     <div class="content_left">
       <ul class="menu_left">
         <li><p>优惠</p></li>
@@ -23,22 +29,34 @@ ${require('./head.tpl')}
         <li><p>限时抢购</p></li>
       </ul>
     </div>
-    <div class="content_main" id="itemBox"><div>
-      <ul>
-        <li>
-          <p><img src="./images/item.png" /></p>
-          <div class="ad">
-            <p class="tit">adsfasd</p>
-            <p class="adsf">asdfa</p>
-          </div>
-        </li>
-      </ul>
-    </div></div>
+
+    <!-- 商品列表 -->
+    <div class="content_main" id="iScrollItem">
+      <div>
+        <ul class="item_list">
+          <li>
+            <p class="image_box"><img src="/src/images/item.png" /></p>
+            <div class="text_box">
+              <p class="item_tit">adsfasd</p>
+              <p class="item_remark">asdfa</p>
+              <div class="price_box">
+                <p class="item_price">￥100.00</p>
+                <p class="item_choice">-12+</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
   </div>
+
+  <!-- 底部 -->
   <div class="bottom_box">
     <p class="cart">购(2) <span>￥100.00</span></p>
     <p class="buy">去结算</p>
   </div>
+
 </div>
 
 <!-- <script src="https://cdn.bootcss.com/iScroll/5.2.0/iscroll.min.js"></script> -->
