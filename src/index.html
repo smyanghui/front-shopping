@@ -8,8 +8,8 @@ ${require('./head.tpl')}
   <!-- 顶部导航 -->
   <div class="top_box">
     <p class="cur"><a href="javascript:;">选蛋糕</a></p>
-    <p><a href="#">订单</a></p>
-    <p><a href="#">我的</a></p>
+    <p><a href="order.html">我的订单</a></p>
+    <p><a href="seller.html">商家</a></p>
   </div>
 
   <!-- 商品内容 -->
@@ -59,18 +59,51 @@ ${require('./head.tpl')}
 
   <!-- 底部 -->
   <div class="bottom_box">
-    <p class="cart">购(2) <span>￥100.00</span></p>
+    <p class="bottom_cart" id="viewCart">购(2) <span>￥100.00</span></p>
     <p class="buy">去结算</p>
   </div>
 
   <!-- 购物车 -->
   <div class="cart_box" id="cartBox">
-    <p class="cart_tit"><span>清空</span>已选商品</p>
+    <p class="cart_tit"><span><i class="iconfont icon-lajixiang"></i> 清空</span>已选商品</p>
     <ul class="cart_list">
       <li>
         <div class="cart_item">
-            <p>商品名称</p>
-            <p>商品规格</p>
+            <p class="cart_item_tit">商品名称</p>
+            <p class="cart_item_sm">商品规格</p>
+        </div>
+        <div class="cart_choice">
+          <i class="iconfont icon-minus"></i>
+          <strong>2</strong>
+          <i class="iconfont icon-add"></i>
+        </div>
+      </li>
+      <li>
+        <div class="cart_item">
+            <p class="cart_item_tit">商品名称</p>
+            <p class="cart_item_sm">商品规格</p>
+        </div>
+        <div class="cart_choice">
+          <i class="iconfont icon-minus"></i>
+          <strong>2</strong>
+          <i class="iconfont icon-add"></i>
+        </div>
+      </li>
+      <li>
+        <div class="cart_item">
+            <p class="cart_item_tit">商品名称</p>
+            <p class="cart_item_sm">商品规格</p>
+        </div>
+        <div class="cart_choice">
+          <i class="iconfont icon-minus"></i>
+          <strong>2</strong>
+          <i class="iconfont icon-add"></i>
+        </div>
+      </li>
+      <li>
+        <div class="cart_item">
+            <p class="cart_item_tit">商品名称</p>
+            <p class="cart_item_sm">商品规格</p>
         </div>
         <div class="cart_choice">
           <i class="iconfont icon-minus"></i>

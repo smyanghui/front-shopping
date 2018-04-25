@@ -25,7 +25,17 @@ class Index {
   }
 
   bindEvent() {
-    //aa
+
+    $("#viewCart").click(function(){
+      $("#pageMask, #cartBox").show();
+    });
+
+    // 点击空白隐藏购物车
+    $("#pageMask").click(function(){
+      $(this).hide();
+      $("#cartBox").hide();
+    });
+
   }
 
   // 渲染商品

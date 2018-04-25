@@ -6,5 +6,6 @@
   <meta name="format-detection" content="telephone=no, email=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-touch-fullscreen" content="yes" />
-  <link href="//at.alicdn.com/t/font_641460_5jbmp4lakewv1jor.css" rel="stylesheet" />
+  <link href="//at.alicdn.com/t/font_641460_mbt3ci07opmvlsor.css" rel="stylesheet" />
+
 
