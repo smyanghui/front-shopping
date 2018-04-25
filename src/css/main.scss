@@ -9,6 +9,7 @@ body { color: #333; font-size: 14px; background-color: #fff;}
 ul { list-style: none;}
 input, textarea, select, button { font: inherit; outline: 0;}
 input[type="checkbox"] { cursor: pointer;}
+button { border: 0; cursor: pointer;}
 
 a { text-decoration: none; color: #333;}
 table { border-collapse: collapse; border-spacing: 0;}
