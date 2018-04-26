@@ -7,6 +7,7 @@ var config = {
   entry: {
     'index': ['./src/js/index.js', './src/css/index.scss'],
     'order': ['./src/js/order.js', './src/css/order.scss'],
+    'login': ['./src/js/login.js', './src/css/login.scss'],
     'common': ['./src/js/main.js'],
   },
 

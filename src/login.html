@@ -1,0 +1,32 @@
+${require('./head.tpl')}
+<title>用户登录</title>
+</head>
+<body>
+
+<div class="page_box">
+
+  <div class="reg_box" id="regBox">
+
+    <p>注册</p>
+    <ul class="form_box">
+      <li>
+        <input type="text" placeholder="请输入手机号码" class="input_a" />
+      </li>
+      <li>
+        <button class="button_yzm">获取短信验证码</button>
+        <input type="text" placeholder="请输入手机验证码" class="input_b" />
+      </li>
+    </ul>
+
+    <button class="button_reg">注册</button>
+    <button class="button_login" id="goLogin">已注册，去登录</button>
+
+  </div>
+
+  <div class="login_box" id="loginBox">
+    登录
+    <button class="button_login" id="goReg">免费注册</button>
+  </div>
+ 
+</div>
+${require('./foot.tpl')}
