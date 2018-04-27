@@ -1,4 +1,9 @@
 
+import { Tips, Loading } from './modal.js';
+
+const newTips = new Tips();
+const newLoading = new Loading();
+
 class Controller {
 
   constructor() {}
@@ -12,12 +17,12 @@ class Controller {
   // }
 
   // 提示信息
-  // static showMessage(msg) {
-  //  newTips.show(msg, 1);
-  // }
-  // static hideMessage() {
-  //  newTips.hide();
-  // }
+  static showMessage(msg) {
+   newTips.show(msg, 1);
+  }
+  static hideMessage() {
+   newTips.hide();
+  }
 
   // static tips(msg, mType = 'warning', t = 3) {
   //   tips.show(msg, mType, t);
@@ -36,15 +41,12 @@ class Controller {
   // }
 
   // // 加载效果
-  // static showLoading(...data) {
-  //  if (!this.loading) {
-  //    this.loading = new Loading();
-  //  }
-  //  this.loading.show(...data);
-  // }
-  // static hideLoading() {
-  //  if (this.loading) this.loading.hide();
-  // }
+  static showLoading(...data) {
+    newLoading.show(...data);
+  }
+  static hideLoading() {
+    newLoading.hide();
+  }
 
   // // 提示信息
   // static showMessage(...data) {
@@ -82,15 +84,31 @@ class Controller {
   // ajax
   static ajax(options, success, error) {
 
+Controller.showLoading();
+return;
     options.success = options.success || function(data) {
-      console.log(data);
-      // if (parseInt(data.code) >= 20000) {
-      // } else {}
+      Controller.showMessage('aaa');
+      if (parseInt(data.code) >= 20000) {
+        // 请求超时刷新页面
+        // if (parseInt(data.code) == 20002) {
+        //   //Controller.showMessage(data.message);
+        //   setTimeout(function(){
+        //     window.location.reload();
+        //   }, 1000);
+        // }
+        // console.log(data);
+        Controller.showMessage(data.msg);
+      } else {
+        success(data);
+      }
     }
 
     options.error = options.error || function(data) {
       console.log(data);
+      //Controller.hideLoading();
+      Controller.showMessage('网络异常，请稍后重试');
     }
+    options.url = 'http://devapi.nfangbian.com' + options.url;
 
     $.ajax(options);
   }

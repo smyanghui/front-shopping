@@ -10,15 +10,15 @@ ${require('./head.tpl')}
     <p>注册</p>
     <ul class="form_box">
       <li>
-        <input type="text" placeholder="请输入手机号码" class="input_a" />
+        <input type="text" placeholder="请输入手机号码" id="telNum" class="input_a" />
       </li>
       <li>
         <button class="button_yzm">获取短信验证码</button>
-        <input type="text" placeholder="请输入手机验证码" class="input_b" />
+        <input type="text" placeholder="请输入手机验证码" id="smsYzm" class="input_b" />
       </li>
     </ul>
 
-    <button class="button_reg">注册</button>
+    <button class="button_reg" id="submitReg">注册</button>
     <button class="button_login" id="goLogin">已注册，去登录</button>
 
   </div>
@@ -27,6 +27,6 @@ ${require('./head.tpl')}
     登录
     <button class="button_login" id="goReg">免费注册</button>
   </div>
- 
+
 </div>
 ${require('./foot.tpl')}

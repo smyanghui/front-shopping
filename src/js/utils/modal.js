@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-// 弹层提示信息
+// 弹窗提示
 class Tips {
 
   constructor() {
@@ -8,42 +8,46 @@ class Tips {
   }
 
   createHtml(){
-    this.curTips = $('<div class="ui_modal">');
-    this.tipsBox = $('<div class="ui_modal_box">'); // flex方便居中
+    this.curTips = $('<div class="ui-message">');
     this.curTips.appendTo('body');
-    this.tipsBox.appendTo(this.curTips);
     this.timeTips = null;
   }
 
-  show(msg, mType, t){
+  show(msg, msgType){
 
-    // 提示内容
-    let contentBox = $('<div class="ui_modal_content">');
+    // 弹窗内容
+    let contentBox = $('<div class="wrong-box">');
 
     // 关闭按钮
-    // let closeBtn = $('<i class="mask-close">');
-    // contentBox.append(closeBtn);
-    // closeBtn.on('click', () => { this.curTips.hide(); });
+    let closeBtn = $('<i class="mask-close">');
+    contentBox.append(closeBtn);
+    closeBtn.on('click', () => { this.curTips.hide(); });
 
-    //
+    let contentHtml = ''
+    if (msgType) {
 
-    // 默认警告
-    let iconType = '<i class="iconfont icon-browser"></i>';
+      contentHtml += '<p class="tips-icon icon1"></p>';
 
-    // 错误提示
-    if (mType == 'wrong') iconType = '<i class="iconfont icon-browser"></i>';
+    } else {
 
-    // 成功提示
-    if (mType == 'success') iconType = '<i class="iconfont icon-browser"></i>';
+      contentHtml += '<p class="tips-icon icon3"></p>';
 
-    let contentHtml = `<p class="ui_modal_txt">${iconType}${msg}</p>`;
+      // 不显示关闭按钮
+      closeBtn.hide();
 
+      // 倒计时关闭、点击空白关闭
+      clearTimeout(this.timeTips);
+      this.timeTips = setTimeout(() => { this.curTips.hide(); }, 2000);
+      this.curTips.on('click', () => { this.curTips.hide(); });
+      
+    }
 
+    // 拼接弹窗内容
+    contentHtml += '<p class="tips-txt">'+ msg +'</p>';
 
     // 显示输出
-    contentBox.html(contentHtml);
-    this.tipsBox.html(contentBox);
-    this.curTips.show();
+    contentBox.append(contentHtml);
+    this.curTips.html(contentBox).show();
 
   }
 
@@ -53,4 +57,33 @@ class Tips {
 
 }
 
-export default new Tips();
+
+
+// loading加载
+class Loading {
+
+  constructor() {
+    this.createHtml();
+  }
+
+  createHtml(){
+
+    this.loadingBox = $('<div class="ui-loading">');
+
+    let contentHtml = '';
+      contentHtml += '<i class="loading rotate360"></i>';
+      contentHtml += '<p>加载中</p>';
+
+    // 显示输出
+    this.loadingBox.append(contentHtml).appendTo('body');
+
+  }
+
+  show(){ this.loadingBox.show(); }
+
+  hide(){ this.loadingBox.hide(); }
+
+}
+
+
+export { Tips, Loading };

@@ -1,5 +1,5 @@
 // import validata from './utils/validate';
-import controller from './utils/controller';
+// import controller from './utils/controller';
 
 
 class Page {

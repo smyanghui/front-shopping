@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+* { padding: 0; margin: 0; box-sizing: border-box;}
+img { border: 0;}
+
+html, body { height: 100%;}
+body { color: #333; font-size: 14px; background-color: #fff;}
+
+ul { list-style: none;}
+input, textarea, select, button { font: inherit; outline: 0;}
+input[type="checkbox"] { cursor: pointer;}
+button { border: 0; cursor: pointer;}
+
+a { text-decoration: none; color: #333;}
+table { border-collapse: collapse; border-spacing: 0;}
+
+.clear { float: none; clear: both;}
+.clearfix:after { display: block; clear: both; content: " "; height: 0; overflow: hidden;}
+
+.page_box { width: 100%; max-width: 800px; margin: 0 auto;}
+
+.top_box {
+  height: 45px; line-height: 45px; display: flex; background-color: #fff;
+  border-bottom: 1px solid #e5e5e5; font-size: 16px;
+}
+.top_box p { width: 33.33%; text-align: center;}
+.top_box p.cur { border-bottom: 2px solid #2396FF;}
+
+.page_mask {
+  position: fixed; left: 0; top: 0; z-index: 1;
+  width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);
+}
