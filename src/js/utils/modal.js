@@ -7,13 +7,13 @@ class Tips {
     this.createHtml();
   }
 
-  createHtml(){
+  createHtml() {
     this.curTips = $('<div class="ui-message">');
     this.curTips.appendTo('body');
     this.timeTips = null;
   }
 
-  show(msg, msgType){
+  show(msg, msgType) {
 
     // 弹窗内容
     let contentBox = $('<div class="wrong-box">');
@@ -51,7 +51,7 @@ class Tips {
 
   }
 
-  hide(){
+  hide() {
     this.curTips.hide();
   }
 
@@ -66,12 +66,11 @@ class Loading {
     this.createHtml();
   }
 
-  createHtml(){
+  createHtml() {
 
     this.loadingBox = $('<div class="ui-loading">');
 
     let contentHtml = '';
-      contentHtml += '<i class="loading rotate360"></i>';
       contentHtml += '<p>加载中</p>';
 
     // 显示输出
@@ -79,9 +78,9 @@ class Loading {
 
   }
 
-  show(){ this.loadingBox.show(); }
+  show() { this.loadingBox.show(); }
 
-  hide(){ this.loadingBox.hide(); }
+  hide() { this.loadingBox.hide(); }
 
 }
 
