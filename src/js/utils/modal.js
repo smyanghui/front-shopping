@@ -10,40 +10,19 @@ class Tips {
   createHtml() {
     this.curTips = $('<div class="ui-message">');
     this.curTips.appendTo('body');
+    this.curTips.on('click', () => this.curTips.hide() );
     this.timeTips = null;
   }
 
   show(msg, msgType) {
 
-    // 弹窗内容
-    let contentBox = $('<div class="wrong-box">');
+    let contentBox = $('<div class="message-box">');
 
-    // 关闭按钮
-    let closeBtn = $('<i class="mask-close">');
-    contentBox.append(closeBtn);
-    closeBtn.on('click', () => { this.curTips.hide(); });
-
-    let contentHtml = ''
-    if (msgType) {
-
-      contentHtml += '<p class="tips-icon icon1"></p>';
-
-    } else {
-
-      contentHtml += '<p class="tips-icon icon3"></p>';
-
-      // 不显示关闭按钮
-      closeBtn.hide();
-
-      // 倒计时关闭、点击空白关闭
-      clearTimeout(this.timeTips);
-      this.timeTips = setTimeout(() => { this.curTips.hide(); }, 2000);
-      this.curTips.on('click', () => { this.curTips.hide(); });
-      
-    }
-
-    // 拼接弹窗内容
-    contentHtml += '<p class="tips-txt">'+ msg +'</p>';
+    // 错误/成功提示
+    let tipsIcon = !!msgType ? 'icon-success' : 'icon-error';
+    let contentHtml = `<span class="tips-box"><i class="iconfont ${tipsIcon}"></i> ${msg}</span>`;
+    clearTimeout(this.timeTips);
+    this.timeTips = setTimeout(() => { this.curTips.hide() }, 3000);
 
     // 显示输出
     contentBox.append(contentHtml);
@@ -67,15 +46,8 @@ class Loading {
   }
 
   createHtml() {
-
     this.loadingBox = $('<div class="ui-loading">');
-
-    let contentHtml = '';
-      contentHtml += '<p>加载中</p>';
-
-    // 显示输出
-    this.loadingBox.append(contentHtml).appendTo('body');
-
+    this.loadingBox.appendTo('body');
   }
 
   show() { this.loadingBox.show(); }

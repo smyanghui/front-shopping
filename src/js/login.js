@@ -19,22 +19,19 @@ class Page extends Controller {
 
     let _this = this;
 
+    const GOLOGIN = $("#goLogin");
+    const GOREG = $("#goReg");
+    const REGBOX = $("#regBox");
+    const LOGINBOX = $("#loginBox");
+
     // 去登录
-    $("#goLogin").click(function(){
-      $("#regBox").hide();
-      $("#loginBox").show();
-    });
+    GOLOGIN.click( () => { REGBOX.hide(); LOGINBOX.show(); });
 
     // 去注册
-    $("#goReg").click(function(){
-      $("#loginBox").hide();
-      $("#regBox").show();
-    });
+    GOREG.click( () => { LOGINBOX.hide(); REGBOX.show(); });
 
     // 注册提交
-    $("#submitReg").click(function(){
-      _this.submitReg();
-    });
+    $("#submitReg").click( () => this.submitReg() );
 
   }
 
