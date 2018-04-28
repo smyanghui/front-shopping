@@ -17,7 +17,7 @@ ${require('./head.tpl')}
 
     <!-- 左侧分类 -->
     <div class="content_left">
-      <ul class="menu_left">
+      <ul class="menu_left" id="sortBox">
         <li><p>优惠</p></li>
         <li id="myclik" class="cur"><p>招牌</p></li>
         <li><p>吃货最爱</p></li>
@@ -33,7 +33,7 @@ ${require('./head.tpl')}
     <!-- 商品列表 -->
     <div class="content_main" id="iScrollItem">
       <div>
-        <ul>
+        <ul id="itemBox">
           <li id="item_11" data-itemid="11">
             <p class="image_box"><img src="/src/images/item.png" /></p>
             <div class="text_box">
@@ -66,7 +66,7 @@ ${require('./head.tpl')}
   <!-- 购物车 -->
   <div class="cart_box" id="cartBox">
     <p class="cart_tit"><span><i class="iconfont icon-lajixiang"></i> 清空</span>已选商品</p>
-    <ul class="cart_list">
+    <ul class="cart_list" id="cartItemBox">
       <li id="cart_11" data-itemid="11">
         <div class="cart_item">
             <p class="cart_item_tit">商品名称</p>
