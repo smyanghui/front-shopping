@@ -57,20 +57,25 @@ ${require('./head.tpl')}
 
   </div>
 
-  <!-- 底部 -->
+</div>
+
+<!-- 底部 -->
+<div class="bottom_out_box">
   <div class="bottom_box">
     <p class="bottom_cart" id="viewCart">购(2) <span>￥100.00</span></p>
     <p class="buy">去结算</p>
   </div>
+</div>
 
-  <!-- 购物车 -->
+<!-- 购物车 -->
+<div class="cart_out_box" id="cartOutBox">
   <div class="cart_box" id="cartBox">
     <p class="cart_tit"><span><i class="iconfont icon-lajixiang"></i> 清空</span>已选商品</p>
     <ul class="cart_list" id="cartItemBox">
       <li id="cart_11" data-itemid="11">
         <div class="cart_item">
-            <p class="cart_item_tit">商品名称</p>
-            <p class="cart_item_sm">商品规格</p>
+          <p class="cart_item_tit">商品名称</p>
+          <p class="cart_item_sm">商品规格</p>
         </div>
         <div class="cart_choice J_cart_choice">
           <i class="iconfont icon-minus"></i>
@@ -80,12 +85,9 @@ ${require('./head.tpl')}
       </li>
     </ul>
   </div>
-
-  <!-- 遮罩层 -->
-  <div class="page_mask" id="pageMask"></div>
-
 </div>
 
-<!-- <script src="https://cdn.bootcss.com/iScroll/5.2.0/iscroll.min.js"></script> -->
+<div class="cart_mask" id="cartMask"></div>
+
 <script src="https://cdn.bootcss.com/iScroll/5.2.0/iscroll-lite.js"></script>
 ${require('./foot.tpl')}

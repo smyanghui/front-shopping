@@ -47,6 +47,7 @@ class Index {
       12: null,
       13: null,
     };
+
     this.renderSort();
     this.renderItem();
     this.renderCart();
@@ -58,13 +59,14 @@ class Index {
 
     $("#viewCart").click(function(){
       _this.renderCart();
-      $("#pageMask, #cartBox").show();
+      $("#cartMask").show();
+      $("#cartOutBox").css("bottom", 45);
     });
 
     // 点击空白隐藏购物车
-    $("#pageMask").click(function(){
+    $("#cartMask").click(function(e){
       $(this).hide();
-      $("#cartBox").hide();
+      $("#cartOutBox").css("bottom", '-80%');
     });
 
     // 移入/移出商品
