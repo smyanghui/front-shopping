@@ -103,7 +103,7 @@ class Index {
       itemHTML += `<li id="item_${i}" data-itemid="${i}">
         <p class="image_box"><img src="${item.imgUrl}" /></p>
         <div class="text_box">
-          <p class="item_tit">${item.name}</p>
+          <a href="detail.html" class="item_tit">${item.name}</a>
           <div class="item_remark">
             <p>${item.text}</p>
           </div>

@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+// 纵向排列
+.page_box { display: flex; flex-direction: column; height: 100%; position: relative;}
+
+.detail_tit {
+  height: 45px; line-height: 45px;
+  border-bottom: 1px solid #e5e5e5; font-size: 16px;
+  a { display: block; width: 50%; text-align: center; color: #fff;}
+  a.view_more { background-color: #3E3E40; float: left;}
+  a.buy_now { background-color: #59D178; float: right;}
+}
+
+.detail_box {
+  flex: 1; overflow: auto;
+  background-color: #fff; line-height: 1.5em;
+  padding: 10px;
+  img { width: 100%;}
+  p { text-indent: 2em; margin: 10px 0;}
+}
+
+
+
+
