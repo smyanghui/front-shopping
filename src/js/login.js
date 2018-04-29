@@ -33,13 +33,27 @@ class Page extends Controller {
     // 注册提交
     $("#submitReg").click( () => this.submitReg() );
 
+    // 登录提交
+    $("#submitLogin").click( () => this.submitLogin() );
+
   }
 
   // 注册
   submitReg() {
     
-    let telNum = $("#telNum").val();
-    let smsYzm = $("#smsYzm").val();
+    const telNum = $.trim($("#regTelNum").val());
+    const smsYzm = $.trim($("#regSmsYzm").val());
+
+    // 验证手机号码
+    if (Validata.isBlank(telNum)) {
+      return Controller.showMessage("手机号码不能为空！");
+    }
+    if (!Validata.isMobile(telNum)) {
+      return Controller.showMessage("手机号码格式不正确！");
+    }
+    if (Validata.isBlank(smsYzm)) {
+      return Controller.showMessage("请输入验证码！");
+    }
 
     let params = {
       account: telNum,
@@ -48,6 +62,41 @@ class Page extends Controller {
 
     Controller.ajax({
       url: '/reg/mobile',
+      type: 'POST',
+      // cache: false,
+      data: params
+    }, (res) => {
+      console.log(res);
+    });
+
+  }
+
+
+  // 登录
+  submitLogin() {
+    
+    const telNum = $.trim($("#loginTelNum").val());
+    const smsYzm = $.trim($("#loginSmsYzm").val());
+
+    // 验证手机号码
+    if (Validata.isBlank(telNum)) {
+      return Controller.showMessage("手机号码不能为空！");
+    }
+    if (!Validata.isMobile(telNum)) {
+      return Controller.showMessage("手机号码格式不正确！");
+    }
+    if (Validata.isBlank(smsYzm)) {
+      return Controller.showMessage("请输入验证码！");
+    }
+
+    let params = {
+      account: telNum,
+      login_type: 2,
+      pwd: smsYzm,
+    };
+
+    Controller.ajax({
+      url: '/login/mobile',
       type: 'POST',
       // cache: false,
       data: params

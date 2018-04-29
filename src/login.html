@@ -7,25 +7,43 @@ ${require('./head.tpl')}
 
   <div class="reg_box" id="regBox">
 
-    <p>注册</p>
+    <h2 class="top_tit">免费注册</h2>
     <ul class="form_box">
       <li>
-        <input type="text" placeholder="请输入手机号码" id="telNum" class="input_a" />
+        <input type="text" maxlength="11" placeholder="请输入手机号码" id="regTelNum" class="input_a" />
       </li>
       <li>
         <button class="button_yzm">获取短信验证码</button>
-        <input type="text" placeholder="请输入手机验证码" id="smsYzm" class="input_b" />
+        <input type="text" maxlength="5" placeholder="请输入手机验证码" id="regSmsYzm" class="input_b" />
       </li>
     </ul>
 
-    <button class="button_reg" id="submitReg">注册</button>
+    <button class="button_reg" id="submitReg">注 册</button>
+
+    <p class="login_tips">如果您已注册，请点击去登录！</p>
     <button class="button_login" id="goLogin">已注册，去登录</button>
 
   </div>
 
   <div class="login_box" id="loginBox">
-    登录
+
+    <h2 class="top_tit">欢迎登录</h2>
+    <ul class="form_box">
+      <li>
+        <input type="text" maxlength="11" placeholder="请输入手机号码" id="loginTelNum" class="input_a" />
+      </li>
+      <li>
+        <button class="button_yzm">获取短信验证码</button>
+        <input type="text" maxlength="5" placeholder="请输入手机验证码" id="loginSmsYzm" class="input_b" />
+      </li>
+    </ul>
+
+    <button class="button_reg" id="submitLogin">登 录</button>
+
+    <p class="login_tips">如果您未注册，请点击免费注册！</p>
     <button class="button_login" id="goReg">免费注册</button>
+
+
   </div>
 
 </div>
