@@ -83,6 +83,17 @@ class Index {
       _this.updateCart(curId, isAdd);
     });
 
+    // 清空购物车
+    $("#cleanCart").click( () => {
+      for (let i in this.arrCart) {
+        if (this.arrItem[i].num == 0) continue;
+        this.arrItem[i].num = 0;
+        $("#item_"+ i).find("strong").text('0');
+      }
+      this.arrCart = {};
+      this.renderCart();
+    })
+
   }
 
   // 渲染商品
@@ -139,6 +150,7 @@ class Index {
         </div>
       </li>`;
     }
+    if (itemHTML == '') itemHTML = '<li>空空如也！</li>';
     $("#cartItemBox").html(itemHTML);
   }
 

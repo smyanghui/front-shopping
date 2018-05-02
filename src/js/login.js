@@ -11,99 +11,86 @@ class Page extends Controller {
   }
 
   init() {
-    this.arrItem = '';
-    // this.renderItem();
+    this.isSending = false;
   }
 
   bindEvent() {
-
     let _this = this;
-
-    const GOLOGIN = $("#goLogin");
-    const GOREG = $("#goReg");
-    const REGBOX = $("#regBox");
-    const LOGINBOX = $("#loginBox");
-
-    // 去登录
-    GOLOGIN.click( () => { REGBOX.hide(); LOGINBOX.show(); });
-
-    // 去注册
-    GOREG.click( () => { LOGINBOX.hide(); REGBOX.show(); });
-
-    // 注册提交
-    $("#submitReg").click( () => this.submitReg() );
-
+    // 发送短信验证码
+    $("#smsYzm").click( () => this.sendSms() );
     // 登录提交
     $("#submitLogin").click( () => this.submitLogin() );
-
   }
 
-  // 注册
-  submitReg() {
-    
-    const telNum = $.trim($("#regTelNum").val());
-    const smsYzm = $.trim($("#regSmsYzm").val());
-
-    // 验证手机号码
-    if (Validata.isBlank(telNum)) {
-      return Controller.showMessage("手机号码不能为空！");
-    }
-    if (!Validata.isMobile(telNum)) {
-      return Controller.showMessage("手机号码格式不正确！");
-    }
-    if (Validata.isBlank(smsYzm)) {
-      return Controller.showMessage("请输入验证码！");
-    }
-
+  // 发送短信验证码
+  sendSms() {
+    if (this.isSending) return;
+    const telNum = this.checkMobile();
+    if (!telNum) return;
     let params = {
-      account: telNum,
-      sms_yzm: smsYzm,
+      mobile: telNum,
+      system_id: 1,
+      business_id: '10002',
+      token: '',
     };
-
     Controller.ajax({
-      url: '/reg/mobile',
+      url: '/sms/send',
       type: 'POST',
-      // cache: false,
+      cache: false,
       data: params
     }, (res) => {
-      console.log(res);
+      this.isSending = true;
+      // 倒计时
+      let secondNum = 5;
+      let downTime = null;
+      downTime = setInterval(() => {
+        if (secondNum <= 0) {
+          this.isSending = false;
+          clearInterval(downTime);
+          return;
+        }
+        secondNum--;
+        let smsHtml = secondNum <= 0 ? '重新发送' : secondNum +'秒后重新发送';
+        $("#smsYzm").text(smsHtml);
+      }, 1000);
     });
-
   }
 
+  // 校验手机号码
+  checkMobile() {
+    const telNum = $.trim($("#loginTelNum").val());
+    if (Validata.isBlank(telNum)) {
+      Controller.showMessage("手机号码不能为空！");
+      return false;
+    }
+    if (!Validata.isMobile(telNum)) {
+      Controller.showMessage("手机号码格式不正确！");
+      return false;
+    }
+    return telNum;
+  }
 
   // 登录
   submitLogin() {
-    
-    const telNum = $.trim($("#loginTelNum").val());
+    const telNum = this.checkMobile();
+    if (!telNum) return;
     const smsYzm = $.trim($("#loginSmsYzm").val());
-
-    // 验证手机号码
-    if (Validata.isBlank(telNum)) {
-      return Controller.showMessage("手机号码不能为空！");
-    }
-    if (!Validata.isMobile(telNum)) {
-      return Controller.showMessage("手机号码格式不正确！");
-    }
     if (Validata.isBlank(smsYzm)) {
       return Controller.showMessage("请输入验证码！");
     }
-
     let params = {
       account: telNum,
       login_type: 2,
       pwd: smsYzm,
     };
-
     Controller.ajax({
       url: '/login/mobile',
       type: 'POST',
-      // cache: false,
       data: params
     }, (res) => {
-      console.log(res);
+      Controller.setCookie('token', res.data.token || '');
+      window.history.go(-1);
     });
-
   }
 
 }

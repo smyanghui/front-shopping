@@ -6,19 +6,21 @@
   <meta name="format-detection" content="telephone=no, email=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-touch-fullscreen" content="yes">
+  <link href="//at.alicdn.com/t/font_641460_mbt3ci07opmvlsor.css" rel="stylesheet">
+
 
 
 <title>首页</title>
-<link href="/css/index.63963afd.css" rel="stylesheet"></head>
+<link href="/css/common.454a1660.css" rel="stylesheet"><link href="/css/index.454a1660.css" rel="stylesheet"></head>
 <body>
 
 <div class="page_box">
 
   
   <div class="top_box">
-    <p class="cur"><a href="#">选蛋糕</a></p>
-    <p><a href="#">订单</a></p>
-    <p><a href="#">我的</a></p>
+    <p class="cur"><a href="javascript:;">选蛋糕</a></p>
+    <p><a href="order.html">我的订单</a></p>
+    <p><a href="seller.html">商家详情</a></p>
   </div>
 
   
@@ -26,7 +28,7 @@
 
     
     <div class="content_left">
-      <ul class="menu_left">
+      <ul class="menu_left" id="sortBox">
         <li><p>优惠</p></li>
         <li id="myclik" class="cur"><p>招牌</p></li>
         <li><p>吃货最爱</p></li>
@@ -42,15 +44,21 @@
     
     <div class="content_main" id="iScrollItem">
       <div>
-        <ul class="item_list">
-          <li>
+        <ul id="itemBox">
+          <li id="item_11" data-itemid="11">
             <p class="image_box"><img src="/src/images/item.png"></p>
             <div class="text_box">
-              <p class="item_tit">adsfasd</p>
-              <p class="item_remark">asdfa</p>
+              <a href="detail.html" class="item_tit">精品生日水果蛋糕</a>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
               <div class="price_box">
                 <p class="item_price">￥100.00</p>
-                <p class="item_choice">-12+</p>
+                <p class="item_choice J_item_choice">
+                  <i class="iconfont icon-minus"></i>
+                  <strong>2</strong>
+                  <i class="iconfont icon-add"></i>
+                </p>
               </div>
             </div>
           </li>
@@ -60,16 +68,39 @@
 
   </div>
 
-  
-  <div class="bottom_box">
-    <p class="cart">购(2) <span>￥100.00</span></p>
-    <p class="buy">去结算</p>
-  </div>
-
 </div>
 
 
+<div class="bottom_out_box">
+  <div class="bottom_box">
+    <p class="bottom_cart" id="viewCart">购(2) <span>￥100.00</span></p>
+    <p class="buy">去结算</p>
+  </div>
+</div>
+
+
+<div class="cart_out_box" id="cartOutBox">
+  <div class="cart_box" id="cartBox">
+    <p class="cart_tit"><span id="cleanCart"><i class="iconfont icon-lajixiang"></i> 清空</span>已选商品</p>
+    <ul class="cart_list" id="cartItemBox">
+      <li id="cart_11" data-itemid="11">
+        <div class="cart_item">
+          <p class="cart_item_tit">商品名称</p>
+          <p class="cart_item_sm">商品规格</p>
+        </div>
+        <div class="cart_choice J_cart_choice">
+          <i class="iconfont icon-minus"></i>
+          <strong>2</strong>
+          <i class="iconfont icon-add"></i>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="cart_mask" id="cartMask"></div>
+
 <script src="https://cdn.bootcss.com/iScroll/5.2.0/iscroll-lite.js"></script>
 <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
-<script type="text/javascript" src="/js/common.63963afd.js"></script><script type="text/javascript" src="/js/index.63963afd.js"></script></body>
+<script type="text/javascript" src="/js/common.454a1660.js"></script><script type="text/javascript" src="/js/index.454a1660.js"></script></body>
 </html>
