@@ -1,10 +1,6 @@
 @charset "utf-8";
-
-// 纵向排列
-.page_box { display: flex; flex-direction: column; height: 100%; position: relative;}
-
-// 商品内容
-.content_box { flex: 1; display: flex;}
+.page_box { position: relative; overflow: hidden;}
+.content_box { height: 100%; padding: 45px 0; display: flex;}
 
 // 左侧分类
 .content_left { width: 80px; background-color: #f8f8f8; overflow: hidden;}
@@ -40,7 +36,10 @@
   .item_remark { font-size: 12px; color: #666; max-height: 80px; overflow: hidden;}
   .price_box {
     display: flex; line-height: 24px; margin-top: 10px;
-    .item_price { width: 50%; font-size: 18px;}
+    .item_price {
+      width: 50%; font-size: 18px; color: #f60;
+      i { font-size: 14px;}
+    }
     .item_choice {
       flex: 1; text-align: right;
       i, strong { display: inline-block; font-size: 16px; text-align: center;}
@@ -49,13 +48,17 @@
         width: 24px; height: 24px; cursor: pointer;
         border-radius: 24px; background-color: #59D178; color: #fff;
       }
+      span {
+        padding: 3px 10px;
+        border-radius: 24px; background-color: #59D178; color: #fff;
+      }
     }
   }
 }
 
 // 底部
 .bottom_out_box {
-  position: fixed; bottom: 0; left: 0; z-index: 99;
+  position: absolute; bottom: 0; left: 0; z-index: 15;
   width: 100%; height: 45px; line-height: 45px;
 }
 .bottom_box {
@@ -73,7 +76,7 @@
 
 // 购物车
 .cart_out_box {
-  position: fixed; left: 0; bottom: -80%; z-index: 2;
+  position: absolute; left: 0; bottom: -80%; z-index: 3;
   width: 100%; transition: bottom 0.5s;
 }
 .cart_box {
@@ -108,10 +111,43 @@
 }
 
 .cart_mask {
-  position: fixed; left: 0; top: 0; z-index: 1; display: none;
+  position: absolute; left: 0; top: 0; z-index: 2; display: none;
   width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);
 }
 
-
+// 选规格
+.size_out_box {
+  position: absolute; left: 0; top: 0; z-index: 5;
+  width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);
+  display: flex; align-items: center; justify-content: center;
+}
+.size_box {
+  width: 80%; max-width: 700px; margin: 0 auto; overflow: hidden;
+  background-color: #fff; margin-top: -100px; border-radius: 5px; padding-top: 10px;
+  .size_tit {
+    padding: 0 10px; text-align: center; font-size: 18px; line-height: 35px;
+    i { float: right; font-size: 24px; color: #666;}
+  }
+  .size_content {
+    padding: 10px 20px;
+    span {
+      border: 1px solid #666; margin: 0 10px 10px 0; padding: 5px 15px;
+      display: inline-block; border-radius: 30px; color: #666;
+      &.cur { border-color: #59D178; color: #59D178;}
+    }
+  }
+  .size_bottom {
+    display: flex; line-height: 45px; font-size: 18px;
+    background-color: #fafafa; border-top: 1px solid #ddd;
+  }
+  .size_price {
+    flex: 1; color: #f60; font-size: 24px; padding-left: 10px;
+    i { font-size: 14px;}
+  }
+  .size_btn_ok {
+    width: 100px; text-align: center;
+    background-color: #59D178; color: #fff;
+  }
+}
 
 

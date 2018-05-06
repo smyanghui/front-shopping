@@ -11,23 +11,25 @@
 
 
 <title>首页</title>
-<link href="/css/common.454a1660.css" rel="stylesheet"><link href="/css/index.454a1660.css" rel="stylesheet"></head>
+<link href="/css/common.034dd4d0.css" rel="stylesheet"><link href="/css/index.034dd4d0.css" rel="stylesheet"></head>
 <body>
 
 <div class="page_box">
 
   
-  <div class="top_box">
-    <p class="cur"><a href="javascript:;">选蛋糕</a></p>
-    <p><a href="order.html">我的订单</a></p>
-    <p><a href="seller.html">商家详情</a></p>
+  <div class="top_out_box">
+    <div class="top_box">
+      <p class="cur"><a href="javascript:;">选蛋糕</a></p>
+      <p><a href="order.html">我的订单</a></p>
+      <p><a href="seller.html">商家详情</a></p>
+    </div>
   </div>
 
   
   <div class="content_box">
 
     
-    <div class="content_left">
+    <div class="content_left" id="iScrollMenu">
       <ul class="menu_left" id="sortBox">
         <li><p>优惠</p></li>
         <li id="myclik" class="cur"><p>招牌</p></li>
@@ -43,64 +45,79 @@
 
     
     <div class="content_main" id="iScrollItem">
-      <div>
-        <ul id="itemBox">
-          <li id="item_11" data-itemid="11">
-            <p class="image_box"><img src="/src/images/item.png"></p>
-            <div class="text_box">
-              <a href="detail.html" class="item_tit">精品生日水果蛋糕</a>
-              <div class="item_remark">
-                <p>送蜡烛10支，每个账号限买一个</p>
-              </div>
-              <div class="price_box">
-                <p class="item_price">￥100.00</p>
-                <p class="item_choice J_item_choice">
-                  <i class="iconfont icon-minus"></i>
-                  <strong>2</strong>
-                  <i class="iconfont icon-add"></i>
-                </p>
-              </div>
+      <ul id="itemBox">
+        <li id="item_11" data-itemid="11">
+          <p class="image_box"><img src="/src/images/item.png"></p>
+          <div class="text_box">
+            <a href="detail.html" class="item_tit">精品生日水果蛋糕</a>
+            <div class="item_remark">
+              <p>送蜡烛10支，每个账号限买一个</p>
             </div>
-          </li>
-        </ul>
-      </div>
+            <div class="price_box">
+              <p class="item_price"><i>￥</i>100.00</p>
+              <p class="item_choice J_item_choice">
+                
+                <span>选规格</span>
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
 
   </div>
 
-</div>
-
-
-<div class="bottom_out_box">
-  <div class="bottom_box">
-    <p class="bottom_cart" id="viewCart">购(2) <span>￥100.00</span></p>
-    <p class="buy">去结算</p>
+  
+  <div class="bottom_out_box">
+    <div class="bottom_box">
+      <p class="bottom_cart" id="viewCart">购(2) <span>￥100.00</span></p>
+      <p class="buy">去结算</p>
+    </div>
   </div>
-</div>
 
-
-<div class="cart_out_box" id="cartOutBox">
-  <div class="cart_box" id="cartBox">
-    <p class="cart_tit"><span id="cleanCart"><i class="iconfont icon-lajixiang"></i> 清空</span>已选商品</p>
-    <ul class="cart_list" id="cartItemBox">
-      <li id="cart_11" data-itemid="11">
-        <div class="cart_item">
-          <p class="cart_item_tit">商品名称</p>
-          <p class="cart_item_sm">商品规格</p>
-        </div>
-        <div class="cart_choice J_cart_choice">
-          <i class="iconfont icon-minus"></i>
-          <strong>2</strong>
-          <i class="iconfont icon-add"></i>
-        </div>
-      </li>
-    </ul>
+  
+  <div class="cart_out_box" id="cartOutBox">
+    <div class="cart_box" id="cartBox">
+      <p class="cart_tit"><span id="cleanCart"><i class="iconfont icon-lajixiang"></i> 清空</span>已选商品</p>
+      <ul class="cart_list" id="cartItemBox">
+        <li id="cart_11" data-itemid="11">
+          <div class="cart_item">
+            <p class="cart_item_tit">商品名称</p>
+            <p class="cart_item_sm">商品规格</p>
+          </div>
+          <div class="cart_choice J_cart_choice">
+            <i class="iconfont icon-minus"></i>
+            <strong>2</strong>
+            <i class="iconfont icon-add"></i>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
+
+  
+  <div style="display: none;" id="choiceSize">
+    <div class="size_out_box">
+      <div class="size_box">
+        <p class="size_tit"><i class="iconfont icon-close" onclick="$('#choiceSize').hide()"></i> 水果蛋糕</p>
+        <div class="size_content">
+          <span class="cur">6寸</span>
+          <span>8寸</span>
+          <span>10寸</span>
+        </div>
+        <div class="size_bottom">
+          <p class="size_price"><i>￥</i>100.00</p>
+          <p class="size_btn_ok">选好了</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart_mask" id="cartMask"></div>
+
 </div>
 
-<div class="cart_mask" id="cartMask"></div>
-
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/iScroll/5.2.0/iscroll-lite.js"></script>
-<script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
-<script type="text/javascript" src="/js/common.454a1660.js"></script><script type="text/javascript" src="/js/index.454a1660.js"></script></body>
+<script type="text/javascript" src="/js/common.034dd4d0.js"></script><script type="text/javascript" src="/js/index.034dd4d0.js"></script></body>
 </html>

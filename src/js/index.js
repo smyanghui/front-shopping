@@ -1,7 +1,10 @@
 
-class Index {
+import Controller from './utils/controller';
+
+class Page extends Controller {
 
   constructor() {
+    super();
     this.init();
     this.bindEvent();
   }
@@ -14,6 +17,14 @@ class Index {
       12: {name: '招牌'},
       13: {name: '吃货最爱'},
       14: {name: '卡通生日蛋糕'},
+      21: {name: '优惠'},
+      22: {name: '招牌'},
+      23: {name: '吃货最爱'},
+      24: {name: '卡通生日蛋糕'},
+      31: {name: '优惠'},
+      32: {name: '招牌'},
+      33: {name: '吃货最爱'},
+      34: {name: '卡通生日蛋糕'},
     };
 
     // 商品数据
@@ -39,6 +50,48 @@ class Index {
         text: '送蜡烛10支，每个账号限买一个',
         price: '100.00',
       },
+      21: {
+        name: '精品生日水果蛋糕11',
+        num: 0,
+        imgUrl: '/src/images/item.png',
+        text: '送蜡烛10支，每个账号限买一个',
+        price: '100.00',
+      },
+      22: {
+        name: '精品生日水果蛋糕12',
+        num: 0,
+        imgUrl: '/src/images/item.png',
+        text: '送蜡烛10支，每个账号限买一个',
+        price: '100.00',
+      },
+      23: {
+        name: '精品生日水果蛋糕13',
+        num: 0,
+        imgUrl: '/src/images/item.png',
+        text: '送蜡烛10支，每个账号限买一个',
+        price: '100.00',
+      },
+      31: {
+        name: '精品生日水果蛋糕11',
+        num: 0,
+        imgUrl: '/src/images/item.png',
+        text: '送蜡烛10支，每个账号限买一个',
+        price: '100.00',
+      },
+      32: {
+        name: '精品生日水果蛋糕12',
+        num: 0,
+        imgUrl: '/src/images/item.png',
+        text: '送蜡烛10支，每个账号限买一个',
+        price: '100.00',
+      },
+      33: {
+        name: '精品生日水果蛋糕13',
+        num: 0,
+        imgUrl: '/src/images/item.png',
+        text: '送蜡烛10支，每个账号限买一个',
+        price: '100.00',
+      },
     };
 
     // 购物车数据
@@ -48,10 +101,7 @@ class Index {
       13: null,
     };
 
-    this.renderSort();
-    this.renderItem();
-    this.renderCart();
-    this.listScroll = new IScroll('#iScrollItem');
+    this.getItems();
   }
 
   bindEvent() {
@@ -70,10 +120,15 @@ class Index {
     });
 
     // 移入/移出商品
-    $(".J_item_choice i").click(function(){
+    $("#itemBox").on('click', ".J_item_choice i", function(){
       const isAdd = $(this).hasClass("icon-add");
       const curId = $(this).closest('li').data('itemid');
       _this.changeCart(curId, isAdd);
+    });
+
+    // 选规格
+    $("#itemBox").on('click', "img", function(){
+      $("#choiceSize").show();
     });
 
     // 修改购物车数量
@@ -94,6 +149,33 @@ class Index {
       this.renderCart();
     })
 
+  }
+
+  // 获取商品数据
+  getItems() {
+    Controller.ajax({
+      url: '/index/goods',
+      type: 'POST',
+    }, (res) => {
+      const listArr = res.data.goods || [];
+      for (let i in listArr) {
+        this.arrSort[listArr[i].category_id] = {name: listArr[i].category_name};
+        for (let j in listArr[i].items) {
+          let itemsArr = listArr[i].items[j];
+          this.arrItem[listArr[i].category_id] = {
+            name: itemsArr.goods_name,
+            num: 0,
+            imgUrl: '/src/images/item.png', // itemsArr.goods_logo
+            text: '送蜡烛10支，每个账号限买一个', // itemsArr.goods_desc
+            price: itemsArr.goods_price,
+          };
+        }
+      }
+      this.renderSort();
+      this.renderItem();
+      new IScroll('#iScrollMenu');
+      new IScroll('#iScrollItem');
+    });
   }
 
   // 渲染商品
@@ -192,5 +274,4 @@ class Index {
 
 }
 
-
-new Index();
+new Page();
