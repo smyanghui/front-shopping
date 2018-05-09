@@ -3,25 +3,25 @@ ${require('./head.tpl')}
 </head>
 <body>
 
-<div class="page_box">
+<div class="page">
 
   <!-- 顶部 -->
-  <div class="top_out_box">
-    <div class="top_box">
-      <p class="cur"><a href="javascript:;">选蛋糕</a></p>
-      <p><a href="order.html">我的订单</a></p>
-      <p><a href="seller.html">商家详情</a></p>
-    </div>
+  <div class="page_header">
+    <ul>
+      <li class="cur">选蛋糕</li>
+      <li><a href="order.html">我的订单</a></li>
+      <li><a href="seller.html">商家详情</a></li>
+    </ul>
   </div>
 
   <!-- 商品内容 -->
-  <div class="content_box">
+  <div class="page_content">
 
     <!-- 左侧分类 -->
-    <div class="content_left" id="iScrollMenu">
-      <ul class="menu_left" id="sortBox">
+    <div class="content_left" id="iScrollSort">
+      <ul class="sort_box" id="sortBox">
         <li><p>优惠</p></li>
-        <li id="myclik" class="cur"><p>招牌</p></li>
+        <li class="cur"><p>招牌</p></li>
         <li><p>吃货最爱</p></li>
         <li><p>卡通生日蛋糕</p></li>
         <li><p>新品蛋糕</p></li>
@@ -33,34 +33,193 @@ ${require('./head.tpl')}
     </div>
 
     <!-- 商品列表 -->
-    <div class="content_main" id="iScrollItem">
-      <ul id="itemBox">
-        <li id="item_11" data-itemid="11">
-          <p class="image_box"><img src="/src/images/item.png" /></p>
-          <div class="text_box">
-            <a href="detail.html" class="item_tit">精品生日水果蛋糕</a>
-            <div class="item_remark">
-              <p>送蜡烛10支，每个账号限买一个</p>
-            </div>
-            <div class="price_box">
-              <p class="item_price"><i>￥</i>100.00</p>
-              <p class="item_choice J_item_choice">
-                <!-- <i class="iconfont icon-minus"></i>
-                <strong>2</strong>
-                <i class="iconfont icon-add"></i> -->
-                <span>选规格</span>
+    <div class="content_right" id="iScrollItem">
+      <div class="item_box" id="itemBox">
+        <ul id="item_11">
+          <li data-itemid="11">
+
+            <p class="item_img_box">
+              <a href="detail.html"><img src="/src/images/item.png" /></a>
+            </p>
+
+            <div class="item_infor_box">
+              <p class="item_name">
+                <a href="detail.html">精品生日水果蛋糕</a>
               </p>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
+              <div class="price_box">
+                <p class="item_price"><i>￥</i>100.00</p>
+                <p class="item_choice J_item_choice">
+                  <!-- <i class="iconfont icon-minus"></i>
+                  <strong>2</strong>
+                  <i class="iconfont icon-add"></i> -->
+                  <span>选规格</span>
+                </p>
+              </div>
             </div>
-          </div>
-        </li>
-      </ul>
+
+          </li>
+
+          <li data-itemid="11">
+
+            <p class="item_img_box">
+              <a href="detail.html"><img src="/src/images/item.png" /></a>
+            </p>
+
+            <div class="item_infor_box">
+              <p class="item_name">
+                <a href="detail.html">精品生日水果蛋糕</a>
+              </p>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
+              <div class="price_box">
+                <p class="item_price"><i>￥</i>100.00</p>
+                <p class="item_choice J_item_choice">
+                  <i class="iconfont icon-minus"></i>
+                  <strong>2</strong>
+                  <i class="iconfont icon-add"></i>
+                </p>
+              </div>
+            </div>
+
+          </li>
+          <li data-itemid="11">
+
+            <p class="item_img_box">
+              <a href="detail.html"><img src="/src/images/item.png" /></a>
+            </p>
+
+            <div class="item_infor_box">
+              <p class="item_name">
+                <a href="detail.html">精品生日水果蛋糕</a>
+              </p>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
+              <div class="price_box">
+                <p class="item_price"><i>￥</i>100.00</p>
+                <p class="item_choice J_item_choice">
+                  <!-- <i class="iconfont icon-minus"></i>
+                  <strong>2</strong>
+                  <i class="iconfont icon-add"></i> -->
+                  <span>选规格</span>
+                </p>
+              </div>
+            </div>
+
+          </li>
+          <li data-itemid="11">
+
+            <p class="item_img_box">
+              <a href="detail.html"><img src="/src/images/item.png" /></a>
+            </p>
+
+            <div class="item_infor_box">
+              <p class="item_name">
+                <a href="detail.html">精品生日水果蛋糕</a>
+              </p>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
+              <div class="price_box">
+                <p class="item_price"><i>￥</i>100.00</p>
+                <p class="item_choice J_item_choice">
+                  <!-- <i class="iconfont icon-minus"></i>
+                  <strong>2</strong>
+                  <i class="iconfont icon-add"></i> -->
+                  <span>选规格</span>
+                </p>
+              </div>
+            </div>
+
+          </li>
+          <li data-itemid="11">
+
+            <p class="item_img_box">
+              <a href="detail.html"><img src="/src/images/item.png" /></a>
+            </p>
+
+            <div class="item_infor_box">
+              <p class="item_name">
+                <a href="detail.html">精品生日水果蛋糕</a>
+              </p>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
+              <div class="price_box">
+                <p class="item_price"><i>￥</i>100.00</p>
+                <p class="item_choice J_item_choice">
+                  <!-- <i class="iconfont icon-minus"></i>
+                  <strong>2</strong>
+                  <i class="iconfont icon-add"></i> -->
+                  <span>选规格</span>
+                </p>
+              </div>
+            </div>
+
+          </li>
+          <li data-itemid="11">
+
+            <p class="item_img_box">
+              <a href="detail.html"><img src="/src/images/item.png" /></a>
+            </p>
+
+            <div class="item_infor_box">
+              <p class="item_name">
+                <a href="detail.html">精品生日水果蛋糕</a>
+              </p>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
+              <div class="price_box">
+                <p class="item_price"><i>￥</i>100.00</p>
+                <p class="item_choice J_item_choice">
+                  <!-- <i class="iconfont icon-minus"></i>
+                  <strong>2</strong>
+                  <i class="iconfont icon-add"></i> -->
+                  <span>选规格</span>
+                </p>
+              </div>
+            </div>
+
+          </li>
+          <li data-itemid="11">
+
+            <p class="item_img_box">
+              <a href="detail.html"><img src="/src/images/item.png" /></a>
+            </p>
+
+            <div class="item_infor_box">
+              <p class="item_name">
+                <a href="detail.html">精品生日水果蛋糕</a>
+              </p>
+              <div class="item_remark">
+                <p>送蜡烛10支，每个账号限买一个</p>
+              </div>
+              <div class="price_box">
+                <p class="item_price"><i>￥</i>100.00</p>
+                <p class="item_choice J_item_choice">
+                  <!-- <i class="iconfont icon-minus"></i>
+                  <strong>2</strong>
+                  <i class="iconfont icon-add"></i> -->
+                  <span>选规格</span>
+                </p>
+              </div>
+            </div>
+
+          </li>
+        </ul>
+      </div>
     </div>
 
   </div>
 
   <!-- 底部 -->
-  <div class="bottom_out_box">
-    <div class="bottom_box">
+  <div class="page_footer">
+    <div class="footer_box">
       <p class="bottom_cart" id="viewCart">购(2) <span>￥100.00</span></p>
       <p class="buy">去结算</p>
     </div>
@@ -97,7 +256,7 @@ ${require('./head.tpl')}
           <span>10寸</span>
         </div>
         <div class="size_bottom">
-          <p class="size_price"><i>￥</i>100.00</p>
+          <p class="size_price"><i>￥</i>132.00</p>
           <p class="size_btn_ok">选好了</p>
         </div>
       </div>

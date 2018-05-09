@@ -1,11 +1,12 @@
 @charset "utf-8";
 
-.page_box {
-  background-color: #eee; height: 100%;
+.order_box {
+  position: absolute; top: 45px; bottom: 0; left: 0; z-index: 1;
+  width: 100%; background-color: #f8f8f8; overflow: hidden;
 }
-
 .order_list {
-  padding: 15px;
+  position: absolute; z-index: 2; width: 100%; padding: 10px;
+  transform: translateZ(0); user-select: none; text-size-adjust: none;
   ul {
     background-color: #fff; padding: 10px 20px;
     border-radius: 5px; margin-bottom: 15px;
@@ -19,6 +20,3 @@
     &.error { color: #999;}
   }
 }
-
-
-

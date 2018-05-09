@@ -29,69 +29,60 @@ class Page extends Controller {
 
     // 商品数据
     this.arrItem = {
-      11: {
-        name: '精品生日水果蛋糕11',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
-      12: {
-        name: '精品生日水果蛋糕12',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
-      13: {
-        name: '精品生日水果蛋糕13',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
-      21: {
-        name: '精品生日水果蛋糕11',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
-      22: {
-        name: '精品生日水果蛋糕12',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
-      23: {
-        name: '精品生日水果蛋糕13',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
-      31: {
-        name: '精品生日水果蛋糕11',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
-      32: {
-        name: '精品生日水果蛋糕12',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
-      33: {
-        name: '精品生日水果蛋糕13',
-        num: 0,
-        imgUrl: '/src/images/item.png',
-        text: '送蜡烛10支，每个账号限买一个',
-        price: '100.00',
-      },
+      11: [
+        {
+          itemId: 12,
+          name: '精品生日水果蛋糕12',
+          num: 0,
+          imgUrl: '/src/images/item.png',
+          text: '送蜡烛10支，每个账号限买一个',
+          price: '100.00',
+        },
+        {
+          itemId: 13,
+          name: '精品生日水果蛋糕13',
+          num: 0,
+          imgUrl: '/src/images/item.png',
+          text: '送蜡烛10支，每个账号限买一个',
+          price: '100.00',
+        },
+      ],
+      21: [
+        {
+          itemId: 22,
+          name: '精品生日水果蛋糕22',
+          num: 0,
+          imgUrl: '/src/images/item.png',
+          text: '送蜡烛10支，每个账号限买一个',
+          price: '100.00',
+        },
+        {
+          itemId: 23,
+          name: '精品生日水果蛋糕23',
+          num: 0,
+          imgUrl: '/src/images/item.png',
+          text: '送蜡烛10支，每个账号限买一个',
+          price: '100.00',
+        },
+      ],
+      31: [
+        {
+          itemId: 32,
+          name: '精品生日水果蛋糕32',
+          num: 0,
+          imgUrl: '/src/images/item.png',
+          text: '送蜡烛10支，每个账号限买一个',
+          price: '100.00',
+        },
+        {
+          itemId: 33,
+          name: '精品生日水果蛋糕33',
+          num: 0,
+          imgUrl: '/src/images/item.png',
+          text: '送蜡烛10支，每个账号限买一个',
+          price: '100.00',
+        },
+      ],
     };
 
     // 购物车数据
@@ -100,6 +91,7 @@ class Page extends Controller {
       12: null,
       13: null,
     };
+
 
     this.getItems();
   }
@@ -119,15 +111,22 @@ class Page extends Controller {
       $("#cartOutBox").css("bottom", '-80%');
     });
 
-    // 移入/移出商品
-    $("#itemBox").on('click', ".J_item_choice i", function(){
+    // 滚动
+    $("#iScrollSort").on('click', 'li', function(){
+      const sid = $(this).data("sortid");
+      _this.iScrollItem.scrollToElement("#itemarr_"+ sid, 500);
+    });
+
+    // 加减商品
+    $("#iScrollItem").on('click', ".J_item_choice i", function(){
       const isAdd = $(this).hasClass("icon-add");
+      const curArrId = $(this).closest('ul').data('itemarrid');
       const curId = $(this).closest('li').data('itemid');
-      _this.changeCart(curId, isAdd);
+      _this.changeCart(curArrId, curId, isAdd);
     });
 
     // 选规格
-    $("#itemBox").on('click', "img", function(){
+    $("#iScrollItem").on('click', ".J_item_choice span", function(){
       $("#choiceSize").show();
     });
 
@@ -147,7 +146,7 @@ class Page extends Controller {
       }
       this.arrCart = {};
       this.renderCart();
-    })
+    });
 
   }
 
@@ -159,31 +158,42 @@ class Page extends Controller {
     }, (res) => {
       const listArr = res.data.goods || [];
       for (let i in listArr) {
+        const items = listArr[i].items || [];
+        if (items.length == 0) continue;
         this.arrSort[listArr[i].category_id] = {name: listArr[i].category_name};
-        for (let j in listArr[i].items) {
-          let itemsArr = listArr[i].items[j];
-          this.arrItem[listArr[i].category_id] = {
+        let arrItem = [];
+        for (let j in items) {
+          let itemsArr = items[j];
+          arrItem.push({
+            itemId: itemsArr.id,
             name: itemsArr.goods_name,
             num: 0,
             imgUrl: '/src/images/item.png', // itemsArr.goods_logo
             text: '送蜡烛10支，每个账号限买一个', // itemsArr.goods_desc
             price: itemsArr.goods_price,
-          };
+          });
         }
+        this.arrItem[listArr[i].category_id] = arrItem;
       }
+
       this.renderSort();
       this.renderItem();
-      new IScroll('#iScrollMenu');
-      new IScroll('#iScrollItem');
+
+      // setTimeout()
+
+      this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
+      this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
+
+      
     });
   }
 
-  // 渲染商品
+  // 渲染分类
   renderSort() {
     let itemHTML = '';
     for (let i in this.arrSort) {
       let item = this.arrSort[i];
-      itemHTML += `<li id="sort_${i}"><p>${item.name}</p></li>`;
+      itemHTML += `<li data-sortid="${i}" id="sort_${i}"><p>${item.name}</p></li>`;
     }
     $("#sortBox").html(itemHTML);
   }
@@ -192,24 +202,34 @@ class Page extends Controller {
   renderItem() {
     let itemHTML = '';
     for (let i in this.arrItem) {
-      let item = this.arrItem[i];
-      itemHTML += `<li id="item_${i}" data-itemid="${i}">
-        <p class="image_box"><img src="${item.imgUrl}" /></p>
-        <div class="text_box">
-          <a href="detail.html" class="item_tit">${item.name}</a>
-          <div class="item_remark">
-            <p>${item.text}</p>
-          </div>
-          <div class="price_box">
-            <p class="item_price">￥${item.price}</p>
-            <p class="item_choice J_item_choice">
-              <i class="iconfont icon-minus"></i>
-              <strong>${item.num}</strong>
-              <i class="iconfont icon-add"></i>
+      const arrItem = this.arrItem[i] || [];
+      if (arrItem.length == 0) continue;
+      itemHTML += `<ul id="itemarr_${i}" data-itemarrid="${i}">`;
+      for (let j in arrItem) {
+        let item = arrItem[j];
+        itemHTML += `<li id="item_${item.itemId}" data-itemid="${item.itemId}">
+          <p class="item_img_box">
+            <a href="detail.html"><img src="${item.imgUrl}" /></a>
+          </p>
+          <div class="item_infor_box">
+            <p class="item_name">
+              <a href="detail.html">${item.name}</a>
             </p>
+            <div class="item_remark">
+              <p>${item.text}</p>
+            </div>
+            <div class="price_box">
+              <p class="item_price"><i>￥</i>${item.price}</p>
+              <p class="item_choice J_item_choice">
+                <i class="iconfont icon-minus"></i>
+                <strong>${item.num}</strong>
+                <i class="iconfont icon-add"></i>
+              </p>
+            </div>
           </div>
-        </div>
-      </li>`;
+        </li>`;
+      }
+      itemHTML += '</ul>';
     }
     $("#itemBox").html(itemHTML);
   }
@@ -237,10 +257,20 @@ class Page extends Controller {
   }
 
   // 移入/移出购物车
-  changeCart(cid, isadd) {
-    let curNum = parseInt(this.arrItem[cid].num);
+  changeCart(aid, cid, isadd) {
+    const arrItem = this.arrItem[aid];
+    let curNum = 0;
+    let arrItemIndex = 0;
+    for (let i in arrItem) {
+      if (arrItem[i].itemId == cid) {
+        curNum = parseInt(arrItem[i].num);
+        arrItemIndex = i;
+        break;
+      }
+    }
     let resNum = isadd ? ++curNum : --curNum;
-    this.arrItem[cid].num = resNum;
+    if (resNum < 0 || resNum > 99) return;
+    this.arrItem[aid][arrItemIndex].num = resNum;
     // 更新加入购物车
     let arrCart = this.arrCart;
     if (arrCart[cid]) {
@@ -250,7 +280,7 @@ class Page extends Controller {
         arrCart[cid] = null;
       }
     } else {
-      if (resNum > 0) arrCart[cid] = this.arrItem[cid];
+      if (resNum > 0) arrCart[cid] = this.arrItem[aid][arrItemIndex];
     }
     this.saveSession();
     $("#item_"+ cid).find("strong").text(resNum);

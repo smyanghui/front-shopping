@@ -1,51 +1,67 @@
 @charset "utf-8";
-.page_box { position: relative; overflow: hidden;}
-.content_box { height: 100%; padding: 45px 0; display: flex;}
+.page { overflow: hidden;}
+.page_content {
+  position: absolute; top: 45px; bottom: 45px; left: 0; z-index: 1;
+  width: 100%; background-color: #fff; overflow: hidden;
+}
 
-// 左侧分类
-.content_left { width: 80px; background-color: #f8f8f8; overflow: hidden;}
-.menu_left {
-  display: table; width: 100%;
+.content_left {
+  position: absolute; top: 0; bottom: 0; left: 0; z-index: 2; overflow: hidden;
+  width: 80px; background-color: #f8f8f8;
+}
+.content_right {
+  position: absolute; top: 0; bottom: 0; right: 0; z-index: 2; overflow: hidden;
+  width: calc(100% - 80px);
+}
+
+// 商品分类
+.sort_box {
+  position: absolute; z-index: 3; width: 100%;
+  transform: translateZ(0); user-select: none; text-size-adjust: none;
   li {
     display: table-row; height: 45px;
     &.cur { background-color: #fff; color: #333;}
     p {
-      padding: 0 8px; text-align: center; cursor: pointer;
-      display: table-cell; vertical-align: middle;
-      border-bottom: 1px solid #eee;
+      display: table-cell; padding: 0 8px;
+      text-align: center; vertical-align: middle; border-bottom: 1px solid #eee;
     }
   }
 }
 
 // 商品列表
-.content_main {
-  flex: 1; overflow: hidden;
-  ul { padding: 10px;}
+.item_box {
+  position: absolute; z-index: 3; width: 100%;
+  transform: translateZ(0); user-select: none; text-size-adjust: none;
+  ul:last-child li:last-child { border-bottom: 0;}
   li {
-    display: flex; padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px solid #fafafa;
-    // .image_box, .text_box { display: table-cell; vertical-align: top;}
+    display: flex; padding: 5px; border-bottom: 1px solid #eee;
   }
-}
-.image_box {
-  width: 110px;
-  img { width: 100px; height: 100px; display: block;}
-}
-.text_box {
-  flex: 1;
-  .item_tit { font-size: 16px; text-overflow:ellipsis; white-space: nowrap; overflow: hidden;}
-  .item_remark { font-size: 12px; color: #666; max-height: 80px; overflow: hidden;}
+  .item_img_box {
+    width: 110px;
+    img { width: 100px; height: 100px; display: block;}
+  }
+  .item_infor_box { flex: 1;}
+
+  .item_name {
+    font-size: 16px;
+    text-overflow:ellipsis; white-space: nowrap; overflow: hidden;
+  }
+  .item_remark {
+    font-size: 12px; color: #666; max-height: 80px; overflow: hidden;
+  }
+  // 选商品
   .price_box {
     display: flex; line-height: 24px; margin-top: 10px;
     .item_price {
-      width: 50%; font-size: 18px; color: #f60;
+      flex: 1; font-size: 18px; color: #f60;
       i { font-size: 14px;}
     }
     .item_choice {
-      flex: 1; text-align: right;
+      width: 100px; text-align: right;
       i, strong { display: inline-block; font-size: 16px; text-align: center;}
       strong { width: 20px;}
       i {
-        width: 24px; height: 24px; cursor: pointer;
+        width: 24px; height: 24px;
         border-radius: 24px; background-color: #59D178; color: #fff;
       }
       span {
@@ -56,27 +72,29 @@
   }
 }
 
+
 // 底部
-.bottom_out_box {
-  position: absolute; bottom: 0; left: 0; z-index: 15;
-  width: 100%; height: 45px; line-height: 45px;
+.page_footer {
+  position: absolute; bottom: 0; left: 0; z-index: 6;
+  width: 100%; height: 45px; line-height: 45px; background-color: #fff;
+  .footer_box {
+    display: flex; width: 100%; color: #fff;
+  }
+  .bottom_cart {
+    flex: 1; background-color: #3E3E40; padding-left: 20px;
+    span { font-size: 18px; margin-left: 10px;}
+  }
+  .buy {
+    width: 30%; background-color: #59D178;
+    text-align: center; font-size: 18px;
+  }
 }
-.bottom_box {
-  height: 100%; width: 100%; max-width: 800px; margin: 0 auto;
-  display: flex; color: #fff;
-}
-.bottom_cart {
-  flex: 1; background-color: #3E3E40; padding-left: 20px;
-  span { font-size: 18px; margin-left: 10px;}
-}
-.buy {
-  width: 30%; background-color: #59D178;
-  text-align: center; font-size: 18px;
-}
+
+
 
 // 购物车
 .cart_out_box {
-  position: absolute; left: 0; bottom: -80%; z-index: 3;
+  position: absolute; left: 0; bottom: -80%; z-index: 5;
   width: 100%; transition: bottom 0.5s;
 }
 .cart_box {
@@ -111,7 +129,7 @@
 }
 
 .cart_mask {
-  position: absolute; left: 0; top: 0; z-index: 2; display: none;
+  position: absolute; left: 0; top: 0; z-index: 4; display: none;
   width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);
 }
 

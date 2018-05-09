@@ -1,310 +1,15 @@
-webpackJsonp([0],[
-/* 0 */
+webpackJsonp([0],{
+
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _modal = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var tips = new _modal.Tips();
-var loading = new _modal.Loading();
-
-var Controller = function () {
-  function Controller() {
-    _classCallCheck(this, Controller);
-  }
-
-  // 提示信息，默认为提示错误信息
-
-
-  _createClass(Controller, null, [{
-    key: 'showMessage',
-    value: function showMessage(msg) {
-      var err = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      tips.show(msg, err);
-    }
-  }, {
-    key: 'hideMessage',
-    value: function hideMessage() {
-      tips.hide();
-    }
-
-    // 加载中
-
-  }, {
-    key: 'showLoading',
-    value: function showLoading() {
-      loading.show();
-    }
-  }, {
-    key: 'hideLoading',
-    value: function hideLoading() {
-      loading.hide();
-    }
-
-    // // 提示信息
-    // static showMessage(...data) {
-    //  if (!this.message) {
-    //    this.message = new Message();
-    //  }
-    //  this.message.show(...data);
-    // }
-    // static hideMessage() {
-    //  this.message.hide();
-    // }
-
-    // 获取表单值
-
-  }, {
-    key: 'getFormData',
-    value: function getFormData(selector) {
-      selector = selector || 'input, select, textarea';
-      var data = {};
-      $(selector).each(function (index, el) {
-        if (el.value.trim().length) data[el.name] = el.value;
-      });
-      return data;
-    }
-
-    // ajax封装
-
-  }, {
-    key: 'ajax',
-    value: function ajax(options, success) {
-      Controller.showLoading();
-      options.success = options.success || function (data) {
-        Controller.hideLoading();
-        if (data.code == 0) {
-          success(data);
-        } else {
-          if (data.code == 100008) {
-            // Controller.showMessage('登录超时，请重新登录！');
-            window.location.href = '/login.html';
-          } else {
-            Controller.showMessage(data.msg);
-          }
-        }
-      };
-      options.error = options.error || function (data) {
-        Controller.hideLoading();
-        Controller.showMessage('网络异常，请稍后重试');
-      };
-      options.url = 'http://devapi.nfangbian.com' + options.url;
-
-      $.ajax(options);
-    }
-
-    // 获取cookie
-
-  }, {
-    key: 'getCookie',
-    value: function getCookie(name) {
-      var r = new RegExp("(^|;|\\s+)" + name + "=([^;]*)(;|$)");
-      var m = document.cookie.match(r);
-      return !m ? "" : decodeURIComponent(m[2]);
-    }
-
-    // 设置cookie
-
-  }, {
-    key: 'setCookie',
-    value: function setCookie(name, v, path, expire, domain) {
-      var s = name + "=" + encodeURIComponent(v) + "; path=" + (path || '/') + (domain ? "; domain=" + domain : '');
-      if (expire > 0) {
-        var d = new Date();
-        d.setTime(d.getTime() + expire * 1000);
-        s += ";expires=" + d.toGMTString();
-      }
-      document.cookie = s;
-    }
-
-    // 删除cookie
-
-  }, {
-    key: 'delCookie',
-    value: function delCookie(name, path, domain) {
-      if (arguments.length == 2) {
-        domain = path;
-        path = "/";
-      }
-      document.cookie = name + "=;path=" + path + ";" + (domain ? "domain=" + domain + ";" : '') + "expires=Thu, 01-Jan-70 00:00:01 GMT";
-    }
-
-    // 获取url指定参数的值
-
-  }, {
-    key: 'getQuery',
-    value: function getQuery(key) {
-      return this.getQueryParams()[key];
-    }
-
-    // 获取url参数对象
-
-  }, {
-    key: 'getQueryParams',
-    value: function getQueryParams() {
-      var params = {};
-
-      if (location.search.length == 0) return params;
-
-      var keyValPairs = location.search.substr(1).split('&'),
-          tempArr = void 0;
-
-      for (var i = 0; i < keyValPairs.length; i++) {
-        tempArr = keyValPairs[i].split('=');
-        params[tempArr[0]] = decodeURIComponent(tempArr[1] || '');
-      }
-
-      return params;
-    }
-  }]);
-
-  return Controller;
-}();
-
-exports.default = Controller;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Loading = exports.Tips = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _jquery = __webpack_require__(2);
-
-var _jquery2 = _interopRequireDefault(_jquery);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// 弹窗提示
-var Tips = function () {
-  function Tips() {
-    _classCallCheck(this, Tips);
-
-    this.createHtml();
-  }
-
-  _createClass(Tips, [{
-    key: 'createHtml',
-    value: function createHtml() {
-      var _this = this;
-
-      this.curTips = (0, _jquery2.default)('<div class="ui-message">');
-      this.curTips.appendTo('body');
-      this.curTips.on('click', function () {
-        return _this.curTips.hide();
-      });
-      this.timeTips = null;
-    }
-  }, {
-    key: 'show',
-    value: function show(msg, msgType) {
-      var _this2 = this;
-
-      var contentBox = (0, _jquery2.default)('<div class="message-box">');
-
-      // 错误/成功提示
-      var tipsIcon = !!msgType ? 'icon-success' : 'icon-error';
-      var contentHtml = '<span class="tips-box"><i class="iconfont ' + tipsIcon + '"></i> ' + msg + '</span>';
-      clearTimeout(this.timeTips);
-      this.timeTips = setTimeout(function () {
-        _this2.curTips.hide();
-      }, 3000);
-
-      // 显示输出
-      contentBox.append(contentHtml);
-      this.curTips.html(contentBox).show();
-    }
-  }, {
-    key: 'hide',
-    value: function hide() {
-      this.curTips.hide();
-    }
-  }]);
-
-  return Tips;
-}();
-
-// loading加载
-
-
-var Loading = function () {
-  function Loading() {
-    _classCallCheck(this, Loading);
-
-    this.createHtml();
-  }
-
-  _createClass(Loading, [{
-    key: 'createHtml',
-    value: function createHtml() {
-      this.loadingBox = (0, _jquery2.default)('<div class="ui-loading">');
-      this.loadingBox.appendTo('body');
-    }
-  }, {
-    key: 'show',
-    value: function show() {
-      this.loadingBox.show();
-    }
-  }, {
-    key: 'hide',
-    value: function hide() {
-      this.loadingBox.hide();
-    }
-  }]);
-
-  return Loading;
-}();
-
-exports.Tips = Tips;
-exports.Loading = Loading;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = window.$;
-
-/***/ }),
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(15);
-module.exports = __webpack_require__(17);
+__webpack_require__(16);
+module.exports = __webpack_require__(18);
 
 
 /***/ }),
-/* 15 */
+
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -312,7 +17,7 @@ module.exports = __webpack_require__(17);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _validate = __webpack_require__(16);
+var _validate = __webpack_require__(17);
 
 var _validate2 = _interopRequireDefault(_validate);
 
@@ -451,7 +156,8 @@ var Page = function (_Controller) {
 new Page();
 
 /***/ }),
-/* 16 */
+
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -603,10 +309,12 @@ var Validate = function () {
 exports.default = Validate;
 
 /***/ }),
-/* 17 */
+
+/***/ 18:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ })
-],[14]);
+
+},[15]);

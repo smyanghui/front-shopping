@@ -1,20 +1,25 @@
 @charset "utf-8";
 
-.page_box {
-  background-color: #eee; height: 100%;
+.page { background-color: #eee;}
+
+.page_content {
+  position: absolute; top: 45px; bottom: 0; left: 0; z-index: 1;
+  width: 100%; background-color: #f8f8f8; overflow: hidden;
 }
-
-.sell_img { width: 100%; display: block;}
-
 .sell_box {
-  background-color: #fff; margin-bottom: 10px;
-  padding: 10px 20px;
-  dt {
-    font-weight: bold; font-size: 18px;
-    padding: 10px 0;
+  position: absolute; z-index: 2; width: 100%; padding: 10px;
+  transform: translateZ(0); user-select: none; text-size-adjust: none;
+  .sell_img { width: 100%; display: block;}
+  dl {
+    background-color: #fff; margin-bottom: 10px;
+    padding: 10px 20px;
+    dt {
+      font-weight: bold; font-size: 18px;
+      padding: 10px 0;
+    }
+    dd { border-bottom: 1px solid #eee; padding: 10px 0;}
+    dd:last-child { border-bottom: 0;}
+    i { color: #999;}
   }
-  dd { border-bottom: 1px solid #eee; padding: 10px 0;}
-  dd:last-child { border-bottom: 0;}
-  i { color: #999;}
 }
 

@@ -12,7 +12,7 @@ class Page extends Controller {
   init() {
 
     // this.getItems();
-    this.iScrollMenu = new IScroll('#iScrollOrder', { disableMouse: true, click: true, tap: true });
+    this.iScrollMenu = new IScroll('#iScrollDetail', { disableMouse: true, click: true, tap: true });
   }
 
   bindEvent() {
