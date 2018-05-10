@@ -94,6 +94,13 @@ class Controller {
     return this.getQueryParams()[key];
   }
 
+  // 格式化金额
+  static formatMoney(val) {
+    let arrVal = String(val).split('.');
+    // arrVal[1]?
+    // return this.getQueryParams()[key];
+  }
+
   // 获取url参数对象
   static getQueryParams() {
     let params = {};

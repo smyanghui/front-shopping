@@ -37,6 +37,8 @@ class Page extends Controller {
           imgUrl: '/src/images/item.png',
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
+          isSpec: 0,
+          spec: [],
         },
         {
           itemId: 13,
@@ -45,6 +47,18 @@ class Page extends Controller {
           imgUrl: '/src/images/item.png',
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
+          isSpec: 1,
+          spec: [
+            {
+              id: 101,
+              specName: "规格",
+              specItems: [
+                {id: 10011, name: "3寸", price: 110},
+                {id: 10012, name: "5寸", price: 150},
+                {id: 10013, name: "9寸", price: 180},
+              ],
+            },
+          ],
         },
       ],
       21: [
@@ -55,6 +69,8 @@ class Page extends Controller {
           imgUrl: '/src/images/item.png',
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
+          isSpec: 0,
+          spec: [],
         },
         {
           itemId: 23,
@@ -63,6 +79,8 @@ class Page extends Controller {
           imgUrl: '/src/images/item.png',
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
+          isSpec: 0,
+          spec: [],
         },
       ],
       31: [
@@ -73,6 +91,8 @@ class Page extends Controller {
           imgUrl: '/src/images/item.png',
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
+          isSpec: 0,
+          spec: [],
         },
         {
           itemId: 33,
@@ -81,6 +101,18 @@ class Page extends Controller {
           imgUrl: '/src/images/item.png',
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
+          isSpec: 1,
+          spec: [
+            {
+              id: 100,
+              specName: "规格",
+              specItems: [
+                {id: 10001, name: "6寸", price: 110},
+                {id: 10002, name: "8寸", price: 150},
+                {id: 10003, name: "12寸", price: 180},
+              ],
+            },
+          ],
         },
       ],
     };
@@ -157,35 +189,52 @@ class Page extends Controller {
       type: 'POST',
     }, (res) => {
       const listArr = res.data.goods || [];
-      for (let i in listArr) {
-        const items = listArr[i].items || [];
-        if (items.length == 0) continue;
-        this.arrSort[listArr[i].category_id] = {name: listArr[i].category_name};
-        let arrItem = [];
-        for (let j in items) {
-          let itemsArr = items[j];
-          arrItem.push({
-            itemId: itemsArr.id,
-            name: itemsArr.goods_name,
-            num: 0,
-            imgUrl: '/src/images/item.png', // itemsArr.goods_logo
-            text: '送蜡烛10支，每个账号限买一个', // itemsArr.goods_desc
-            price: itemsArr.goods_price,
-          });
+      this.formatItems(listArr);
+    });
+  }
+
+  // 格式化数据
+  formatItems(listArr) {
+    for (let i in listArr) {
+      const items = listArr[i].items || [];
+      if (items.length == 0) continue;
+      this.arrSort[listArr[i].category_id] = {name: listArr[i].category_name};
+      let arrItem = [];
+      let arrSpec = [];
+      for (let j in items) {
+        let itemsList = items[j];
+        if (itemsList.is_spec == 1) {
+          for (let k in itemsList.goods_spec_data) {
+            let specData = itemsList.goods_spec_data[k];
+            let specItems = [];
+            for (let l in specData.spec_group_items) {
+              let sItem = specData.spec_group_items[l];
+              specItems.push({id: sItem.spec_id, name: sItem.spec_name, price: sItem.goods_price})
+            }
+            arrSpec.push({ id: specData.spec_group_id, specName: specData.spec_group_name, specItems: specItems})
+          }
         }
-        this.arrItem[listArr[i].category_id] = arrItem;
+        arrItem.push({
+          itemId: itemsList.id,
+          name: itemsList.goods_name,
+          num: 0,
+          imgUrl: '/src/images/item.png', // itemsList.goods_logo
+          text: '送蜡烛10支，每个账号限买一个', // itemsList.goods_desc
+          price: itemsList.goods_price,
+          isSpec: itemsList.is_spec,
+          spec: arrSpec,
+        });
       }
+      this.arrItem[listArr[i].category_id] = arrItem;
+    }
+    console.log(this.arrItem);
 
-      this.renderSort();
-      this.renderItem();
-
-      // setTimeout()
-
+    this.renderSort();
+    this.renderItem();
+    setTimeout(() => {
       this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
       this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
-
-      
-    });
+    }, 200);
   }
 
   // 渲染分类
@@ -207,6 +256,12 @@ class Page extends Controller {
       itemHTML += `<ul id="itemarr_${i}" data-itemarrid="${i}">`;
       for (let j in arrItem) {
         let item = arrItem[j];
+        // 格式价格
+        let priceHtml = `<i>￥</i>${item.price}`;
+        if (item.isSpec == 1) priceHtml += '<i>起</i>';
+        // 是否需要选规格
+        let choiceHtml = `<i class="iconfont icon-minus"></i><strong>${item.num}</strong><i class="iconfont icon-add"></i>`;
+        if (item.isSpec == 1) choiceHtml = '<span>选规格</span>';
         itemHTML += `<li id="item_${item.itemId}" data-itemid="${item.itemId}">
           <p class="item_img_box">
             <a href="detail.html"><img src="${item.imgUrl}" /></a>
@@ -219,12 +274,8 @@ class Page extends Controller {
               <p>${item.text}</p>
             </div>
             <div class="price_box">
-              <p class="item_price"><i>￥</i>${item.price}</p>
-              <p class="item_choice J_item_choice">
-                <i class="iconfont icon-minus"></i>
-                <strong>${item.num}</strong>
-                <i class="iconfont icon-add"></i>
-              </p>
+              <p class="item_price">${priceHtml}</p>
+              <p class="item_choice J_item_choice">${choiceHtml}</p>
             </div>
           </div>
         </li>`;
