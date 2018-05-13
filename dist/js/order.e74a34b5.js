@@ -29,16 +29,19 @@ var Page = function (_Controller) {
     var _this2 = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this));
 
     _this2.init();
-    _this2.bindEvent();
+    // this.bindEvent();
     return _this2;
   }
 
   _createClass(Page, [{
     key: 'init',
     value: function init() {
-
-      // this.getItems();
-      this.iScrollMenu = new IScroll('#iScrollOrder', { disableMouse: true, click: true, tap: true });
+      this.token = _controller2.default.getCookie('token');
+      if (this.token == '') {
+        window.location.href = './login.html';
+        return;
+      }
+      this.rOrder();
     }
   }, {
     key: 'bindEvent',
@@ -46,58 +49,40 @@ var Page = function (_Controller) {
       var _this = this;
     }
 
-    // 获取商品数据
+    // 获取订单列表
 
   }, {
-    key: 'getItems',
-    value: function getItems() {
-      var _this3 = this;
-
+    key: 'rOrder',
+    value: function rOrder() {
+      var param = {
+        page: '',
+        perpage: '',
+        id: '',
+        token: this.token
+      };
       _controller2.default.ajax({
-        url: '/index/goods',
-        type: 'POST'
+        url: '/order/list',
+        type: 'POST',
+        data: param
       }, function (res) {
-        var listArr = res.data.goods || [];
-        for (var i in listArr) {
-          var items = listArr[i].items || [];
-          if (items.length == 0) continue;
-          _this3.arrSort[listArr[i].category_id] = { name: listArr[i].category_name };
-          var arrItem = [];
-          for (var j in items) {
-            var itemsArr = items[j];
-            arrItem.push({
-              itemId: 23,
-              name: itemsArr.goods_name,
-              num: 0,
-              imgUrl: '/src/images/item.png', // itemsArr.goods_logo
-              text: '送蜡烛10支，每个账号限买一个', // itemsArr.goods_desc
-              price: itemsArr.goods_price
-            });
-          }
-          _this3.arrItem[listArr[i].category_id] = arrItem;
-        }
-
-        _this3.renderSort();
-
-        // setTimeout()
-
-        // this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
-        // this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
-
+        // this.renderOrder();
       });
     }
 
-    // 渲染分类
+    // 渲染订单列表
 
   }, {
-    key: 'renderSort',
-    value: function renderSort() {
+    key: 'renderOrder',
+    value: function renderOrder() {
       var itemHTML = '';
       for (var i in this.arrSort) {
         var item = this.arrSort[i];
         itemHTML += '<li data-sortid="' + i + '" id="sort_' + i + '"><p>' + item.name + '</p></li>';
       }
       $("#sortBox").html(itemHTML);
+      // setTimeout(() => {
+      //   this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
+      // }, 200);
     }
   }]);
 

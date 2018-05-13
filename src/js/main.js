@@ -11,10 +11,11 @@ class Page extends Controller {
 
   init() {
     this.menuTop = [
-      {num: '10', text: '选蛋糕', url: '/index.html'},
-      {num: '11', text: '我的订单', url: '/order.html'},
-      {num: '12', text: '商家详情', url: '/detail.html'},
+      ['选蛋糕', '/index.html'],
+      ['我的订单', '/order.html'],
+      ['商家详情', '/detail.html'],
     ];
+    this.renderHeader();
   }
 
   bindEvent() {
@@ -36,7 +37,8 @@ class Page extends Controller {
     let headerHTML = '';
     for (let i in this.menuTop) {
       const menu = this.menuTop[i];
-      headerHTML += `<li><a href="${menu.url}"${menu.num == num ? ' class="cur"' : ''}>${menu.text}</a></li>`;
+      const isCurUrl = window.location.pathname == menu[1];
+      headerHTML += `<li${isCurUrl ? ' class="cur"' : ''}><a href="${isCurUrl ? 'javascript:;': menu[1]}">${menu[0]}</a></li>`;
     }
     $("#headerBox").html(headerHTML);
   }

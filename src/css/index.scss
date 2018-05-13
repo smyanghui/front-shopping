@@ -33,39 +33,37 @@
   position: absolute; z-index: 3; width: 100%;
   transform: translateZ(0); user-select: none; text-size-adjust: none;
   ul:last-child li:last-child { border-bottom: 0;}
-  li {
-    display: flex; padding: 5px; border-bottom: 1px solid #eee;
-  }
+  li { height: 100px; padding: 5px; border-bottom: 1px solid #eee;}
   .item_img_box {
-    width: 110px;
-    img { width: 100px; height: 100px; display: block;}
+    float: left; width: 95px;
+    img { width: 90px; height: 90px; display: block;}
   }
-  .item_infor_box { flex: 1;}
+  .item_infor_box { float: right; width: calc(100% - 95px);}
 
   .item_name {
-    font-size: 16px;
-    text-overflow:ellipsis; white-space: nowrap; overflow: hidden;
+    font-size: 16px; height: 24px;
+    text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
   }
   .item_remark {
-    font-size: 12px; color: #666; max-height: 80px; overflow: hidden;
+    font-size: 12px; color: #666; height: 28px; line-height: 14px; overflow: hidden;
   }
   // 选商品
   .price_box {
-    display: flex; line-height: 24px; margin-top: 10px;
+    line-height: 24px; margin-top: 10px;
     .item_price {
-      flex: 1; font-size: 18px; color: #f60;
-      i { font-size: 14px;}
+      font-size: 18px; color: #f60;
+      i { font-size: 12px;}
     }
     .item_choice {
-      width: 100px; text-align: right;
-      i, strong { display: inline-block; font-size: 16px; text-align: center;}
-      strong { width: 20px;}
+      float: right; text-align: right;
+      i, strong { display: inline-block; font-size: 16px;}
+      strong { font-weight: normal; padding: 0 5px;}
       i {
-        width: 24px; height: 24px;
+        width: 24px; height: 24px; text-align: center;
         border-radius: 24px; background-color: #59D178; color: #fff;
       }
       span {
-        padding: 3px 10px;
+        padding: 0 12px; display: inline-block; font-size: 14px;
         border-radius: 24px; background-color: #59D178; color: #fff;
       }
     }

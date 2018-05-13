@@ -251,6 +251,16 @@ var Controller = function () {
       return this.getQueryParams()[key];
     }
 
+    // 格式化金额
+
+  }, {
+    key: 'formatMoney',
+    value: function formatMoney(val) {
+      var arrVal = String(val).split('.');
+      // arrVal[1]?
+      // return this.getQueryParams()[key];
+    }
+
     // 获取url参数对象
 
   }, {
@@ -324,7 +334,8 @@ var Page = function (_Controller) {
   _createClass(Page, [{
     key: 'init',
     value: function init() {
-      this.menuTop = [{ num: '10', text: '选蛋糕', url: '/index.html' }, { num: '11', text: '我的订单', url: '/order.html' }, { num: '12', text: '商家详情', url: '/detail.html' }];
+      this.menuTop = [['选蛋糕', '/index.html'], ['我的订单', '/order.html'], ['商家详情', '/detail.html']];
+      this.renderHeader();
     }
   }, {
     key: 'bindEvent',
@@ -353,7 +364,8 @@ var Page = function (_Controller) {
       var headerHTML = '';
       for (var i in this.menuTop) {
         var menu = this.menuTop[i];
-        headerHTML += '<li><a href="' + menu.url + '"' + (menu.num == num ? ' class="cur"' : '') + '>' + menu.text + '</a></li>';
+        var isCurUrl = window.location.pathname == menu[1];
+        headerHTML += '<li' + (isCurUrl ? ' class="cur"' : '') + '><a href="' + (isCurUrl ? 'javascript:;' : menu[1]) + '">' + menu[0] + '</a></li>';
       }
       $("#headerBox").html(headerHTML);
     }

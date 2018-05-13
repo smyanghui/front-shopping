@@ -6,13 +6,16 @@ class Page extends Controller {
   constructor() {
     super();
     this.init();
-    this.bindEvent();
+    // this.bindEvent();
   }
 
   init() {
-
-    // this.getItems();
-    this.iScrollMenu = new IScroll('#iScrollOrder', { disableMouse: true, click: true, tap: true });
+    this.token = Controller.getCookie('token');
+    if (this.token == '') {
+      window.location.href= './login.html';
+      return;
+    }
+    this.rOrder();
   }
 
   bindEvent() {
@@ -21,51 +24,34 @@ class Page extends Controller {
 
   }
 
-  // 获取商品数据
-  getItems() {
+  // 获取订单列表
+  rOrder() {
+    let param = {
+      page: '',
+      perpage: '',
+      id: '',
+      token: this.token,
+    };
     Controller.ajax({
-      url: '/index/goods',
+      url: '/order/list',
       type: 'POST',
+      data: param,
     }, (res) => {
-      const listArr = res.data.goods || [];
-      for (let i in listArr) {
-        const items = listArr[i].items || [];
-        if (items.length == 0) continue;
-        this.arrSort[listArr[i].category_id] = {name: listArr[i].category_name};
-        let arrItem = [];
-        for (let j in items) {
-          let itemsArr = items[j];
-          arrItem.push({
-            itemId: 23,
-            name: itemsArr.goods_name,
-            num: 0,
-            imgUrl: '/src/images/item.png', // itemsArr.goods_logo
-            text: '送蜡烛10支，每个账号限买一个', // itemsArr.goods_desc
-            price: itemsArr.goods_price,
-          });
-        }
-        this.arrItem[listArr[i].category_id] = arrItem;
-      }
-
-      this.renderSort();
-
-      // setTimeout()
-
-      // this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
-      // this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
-
-      
+      // this.renderOrder();
     });
   }
 
-  // 渲染分类
-  renderSort() {
+  // 渲染订单列表
+  renderOrder() {
     let itemHTML = '';
     for (let i in this.arrSort) {
       let item = this.arrSort[i];
       itemHTML += `<li data-sortid="${i}" id="sort_${i}"><p>${item.name}</p></li>`;
     }
     $("#sortBox").html(itemHTML);
+    // setTimeout(() => {
+    //   this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
+    // }, 200);
   }
 
 
