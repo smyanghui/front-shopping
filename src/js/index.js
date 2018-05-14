@@ -108,7 +108,7 @@ class Page extends Controller {
               id: 100,
               specName: "规格",
               specItems: [
-                {id: 10001, name: "6寸", price: 110},
+                {id: 10001, name: "6寸", price: 110, num: 2},
                 {id: 10002, name: "8寸", price: 150},
                 {id: 10003, name: "12寸", price: 180},
               ],
@@ -125,8 +125,16 @@ class Page extends Controller {
       13: null,
     };
 
-    this.rItems();
-    this.rCart();
+    // 当前规格商品
+    this.curSpec = null;
+
+    // 初始化数据
+    if (sessionStorage.arrItem) {
+      this.arrItem = sessionStorage.arrItem;
+      this.arrCart = sessionStorage.arrCart;
+    } else {
+      this.rItems();
+    }
   }
 
   bindEvent() {
@@ -153,15 +161,28 @@ class Page extends Controller {
     // 加减商品
     $("#iScrollItem").on('click', ".J_item_choice i", function(){
       const isAdd = $(this).hasClass("icon-add");
-      const itemId = $(this).closest('li').data('itemid');
-      _this.cartAdd(isAdd, itemId);
+      const curLi = $(this).closest('li');
+      _this.changeCart(curLi.data('sortid'), curLi.data('itemid'), isAdd);
     });
 
-    // 选规格
+    // 打开选规格
     $("#iScrollItem").on('click', ".J_item_choice span", function(){
       const curLi = $(this).closest('li');
-      _this.choiceSpec(curLi.data('sortid'), curLi.data('itemid'));
+      _this.openSpec(curLi.data('sortid'), curLi.data('itemid'));
     });
+
+    // 选择规格
+    $("#choiceSpec").on('click', ".J_spec_choice span", function(){
+      if ($(this).hasClass("cur")) return;
+      $(this).addClass('cur').siblings('span').removeClass();
+      // 渲染规格商品价格
+      let price = $(this).data('specprice');
+      $("#choiceSpecPrice").html(`<i>￥</i>${price}`);
+      this.curSpec.choiceId = $(this).data('specid');
+    });
+
+    // 确认选择规格
+    $("#choiceSpecOK").click(() => this.choiceSpecSave());
 
     // 修改购物车数量
     $("#cartItemBox").on('click', '.J_cart_choice i', function(){
@@ -198,29 +219,7 @@ class Page extends Controller {
       type: 'POST',
       data: param,
     }, (res) => {
-      // const listArr = res.data.goods || [];
-      // this.formatItems(listArr);
-    });
-  }
-
-  // 加入购物车
-  cartAdd(isadd, itemid) {
-    let itemDom = $("#item_"+ itemid).find("strong");
-    let curNum = parseInt(itemDom.text());
-    let relNum = isadd ? ++curNum : --curNum;
-    let param = {
-      token: this.token,
-      goods_id: itemid,
-      spec_ids: '',
-      cart_num: relNum
-    };
-    Controller.ajax({
-      url: '/cart/add',
-      type: 'POST',
-      data: param,
-    }, (res) => {
-      itemDom.text(relNum);
-      this.rCart();
+      this.renderCart();
     });
   }
 
@@ -248,7 +247,7 @@ class Page extends Controller {
         arrItem.push({
           itemId: itemsList.id,
           name: itemsList.goods_name,
-          num: itemsList.goods_num,
+          num: 0,
           imgUrl: '/src/images/item.png', // itemsList.goods_logo
           text: '送蜡烛10支，每个账号限买一个', // itemsList.goods_desc
           price: itemsList.goods_price,
@@ -333,11 +332,76 @@ class Page extends Controller {
     $("#cartItemBox").html(itemHTML);
   }
 
+  // 移入/移出购物车
+  changeCart(aid, cid, isadd) {
+    const arrItem = this.arrItem[aid];
+    let curNum = 0;
+    let arrItemIndex = 0;
+    for (let i in arrItem) {
+      if (arrItem[i].itemId == cid) {
+        curNum = parseInt(arrItem[i].num);
+        arrItemIndex = i;
+        break;
+      }
+    }
+    let resNum = isadd ? ++curNum : --curNum;
+    if (resNum < 0 || resNum > 99) return;
+    this.arrItem[aid][arrItemIndex].num = resNum;
+    // 更新加入购物车
+    let arrCart = this.arrCart;
+    if (resNum > 0) {
+      arrCart[cid] = this.arrItem[aid][arrItemIndex];
+      arrCart[cid].sortId = aid;
+    } else {
+      arrCart[cid] = null;
+    }
+    this.saveSession();
+    $("#item_"+ cid).find("strong").text(resNum);
+  }
 
-  // 选规格
-  choiceSpec(aid, cid) {
-    console.log(aid, cid);
-    $("#choiceSize").show();
+  // 打开选规格
+  openSpec(sortid, itemid) {
+    const arrItem = this.arrItem[sortid];
+    for (let i in arrItem) {
+      if (arrItem[i].itemId == itemid) {
+        this.curSpec = arrItem[i];
+        break;
+      }
+    }
+    let specHTML = '';
+    let arrSpec = this.curSpec.spec[0].specItems;
+    for (let i in arrSpec) {
+      specHTML += `<span data-specid="${arrSpec[i].id}" data-specprice="${arrSpec[i].price}">${arrSpec[i].name}</span>`;
+    }
+    $("#specBox").html(specHTML);
+    $("#choiceSpec").show();
+  }
+
+  // 选择规格
+  choiceSpecSave() {
+    // 先到购物车查找若存在则增加
+    this.curSpec
+    // console.log(sortid, itemid, specid);
+    // const arrItem = this.arrItem[sortid];
+    // let arrItemIndex = 0;
+    // for (let i in arrItem) {
+    //   if (arrItem[i].itemId == itemid) {
+    //     // curNum = parseInt(arrItem[i].num);
+    //     arrItemIndex = i;
+    //     for (let j in spec[0].specItems) {
+    //       if (spec[0].specItems[j].id == specid) spec[0].specItems[j].num = 1;
+    //     }
+    //     break;
+    //   }
+    // }
+
+    // // this.curSpec
+    // // 更新加入购物车
+    // let arrCart = this.arrCart;
+    // arrCart[itemid] = this.arrItem[sortid][arrItemIndex];
+    // arrCart[itemid].sortId = sortid;
+
+    $("#choiceSpec").hide();
   }
 
   // 修改购物车
@@ -369,6 +433,19 @@ class Page extends Controller {
     this.renderCart();
     this.renderItem();
     this.saveSession();
+
+    // let param = {
+    //   token: this.token,
+    //   shopid: '',
+    // };
+    // Controller.ajax({
+    //   url: '/cart/clearall',
+    //   type: 'POST',
+    //   data: param,
+    // }, (res) => {
+    //   // const listArr = res.data.goods || [];
+    //   // this.formatItems(listArr);
+    // });
   }
 
   // 暂存数据

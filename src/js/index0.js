@@ -10,6 +10,7 @@ class Page extends Controller {
   }
 
   init() {
+    this.token = Controller.getCookie('token');
 
     // 分类数据
     this.arrSort = {
@@ -124,13 +125,8 @@ class Page extends Controller {
       13: null,
     };
 
-    // 初始化数据
-    if (sessionStorage.arrItem) {
-      this.arrItem = sessionStorage.arrItem;
-      this.arrCart = sessionStorage.arrCart;
-    } else {
-      this.getItems();
-    }
+    this.rItems();
+    this.rCart();
   }
 
   bindEvent() {
@@ -157,8 +153,8 @@ class Page extends Controller {
     // 加减商品
     $("#iScrollItem").on('click', ".J_item_choice i", function(){
       const isAdd = $(this).hasClass("icon-add");
-      const curLi = $(this).closest('li');
-      _this.changeCart(curLi.data('sortid'), curLi.data('itemid'), isAdd);
+      const itemId = $(this).closest('li').data('itemid');
+      _this.cartAdd(isAdd, itemId);
     });
 
     // 选规格
@@ -180,13 +176,50 @@ class Page extends Controller {
   }
 
   // 获取商品数据
-  getItems() {
+  rItems() {
     Controller.ajax({
       url: '/index/goods',
       type: 'POST',
     }, (res) => {
       const listArr = res.data.goods || [];
       this.formatItems(listArr);
+    });
+  }
+
+  // 获取购物车数据
+  rCart() {
+    let param = {
+      token: this.token,
+      shopid: '',
+      is_check: '',
+    };
+    Controller.ajax({
+      url: '/cart/list',
+      type: 'POST',
+      data: param,
+    }, (res) => {
+      this.renderCart();
+    });
+  }
+
+  // 加入购物车
+  cartAdd(isadd, itemid) {
+    let itemDom = $("#item_"+ itemid).find("strong");
+    let curNum = parseInt(itemDom.text());
+    let relNum = isadd ? ++curNum : --curNum;
+    let param = {
+      token: this.token,
+      goods_id: itemid,
+      spec_ids: '',
+      cart_num: relNum
+    };
+    Controller.ajax({
+      url: '/cart/add',
+      type: 'POST',
+      data: param,
+    }, (res) => {
+      itemDom.text(relNum);
+      this.rCart();
     });
   }
 
@@ -214,7 +247,7 @@ class Page extends Controller {
         arrItem.push({
           itemId: itemsList.id,
           name: itemsList.goods_name,
-          num: 0,
+          num: itemsList.goods_num,
           imgUrl: '/src/images/item.png', // itemsList.goods_logo
           text: '送蜡烛10支，每个账号限买一个', // itemsList.goods_desc
           price: itemsList.goods_price,
@@ -230,7 +263,6 @@ class Page extends Controller {
       this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
       this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
     }, 200);
-    this.saveSession();
   }
 
   // 渲染分类
@@ -263,15 +295,11 @@ class Page extends Controller {
             <a href="detail.html"><img src="${item.imgUrl}" /></a>
           </p>
           <div class="item_infor_box">
-            <p class="item_name">
-              <a href="detail.html">${item.name}</a>
-            </p>
-            <div class="item_remark">
-              <p>${item.text}</p>
-            </div>
+            <p class="item_name">${item.name}</p>
+            <div class="item_remark">${item.text}</div>
             <div class="price_box">
-              <p class="item_price">${priceHtml}</p>
               <p class="item_choice J_item_choice">${choiceHtml}</p>
+              <p class="item_price">${priceHtml}</p>
             </div>
           </div>
         </li>`;
@@ -303,32 +331,6 @@ class Page extends Controller {
     $("#cartItemBox").html(itemHTML);
   }
 
-  // 移入/移出购物车
-  changeCart(aid, cid, isadd) {
-    const arrItem = this.arrItem[aid];
-    let curNum = 0;
-    let arrItemIndex = 0;
-    for (let i in arrItem) {
-      if (arrItem[i].itemId == cid) {
-        curNum = parseInt(arrItem[i].num);
-        arrItemIndex = i;
-        break;
-      }
-    }
-    let resNum = isadd ? ++curNum : --curNum;
-    if (resNum < 0 || resNum > 99) return;
-    this.arrItem[aid][arrItemIndex].num = resNum;
-    // 更新加入购物车
-    let arrCart = this.arrCart;
-    if (resNum > 0) {
-      arrCart[cid] = this.arrItem[aid][arrItemIndex];
-      arrCart[cid].sortId = aid;
-    } else {
-      arrCart[cid] = null;
-    }
-    this.saveSession();
-    $("#item_"+ cid).find("strong").text(resNum);
-  }
 
   // 选规格
   choiceSpec(aid, cid) {
@@ -347,32 +349,25 @@ class Page extends Controller {
         break;
       }
     }
-    this.saveSession();
     $("#cart_"+ cid +", #item_"+ cid).find("strong").text(resNum);
   }
 
   // 清空购物车
   cleanCart() {
-    for (let i in this.arrCart) {
-      for (let j in this.arrCart[i]) {
-        let itemList = this.arrCart[i][j];
-        if (itemList.num == 0) continue;
-        this.arrCart[i][j].num = 0;
-        // $("#item_"+ itemList.itemId).find("strong").text('0');
-      }
-    }
-    this.arrCart = {};
-    this.renderCart();
-    this.renderItem();
-    this.saveSession();
+    let param = {
+      token: this.token,
+      shopid: '',
+    };
+    Controller.ajax({
+      url: '/cart/clearall',
+      type: 'POST',
+      data: param,
+    }, (res) => {
+      // const listArr = res.data.goods || [];
+      // this.formatItems(listArr);
+    });
   }
 
-  // 暂存数据
-  saveSession() {
-    sessionStorage.arrItem = this.arrItem;
-    sessionStorage.arrCart = this.arrCart;
-    // $.isEmptyObject(aa); 判断是否为空对象
-  }
 
 }
 
