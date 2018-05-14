@@ -119,19 +119,18 @@ class Page extends Controller {
     };
 
     // 购物车数据
-    this.arrCart = {
-      11: null,
-      12: null,
-      13: null,
-    };
+    this.arrCart = {};
 
     // 当前规格商品
     this.curSpec = null;
 
     // 初始化数据
     if (sessionStorage.arrItem) {
-      this.arrItem = sessionStorage.arrItem;
-      this.arrCart = sessionStorage.arrCart;
+      this.arrSort = JSON.parse(sessionStorage.arrSort) || {};
+      this.arrItem = JSON.parse(sessionStorage.arrItem) || {};
+      this.arrCart = JSON.parse(sessionStorage.arrCart) || {};
+      this.renderSort();
+      this.renderItem();
     } else {
       this.rItems();
     }
@@ -178,7 +177,7 @@ class Page extends Controller {
       // 渲染规格商品价格
       let price = $(this).data('specprice');
       $("#choiceSpecPrice").html(`<i>￥</i>${price}`);
-      this.curSpec.choiceId = $(this).data('specid');
+      _this.curSpec['choiceId'] = $(this).data('specid');
     });
 
     // 确认选择规格
@@ -257,13 +256,9 @@ class Page extends Controller {
       }
       this.arrItem[listArr[i].category_id] = arrItem;
     }
+    this.saveSession();
     this.renderSort();
     this.renderItem();
-    setTimeout(() => {
-      this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
-      this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
-    }, 200);
-    this.saveSession();
   }
 
   // 渲染分类
@@ -274,6 +269,9 @@ class Page extends Controller {
       itemHTML += `<li data-sortid="${i}" id="sort_${i}"><p>${item.name}</p></li>`;
     }
     $("#sortBox").html(itemHTML);
+    setTimeout(() => {
+      this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
+    }, 200);
   }
 
   // 渲染商品
@@ -308,6 +306,9 @@ class Page extends Controller {
       itemHTML += '</ul>';
     }
     $("#itemBox").html(itemHTML);
+    setTimeout(() => {
+      this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
+    }, 200);
   }
 
   // 渲染购物车
@@ -450,8 +451,9 @@ class Page extends Controller {
 
   // 暂存数据
   saveSession() {
-    sessionStorage.arrItem = this.arrItem;
-    sessionStorage.arrCart = this.arrCart;
+    sessionStorage.arrSort = JSON.stringify(this.arrSort);
+    sessionStorage.arrItem = JSON.stringify(this.arrItem);
+    sessionStorage.arrCart = JSON.stringify(this.arrCart);
     // $.isEmptyObject(aa); 判断是否为空对象
   }
 

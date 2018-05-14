@@ -70,7 +70,6 @@
   }
 }
 
-
 // 底部
 .page_footer {
   position: absolute; bottom: 0; left: 0; z-index: 6;
@@ -87,8 +86,6 @@
     text-align: center; font-size: 18px;
   }
 }
-
-
 
 // 购物车
 .cart_out_box {
@@ -133,16 +130,18 @@
 
 // 选规格
 .size_out_box {
-  position: absolute; left: 0; top: 0; z-index: 5;
-  width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);
+  position: absolute; left: 0; top: 0; z-index: 8;
+  width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.3);
   display: flex; align-items: center; justify-content: center;
 }
 .size_box {
   width: 80%; max-width: 700px; margin: 0 auto; overflow: hidden;
   background-color: #fff; margin-top: -100px; border-radius: 5px; padding-top: 10px;
+  box-shadow: 2px 2px 5px #ccc; position: relative;
+  .spec_close { position: absolute; top: 5px; right: 5px; font-size: 24px; color: #666;}
   .size_tit {
-    padding: 0 10px; text-align: center; font-size: 18px; line-height: 35px;
-    i { float: right; font-size: 24px; color: #666;}
+    padding: 0 10px; font-size: 18px; height: 35px; line-height: 35px;
+    text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
   }
   .size_content {
     padding: 10px 20px;
