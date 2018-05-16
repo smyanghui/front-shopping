@@ -327,7 +327,7 @@ var Page = function (_Controller) {
     var _this2 = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this));
 
     _this2.init();
-    _this2.bindEvent();
+    // this.bindEvent();
     return _this2;
   }
 
@@ -336,6 +336,7 @@ var Page = function (_Controller) {
     value: function init() {
       this.menuTop = [['选蛋糕', '/index.html'], ['我的订单', '/order.html'], ['商家详情', '/detail.html']];
       this.renderHeader();
+      this.isLogin();
     }
   }, {
     key: 'bindEvent',
@@ -343,16 +344,18 @@ var Page = function (_Controller) {
       var _this = this;
     }
 
-    // 获取商品数据
+    // 检查是否登录
 
   }, {
-    key: 'getItems',
-    value: function getItems() {
+    key: 'isLogin',
+    value: function isLogin() {
+      window.TOKEN = _controller2.default.getCookie('token');
+      if (TOKEN == '') return;
       _controller2.default.ajax({
-        url: '/index/goods',
-        type: 'POST'
+        url: '/check/token?token=' + TOKEN,
+        type: 'GET'
       }, function (res) {
-        //aa
+        if (res.data.islogin == 0) window.TOKEN = '';
       });
     }
 
@@ -362,9 +365,11 @@ var Page = function (_Controller) {
     key: 'renderHeader',
     value: function renderHeader() {
       var headerHTML = '';
+      var pathName = window.location.pathname;
+      pathName = pathName == '/' ? '/index.html' : pathName;
       for (var i in this.menuTop) {
         var menu = this.menuTop[i];
-        var isCurUrl = window.location.pathname == menu[1];
+        var isCurUrl = pathName == menu[1];
         headerHTML += '<li' + (isCurUrl ? ' class="cur"' : '') + '><a href="' + (isCurUrl ? 'javascript:;' : menu[1]) + '">' + menu[0] + '</a></li>';
       }
       $("#headerBox").html(headerHTML);
@@ -439,7 +444,7 @@ var Tips = function () {
       clearTimeout(this.timeTips);
       this.timeTips = setTimeout(function () {
         _this2.curTips.hide();
-      }, 3000);
+      }, 5000);
 
       // 显示输出
       contentBox.append(contentHtml);

@@ -22,7 +22,7 @@ class Tips {
     let tipsIcon = !!msgType ? 'icon-success' : 'icon-error';
     let contentHtml = `<span class="tips-box"><i class="iconfont ${tipsIcon}"></i> ${msg}</span>`;
     clearTimeout(this.timeTips);
-    this.timeTips = setTimeout(() => { this.curTips.hide() }, 3000);
+    this.timeTips = setTimeout(() => { this.curTips.hide() }, 5000);
 
     // 显示输出
     contentBox.append(contentHtml);

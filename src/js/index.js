@@ -249,7 +249,7 @@ class Page extends Controller {
           num: 0,
           imgUrl: itemsList.goods_logo || '/src/images/item.png',
           text: itemsList.goods_desc || '送蜡烛10支，每个账号限买一个',
-          price: itemsList.goods_price,
+          price: itemsList.goods_price/100,
           isSpec: itemsList.is_spec,
           spec: itemsList.spec_group_info,
           group: group
