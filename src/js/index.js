@@ -10,7 +10,7 @@ class Page extends Controller {
   }
 
   init() {
-    this.token = Controller.getCookie('token');
+    this.token = window.TOKEN;
 
     // 分类数据
     this.arrSort = {
@@ -49,17 +49,22 @@ class Page extends Controller {
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
           isSpec: 1,
-          spec: [
-            {
-              id: 101,
-              specName: "规格",
-              specItems: [
-                {id: 10011, name: "3寸", price: 110},
-                {id: 10012, name: "5寸", price: 150},
-                {id: 10013, name: "9寸", price: 180},
-              ],
-            },
-          ],
+          spec: [{
+            "spec_group_id": 11,
+            "spec_group_name": "尺寸",
+            "spec_group_beizhu": "蛋糕尺寸",
+            "spec_group_list": [
+              {"spec_id": "13", "spec_name": "8寸"},
+              {"spec_id": "12", "spec_name": "6寸"},
+              {"spec_id": "14", "spec_name": "10寸"},
+              {"spec_id": "15", "spec_name": "12寸"}
+            ]
+          }],
+          group: {
+            13: {"skuid": 1, "price": 112},
+            12: {"skuid": 1, "price": 113},
+            14: {"skuid": 1, "price": 116},
+          },
         },
       ],
       21: [
@@ -102,18 +107,8 @@ class Page extends Controller {
           imgUrl: '/src/images/item.png',
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
-          isSpec: 1,
-          spec: [
-            {
-              id: 100,
-              specName: "规格",
-              specItems: [
-                {id: 10001, name: "6寸", price: 110, num: 2},
-                {id: 10002, name: "8寸", price: 150},
-                {id: 10003, name: "12寸", price: 180},
-              ],
-            },
-          ],
+          isSpec: 0,
+          spec: [],
         },
       ],
     };
@@ -199,7 +194,7 @@ class Page extends Controller {
   rItems() {
     Controller.ajax({
       url: '/index/goods',
-      type: 'POST',
+      type: 'GET',
     }, (res) => {
       const listArr = res.data.goods || [];
       this.formatItems(listArr);
@@ -209,7 +204,7 @@ class Page extends Controller {
   // 获取购物车数据
   rCart() {
     let param = {
-      token: this.token,
+      token: TOKEN,
       shopid: '',
       is_check: '',
     };
@@ -229,29 +224,35 @@ class Page extends Controller {
       if (items.length == 0) continue;
       this.arrSort[listArr[i].category_id] = {name: listArr[i].category_name};
       let arrItem = [];
-      let arrSpec = [];
       for (let j in items) {
         let itemsList = items[j];
-        if (itemsList.is_spec == 1) {
-          for (let k in itemsList.goods_spec_data) {
-            let specData = itemsList.goods_spec_data[k];
-            let specItems = [];
-            for (let l in specData.spec_group_items) {
-              let sItem = specData.spec_group_items[l];
-              specItems.push({id: sItem.spec_id, name: sItem.spec_name, price: sItem.goods_price})
-            }
-            arrSpec.push({ id: specData.spec_group_id, specName: specData.spec_group_name, specItems: specItems})
-          }
+        // if (itemsList.is_spec == 1) {
+        //   for (let k in itemsList.goods_spec_data) {
+        //     let specData = itemsList.goods_spec_data[k];
+        //     let specItems = [];
+        //     for (let l in specData.spec_group_items) {
+        //       let sItem = specData.spec_group_items[l];
+        //       specItems.push({id: sItem.spec_id, name: sItem.spec_name, price: sItem.goods_price})
+        //     }
+        //     arrSpec.push({ id: specData.spec_group_id, specName: specData.spec_group_name, specItems: specItems})
+        //   }
+        // }
+        let group = {};
+        for (let k in itemsList.goods_skuid) {
+          let sku = itemsList.goods_skuid[k];
+          let groupId = sku.spec_ids_ary.join(',');
+          group[groupId] = {skuid: sku.skuid, price: sku.goods_price};
         }
         arrItem.push({
           itemId: itemsList.id,
           name: itemsList.goods_name,
           num: 0,
-          imgUrl: '/src/images/item.png', // itemsList.goods_logo
-          text: '送蜡烛10支，每个账号限买一个', // itemsList.goods_desc
+          imgUrl: itemsList.goods_logo || '/src/images/item.png',
+          text: itemsList.goods_desc || '送蜡烛10支，每个账号限买一个',
           price: itemsList.goods_price,
           isSpec: itemsList.is_spec,
-          spec: arrSpec,
+          spec: itemsList.spec_group_info,
+          group: group
         });
       }
       this.arrItem[listArr[i].category_id] = arrItem;
@@ -369,39 +370,34 @@ class Page extends Controller {
         break;
       }
     }
+    this.curSpec['sortId'] = sortid;
     let specHTML = '';
-    let arrSpec = this.curSpec.spec[0].specItems;
-    for (let i in arrSpec) {
-      specHTML += `<span data-specid="${arrSpec[i].id}" data-specprice="${arrSpec[i].price}">${arrSpec[i].name}</span>`;
+    for (let i in this.curSpec.spec) {
+      let spec = this.curSpec.spec[i];
+      specHTML += `<p>${spec.spec_group_name}</p>`;
+      specHTML += '<p>';
+      for (let j in spec.spec_group_list) {
+        let specSku = spec.spec_group_list[j];
+        // specHTML += `<span data-specid="${arrSpec[i].id}" data-specprice="${arrSpec[i].price}">${arrSpec[i].name}</span>`;
+        specHTML += `<span data-specid="${specSku.spec_id}"${j == 0 ? ' class="cur"' : ''}>${specSku.spec_name}</span>`;
+      }
+      specHTML += '</p>';
     }
     $("#specBox").html(specHTML);
     $("#choiceSpec").show();
   }
 
-  // 选择规格
+  // 确认规格
   choiceSpecSave() {
-    // 先到购物车查找若存在则增加
-    this.curSpec
-    // console.log(sortid, itemid, specid);
-    // const arrItem = this.arrItem[sortid];
-    // let arrItemIndex = 0;
-    // for (let i in arrItem) {
-    //   if (arrItem[i].itemId == itemid) {
-    //     // curNum = parseInt(arrItem[i].num);
-    //     arrItemIndex = i;
-    //     for (let j in spec[0].specItems) {
-    //       if (spec[0].specItems[j].id == specid) spec[0].specItems[j].num = 1;
-    //     }
-    //     break;
-    //   }
-    // }
-
-    // // this.curSpec
-    // // 更新加入购物车
-    // let arrCart = this.arrCart;
-    // arrCart[itemid] = this.arrItem[sortid][arrItemIndex];
+    const curSpec = this.curSpec;
+    let arrSpec = curSpec.spec[0].specItems;
+    for (let i in arrSpec) {
+      if (arrSpec[i].id == curSpec.choiceId) arrSpec[i].num += 1;
+    }
+    let arrCart = this.arrCart;
+    arrCart[curSpec.sortId] = curSpec;
     // arrCart[itemid].sortId = sortid;
-
+    this.saveSession();
     $("#choiceSpec").hide();
   }
 
