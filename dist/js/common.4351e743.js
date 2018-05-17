@@ -251,14 +251,16 @@ var Controller = function () {
       return this.getQueryParams()[key];
     }
 
-    // 格式化金额
+    // 格式化金额(分转元)
 
   }, {
     key: 'formatMoney',
     value: function formatMoney(val) {
-      var arrVal = String(val).split('.');
-      // arrVal[1]?
-      // return this.getQueryParams()[key];
+      var branch = parseInt(val);
+      if (branch <= 0) return '0.00';
+      var yuan = branch / 100;
+      return String(yuan).indexOf('.') > -1 ? yuan + '' : yuan + '.00';
+      // let arrYuan = String(yuan).split('.');
     }
 
     // 获取url参数对象

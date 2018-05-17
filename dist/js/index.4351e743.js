@@ -81,6 +81,7 @@ var Page = function (_Controller) {
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
           isSpec: 1,
+          selectSpec: [{ id: '12,14', price: '123', num: 2, specTxt: '12寸/咸味' }, { id: '11,14', price: '120', num: 1, specTxt: '13寸/甜味' }],
           spec: [{
             "spec_group_id": 11,
             "spec_group_name": "尺寸",
@@ -139,6 +140,8 @@ var Page = function (_Controller) {
       // 当前规格商品
       this.curSpec = null;
 
+      // return;
+
       // 初始化数据
       if (sessionStorage.arrItem) {
         this.arrSort = JSON.parse(sessionStorage.arrSort) || {};
@@ -189,13 +192,10 @@ var Page = function (_Controller) {
       });
 
       // 选择规格
-      $("#choiceSpec").on('click', ".J_spec_choice span", function () {
+      $("#specBox").on('click', "span", function () {
         if ($(this).hasClass("cur")) return;
         $(this).addClass('cur').siblings('span').removeClass();
-        // 渲染规格商品价格
-        var price = $(this).data('specprice');
-        $("#choiceSpecPrice").html('<i>\uFFE5</i>' + price);
-        _this.curSpec['choiceId'] = $(this).data('specid');
+        _this.curChoiseSpec();
       });
 
       // 确认选择规格
@@ -288,7 +288,7 @@ var Page = function (_Controller) {
             num: 0,
             imgUrl: itemsList.goods_logo || '/src/images/item.png',
             text: itemsList.goods_desc || '送蜡烛10支，每个账号限买一个',
-            price: itemsList.goods_price / 100,
+            price: itemsList.goods_price,
             isSpec: itemsList.is_spec,
             spec: itemsList.spec_group_info,
             group: group
@@ -299,6 +299,23 @@ var Page = function (_Controller) {
       this.saveSession();
       this.renderSort();
       this.renderItem();
+    }
+
+    // 获取选中的规格
+
+  }, {
+    key: 'curChoiseSpec',
+    value: function curChoiseSpec() {
+      var specIds = [];
+      $("#specBox span.cur").map(function () {
+        var specid = $(this).data('specid');
+        specIds.push(specid);
+      });
+      // 获取组合价格
+      var group = this.curSpec.group[specIds.join(',')];
+      var groupPrice = '缺货';
+      if (group) groupPrice = _controller2.default.formatMoney(group.price);
+      $("#choiceSpecPrice").html('<i>\uFFE5</i>' + groupPrice);
     }
 
     // 渲染分类
@@ -334,7 +351,8 @@ var Page = function (_Controller) {
         for (var j in arrItem) {
           var item = arrItem[j];
           // 格式价格
-          var priceHtml = '<i>\uFFE5</i>' + item.price;
+          var price = _controller2.default.formatMoney(item.price);
+          var priceHtml = '<i>\uFFE5</i>' + price;
           if (item.isSpec == 1) priceHtml += '<i>起</i>';
           // 是否需要选规格
           var choiceHtml = '<i class="iconfont icon-minus"></i><strong>' + item.num + '</strong><i class="iconfont icon-add"></i>';
@@ -364,7 +382,7 @@ var Page = function (_Controller) {
       $("#cartItemBox").html(itemHTML);
     }
 
-    // 移入/移出购物车
+    // 加入/移出购物车
 
   }, {
     key: 'changeCart',
@@ -419,7 +437,9 @@ var Page = function (_Controller) {
         }
         specHTML += '</p>';
       }
+      $("#specTit").text(this.curSpec.name);
       $("#specBox").html(specHTML);
+      this.curChoiseSpec();
       $("#choiceSpec").show();
     }
 
@@ -429,13 +449,23 @@ var Page = function (_Controller) {
     key: 'choiceSpecSave',
     value: function choiceSpecSave() {
       var curSpec = this.curSpec;
-      var arrSpec = curSpec.spec[0].specItems;
-      for (var i in arrSpec) {
-        if (arrSpec[i].id == curSpec.choiceId) arrSpec[i].num += 1;
+      // 需先更新当前规格商品信息
+      if (curSpec.selectSpec.length == 0) {
+        curSpec.selectSpec.push({ id: curSpec.selectSpec, price: curSpec.group[curSpec.selectSpec], num: 1, specTxt: '12寸/咸味' });
+      } else {
+        for (var i in curSpec.selectSpec) {
+          //aa
+        }
       }
-      var arrCart = this.arrCart;
-      arrCart[curSpec.sortId] = curSpec;
-      // arrCart[itemid].sortId = sortid;
+
+      var arrItem = this.arrItem[curSpec.sortId];
+      for (var _i2 in arrItem) {
+        if (arrItem[_i2].itemId == curSpec.itemId) {
+          this.arrItem[curSpec.sortId][_i2] = curSpec;
+          break;
+        }
+      }
+      this.arrCart[curSpec.itemId] = curSpec;
       this.saveSession();
       $("#choiceSpec").hide();
     }
