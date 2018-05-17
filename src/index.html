@@ -20,7 +20,7 @@ ${require('./head.tpl')}
     <!-- 左侧分类 -->
     <div class="content_left" id="iScrollSort">
       <ul class="sort_box" id="sortBox">
-        <li><p>优惠</p></li>
+        <!-- <li><p>优惠</p></li>
         <li class="cur"><p>招牌</p></li>
         <li><p>吃货最爱</p></li>
         <li><p>卡通生日蛋糕</p></li>
@@ -28,14 +28,14 @@ ${require('./head.tpl')}
         <li><p>特色蛋糕</p></li>
         <li><p>水果蛋糕</p></li>
         <li><p>主题蛋糕</p></li>
-        <li><p>限时抢购</p></li>
+        <li><p>限时抢购</p></li> -->
       </ul>
     </div>
 
     <!-- 商品列表 -->
     <div class="content_right" id="iScrollItem">
       <div class="item_box" id="itemBox">
-        <ul id="item_11">
+        <!-- <ul id="item_11">
           <li data-itemid="11" data-sortid="1">
 
             <p class="item_img_box">
@@ -78,7 +78,7 @@ ${require('./head.tpl')}
             </div>
 
           </li>
-        </ul>
+        </ul> -->
       </div>
     </div>
 
@@ -114,27 +114,19 @@ ${require('./head.tpl')}
 
   <!-- 选规格 -->
   <div style="display: none;" id="choiceSpec">
-    <div class="size_out_box">
-      <div class="size_box">
-        <i class="iconfont icon-close spec_close" onclick="$('#choiceSpec').hide()"></i>
-        <p class="size_tit">水果蛋糕水果蛋糕水果蛋糕水果蛋糕水果蛋糕水果蛋糕</p>
-        <div class="size_content J_spec_choice" id="specBox">
-          <p>大小</p>
+    <div class="spec_out_box">
+      <div class="spec_box">
+        <i class="iconfont icon-close" onclick="$('#choiceSpec').hide()"></i>
+        <p class="spec_tit" id="specTit"></p>
+        <div class="spec_content" id="specBox">
+          <!-- <p>大小</p>
           <p>
-            <span data-specid="1" data-specprice="110">6寸</span>
-            <span data-specid="2" data-specprice="100">8寸</span>
-            <span data-specid="3" data-specprice="120">10寸</span>
-            <span data-specid="1" data-specprice="110">6寸</span>
-            <span data-specid="2" data-specprice="100">8寸</span>
-            <span data-specid="3" data-specprice="120">10寸</span>
-            <span data-specid="1" data-specprice="110">6寸</span>
-            <span data-specid="2" data-specprice="100">8寸</span>
-            <span data-specid="3" data-specprice="120">10寸</span>
-          </p>
+            <span data-specid="1" data-specprice="110" class="cur">6寸</span>
+          </p> -->
         </div>
-        <div class="size_bottom">
-          <p class="size_price" id="choiceSpecPrice"><i>￥</i>132.00</p>
-          <p class="size_btn_ok" id="choiceSpecOK">选好了</p>
+        <div class="spec_bottom">
+          <p class="spec_price" id="choiceSpecPrice"><i>￥</i>132.00</p>
+          <p class="spec_btn_ok" id="choiceSpecOK">选好了</p>
         </div>
       </div>
     </div>

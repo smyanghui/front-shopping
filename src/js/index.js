@@ -119,6 +119,8 @@ class Page extends Controller {
     // 当前规格商品
     this.curSpec = null;
 
+    // return;
+
     // 初始化数据
     if (sessionStorage.arrItem) {
       this.arrSort = JSON.parse(sessionStorage.arrSort) || {};
@@ -166,13 +168,10 @@ class Page extends Controller {
     });
 
     // 选择规格
-    $("#choiceSpec").on('click', ".J_spec_choice span", function(){
+    $("#specBox").on('click', "span", function(){
       if ($(this).hasClass("cur")) return;
       $(this).addClass('cur').siblings('span').removeClass();
-      // 渲染规格商品价格
-      let price = $(this).data('specprice');
-      $("#choiceSpecPrice").html(`<i>￥</i>${price}`);
-      _this.curSpec['choiceId'] = $(this).data('specid');
+      _this.curChoiseSpec();
     });
 
     // 确认选择规格
@@ -249,7 +248,7 @@ class Page extends Controller {
           num: 0,
           imgUrl: itemsList.goods_logo || '/src/images/item.png',
           text: itemsList.goods_desc || '送蜡烛10支，每个账号限买一个',
-          price: itemsList.goods_price/100,
+          price: itemsList.goods_price,
           isSpec: itemsList.is_spec,
           spec: itemsList.spec_group_info,
           group: group
@@ -260,6 +259,20 @@ class Page extends Controller {
     this.saveSession();
     this.renderSort();
     this.renderItem();
+  }
+
+  // 获取选中的规格
+  curChoiseSpec() {
+    let specIds = [];
+    $("#specBox span.cur").map(function() {
+      let specid = $(this).data('specid');
+      specIds.push(specid);
+    });
+    // 获取组合价格
+    let group = this.curSpec.group[specIds.join(',')];
+    let groupPrice = '缺货';
+    if (group) groupPrice = Controller.formatMoney(group.price);
+    $("#choiceSpecPrice").html(`<i>￥</i>${groupPrice}`);
   }
 
   // 渲染分类
@@ -285,7 +298,8 @@ class Page extends Controller {
       for (let j in arrItem) {
         let item = arrItem[j];
         // 格式价格
-        let priceHtml = `<i>￥</i>${item.price}`;
+        let price = Controller.formatMoney(item.price);
+        let priceHtml = `<i>￥</i>${price}`;
         if (item.isSpec == 1) priceHtml += '<i>起</i>';
         // 是否需要选规格
         let choiceHtml = `<i class="iconfont icon-minus"></i><strong>${item.num}</strong><i class="iconfont icon-add"></i>`;
@@ -383,7 +397,9 @@ class Page extends Controller {
       }
       specHTML += '</p>';
     }
+    $("#specTit").text(this.curSpec.name);
     $("#specBox").html(specHTML);
+    this.curChoiseSpec();
     $("#choiceSpec").show();
   }
 

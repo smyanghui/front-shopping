@@ -94,11 +94,13 @@ class Controller {
     return this.getQueryParams()[key];
   }
 
-  // 格式化金额
+  // 格式化金额(分转元)
   static formatMoney(val) {
-    let arrVal = String(val).split('.');
-    // arrVal[1]?
-    // return this.getQueryParams()[key];
+    let branch = parseInt(val);
+    if (branch <= 0) return '0.00';
+    let yuan = branch / 100;
+    return String(yuan).indexOf('.') > -1 ? yuan + '' : yuan + '.00';
+    // let arrYuan = String(yuan).split('.');
   }
 
   // 获取url参数对象
