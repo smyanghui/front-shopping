@@ -49,6 +49,10 @@ class Page extends Controller {
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
           isSpec: 1,
+          selectSpec: [
+            {id: '12,14', price: '123', num: 2, specTxt: '12寸/咸味'},
+            {id: '11,14', price: '120', num: 1, specTxt: '13寸/甜味'},
+          ],
           spec: [{
             "spec_group_id": 11,
             "spec_group_name": "尺寸",
@@ -348,7 +352,7 @@ class Page extends Controller {
     $("#cartItemBox").html(itemHTML);
   }
 
-  // 移入/移出购物车
+  // 加入/移出购物车
   changeCart(aid, cid, isadd) {
     const arrItem = this.arrItem[aid];
     let curNum = 0;
@@ -406,13 +410,23 @@ class Page extends Controller {
   // 确认规格
   choiceSpecSave() {
     const curSpec = this.curSpec;
-    let arrSpec = curSpec.spec[0].specItems;
-    for (let i in arrSpec) {
-      if (arrSpec[i].id == curSpec.choiceId) arrSpec[i].num += 1;
+    // 需先更新当前规格商品信息
+    if (curSpec.selectSpec.length == 0) {
+      curSpec.selectSpec.push({id: curSpec.selectSpec, price: curSpec.group[curSpec.selectSpec], num: 1, specTxt: '12寸/咸味'})
+    } else {
+      for (let i in curSpec.selectSpec) {
+        //aa
+      }
     }
-    let arrCart = this.arrCart;
-    arrCart[curSpec.sortId] = curSpec;
-    // arrCart[itemid].sortId = sortid;
+
+    const arrItem = this.arrItem[curSpec.sortId];
+    for (let i in arrItem) {
+      if (arrItem[i].itemId == curSpec.itemId) {
+        this.arrItem[curSpec.sortId][i] = curSpec;
+        break;
+      }
+    }
+    this.arrCart[curSpec.itemId] = curSpec;
     this.saveSession();
     $("#choiceSpec").hide();
   }

@@ -4,7 +4,7 @@
 img { border: 0;}
 
 html, body { height: 100%;}
-body { color: #333; font-size: 14px; background-color: #fff;}
+body { color: #333; font-size: 14px; background-color: #fff; user-select: none;}
 
 ul { list-style: none;}
 input, textarea, select, button { font: inherit; outline: 0;}
