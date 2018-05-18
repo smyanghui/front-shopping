@@ -49,6 +49,7 @@ class Page extends Controller {
           text: '送蜡烛10支，每个账号限买一个',
           price: '100.00',
           isSpec: 1,
+          groupId: '', // 只存放在this.curSpec中
           selectSpec: [
             {id: '12,14', price: '123', num: 2, specTxt: '12寸/咸味'},
             {id: '11,14', price: '120', num: 1, specTxt: '13寸/甜味'},
@@ -255,6 +256,7 @@ class Page extends Controller {
           price: itemsList.goods_price,
           isSpec: itemsList.is_spec,
           spec: itemsList.spec_group_info,
+          selectSpec: [],
           group: group
         });
       }
@@ -273,7 +275,9 @@ class Page extends Controller {
       specIds.push(specid);
     });
     // 获取组合价格
-    let group = this.curSpec.group[specIds.join(',')];
+    let groupId = specIds.join(',');
+    this.curSpec['groupId'] = groupId;
+    let group = this.curSpec.group[groupId];
     let groupPrice = '缺货';
     if (group) groupPrice = Controller.formatMoney(group.price);
     $("#choiceSpecPrice").html(`<i>￥</i>${groupPrice}`);
@@ -332,14 +336,32 @@ class Page extends Controller {
 
   // 渲染购物车
   renderCart() {
-    let itemHTML = '';
+    // 规格组合商品提到外层
+    let cartList = [];
     for (let i in this.arrCart) {
       let item = this.arrCart[i];
       if (!item) continue;
+      if (item.isSpec == 1) {
+        for (let j in item.selectSpec) {
+          let select = item.selectSpec[j];
+          if (select.num > 0) {
+            item.price = select.price || '0';
+            item.smTxt = select.price || 'aaa';
+            cartList.push(item);
+          }
+        }
+      } else {
+        cartList.push(item)
+      }
+    }
+    // 渲染列表
+    let itemHTML = '';
+    for (let i in cartList) {
+      let item = cartList[i];
       itemHTML += `<li data-sortid="${item.sortId}" id="cart_${i}" data-itemid="${i}">
         <div class="cart_item">
-            <p class="cart_item_tit">${item.name}</p>
-            <p class="cart_item_sm">${item.price}</p>
+          <p class="cart_item_tit">${item.name}</p>
+          <p class="cart_item_sm">${item.price}</p>
         </div>
         <div class="cart_choice J_cart_choice">
           <i class="iconfont icon-minus"></i>
@@ -410,23 +432,26 @@ class Page extends Controller {
   // 确认规格
   choiceSpecSave() {
     const curSpec = this.curSpec;
-    // 需先更新当前规格商品信息
-    if (curSpec.selectSpec.length == 0) {
-      curSpec.selectSpec.push({id: curSpec.selectSpec, price: curSpec.group[curSpec.selectSpec], num: 1, specTxt: '12寸/咸味'})
-    } else {
-      for (let i in curSpec.selectSpec) {
-        //aa
-      }
+    // 更新当前规格商品信息
+    let selectIndex = -1;
+    for (let i in curSpec.selectSpec) {
+      if (curSpec.selectSpec[i].id == curSpec.groupId) selectIndex = i;
     }
-
+    let groupInfo = curSpec.group[curSpec.groupId];
+    if (selectIndex == -1) {
+      this.curSpec.selectSpec.push({id: curSpec.groupId, price: groupInfo.price || '0', num: 1, specTxt: groupInfo.name || '未命名'});
+    } else {
+      this.curSpec.selectSpec[selectIndex].num++;
+    }
+    // 更新购物车和商品列表信息
     const arrItem = this.arrItem[curSpec.sortId];
     for (let i in arrItem) {
       if (arrItem[i].itemId == curSpec.itemId) {
-        this.arrItem[curSpec.sortId][i] = curSpec;
+        this.arrItem[curSpec.sortId][i] = this.curSpec;
         break;
       }
     }
-    this.arrCart[curSpec.itemId] = curSpec;
+    this.arrCart[curSpec.itemId] = this.curSpec;
     this.saveSession();
     $("#choiceSpec").hide();
   }
@@ -435,25 +460,41 @@ class Page extends Controller {
   updateCart(aid, cid, isadd) {
     let curNum = parseInt(this.arrCart[cid].num);
     let resNum = isadd ? ++curNum : --curNum;
-    for (let i in this.arrItem[aid]) {
-      let itemList = this.arrItem[aid][i];
-      if (itemList.itemId == cid) {
-        this.arrCart[cid].num = this.arrItem[aid][i].num = resNum;
-        break;
+    if (resNum == 0) {
+      let isDel = confirm('是否从购物车中删除？');
+      if (!isDel) return;
+      this.arrCart[cid] = null;
+      $("#item_"+ cid).find("strong").text(resNum);
+      this.renderCart();
+    } else {
+      let itemIndex = -1, specIndex = -1;
+      for (let i in this.arrItem[aid]) {
+        let itemList = this.arrItem[aid][i];
+        if (itemList.itemId == cid) itemIndex = i;
+        // 查找规格商品
+        if (itemList.itemId == cid && itemList.isSpec == 1) {
+          for (let j in itemList.selectSpec) {
+            if (itemList.selectSpec[j].id == itemList.groupId) specIndex = j;
+          }
+          this.arrItem[aid][itemIndex].selectSpec[specIndex].num = resNum;
+        }
       }
+      this.arrCart[cid].num = this.arrItem[aid][itemIndex].num = resNum;
+      $("#cart_"+ cid +", #item_"+ cid).find("strong").text(resNum);
     }
     this.saveSession();
-    $("#cart_"+ cid +", #item_"+ cid).find("strong").text(resNum);
   }
 
   // 清空购物车
   cleanCart() {
+    let isDel = confirm('是否清空购物车？');
+    if (!isDel) return;
     for (let i in this.arrCart) {
       for (let j in this.arrCart[i]) {
         let itemList = this.arrCart[i][j];
+        if (itemList.isSpec == 1) this.arrCart[i][j].selectSpec = [];
         if (itemList.num == 0) continue;
         this.arrCart[i][j].num = 0;
-        // $("#item_"+ itemList.itemId).find("strong").text('0');
       }
     }
     this.arrCart = {};
@@ -461,18 +502,15 @@ class Page extends Controller {
     this.renderItem();
     this.saveSession();
 
-    // let param = {
-    //   token: this.token,
-    //   shopid: '',
-    // };
-    // Controller.ajax({
-    //   url: '/cart/clearall',
-    //   type: 'POST',
-    //   data: param,
-    // }, (res) => {
-    //   // const listArr = res.data.goods || [];
-    //   // this.formatItems(listArr);
-    // });
+    // 登录状态更新服务端数据
+    if (!this.token) return;
+    Controller.ajax({
+      url: '/cart/clearall',
+      type: 'POST',
+      data: {token: this.token, shopid: ''},
+    }, (res) => {
+      console.log(res);
+    });
   }
 
   // 暂存数据
