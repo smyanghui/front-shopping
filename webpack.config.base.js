@@ -6,6 +6,7 @@ var config = {
 
   entry: {
     'index': ['./src/js/index.js', './src/css/index.scss'],
+    'confirm': ['./src/js/confirm.js', './src/css/confirm.scss'],
     'detail': ['./src/js/detail.js', './src/css/detail.scss'],
     'order': ['./src/js/order.js', './src/css/order.scss'],
     'seller': ['./src/js/seller.js', './src/css/seller.scss'],

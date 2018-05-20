@@ -490,18 +490,15 @@ class Page extends Controller {
     let isDel = confirm('是否清空购物车？');
     if (!isDel) return;
     for (let i in this.arrCart) {
-      for (let j in this.arrCart[i]) {
-        let itemList = this.arrCart[i][j];
-        if (itemList.isSpec == 1) this.arrCart[i][j].selectSpec = [];
-        if (itemList.num == 0) continue;
-        this.arrCart[i][j].num = 0;
+      for (let j in this.arrItem[i]) {
+        let item = this.arrItem[i][j];
+        if (item.isSpec == 1) item.selectSpec = [];
+        item.num = 0;
       }
     }
     this.arrCart = {};
-    this.renderCart();
-    this.renderItem();
     this.saveSession();
-
+    window.location.reload();
     // 登录状态更新服务端数据
     if (!this.token) return;
     Controller.ajax({
