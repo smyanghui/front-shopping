@@ -5,35 +5,95 @@ ${require('./head.tpl')}
 
 <div class="page">
 
+  <p class="page_tit">商品确认</p>
+
+  <!-- 商品列表 -->
   <div class="confirm_box">
-    <p class="c_tit">本产品全国联保</p>
-    <ul>
-      <li>asdfasfd</li>
-      <li>asdfasfd</li>
-      <li>asdfasfd</li>
+    <p class="box_tit">商品信息</p>
+    <ul class="item_list">
+      <li>
+        <p class="item_img"><img src="/src/images/item.png" /></p>
+        <div class="item_text">
+          <p class="item_name">精品生日水果蛋糕精品生日水果蛋糕</p>
+          <p class="item_sm">送蜡烛10支，每个账号限买一个送蜡烛10支</p>
+        </div>
+        <p class="item_num">x1</p>
+        <p class="item_price"><i>￥</i>100.00</p>
+      </li>
+      <li>
+        <p class="item_img"><img src="/src/images/item.png" /></p>
+        <div class="item_text">
+          <p class="item_name">精品生日水果蛋糕精品生日水果蛋糕</p>
+          <p class="item_sm">送蜡烛10支，每个账号限买一个送蜡烛10支</p>
+        </div>
+        <p class="item_num">x1</p>
+        <p class="item_price"><i>￥</i>100.00</p>
+      </li>
+      <li>
+        <p class="item_img"><img src="/src/images/item.png" /></p>
+        <div class="item_text">
+          <p class="item_name">精品生日水果蛋糕精品生日水果蛋糕</p>
+          <p class="item_sm">送蜡烛10支，每个账号限买一个送蜡烛10支</p>
+        </div>
+        <p class="item_num">x1</p>
+        <p class="item_price"><i>￥</i>100.00</p>
+      </li>
     </ul>
+    <div class="total_box">
+      总计：<i>￥</i>1000.00
+    </div>
   </div>
 
-  <div class="asdf">
-    支付方式：
-    <select name="" id="">
-      <option value="0">货到付款</option>
-      <option value="1">支付宝</option>
-      <option value="2">微信</option>
-    </select>
-    <p>配送方式
-      <select name="" id="">
-      <option value="0">送货上门</option>
-      <option value="1">自提</option>
-    </select>
-
-    </p>
-    <p>
-      收货人信息
-    </p>
-    收货地址：
-    <input type="text" value="" />
-
+  <!-- 配送信息 -->
+  <div class="confirm_box">
+    <p class="box_tit">配送信息</p>
+    <ul class="song_box">
+      <li>
+        <p class="song_tit">支付方式</p>
+        <p class="song_text">
+          <select class="wide100">
+            <option value="">请选择</option>
+            <option value="0">货到付款</option>
+            <option value="1">支付宝支付</option>
+            <option value="2">微信支付</option>
+          </select>
+        </p>
+      </li>
+      <li>
+        <p class="song_tit">配送方式</p>
+        <p class="song_text">
+          <select class="wide100">
+            <option value="0">请选择</option>
+            <option value="1">送货上门</option>
+            <option value="2">门店自提</option>
+          </select>
+        </p>
+      </li>
+      <li>
+        <p class="song_tit">收货地址</p>
+        <p class="song_text"><a href="javascript:;">添加地址</a></p>
+      </li>
+      <li>
+        <select disabled="disabled">
+          <option value="">上海</option>
+        </select>
+        <select disabled="disabled">
+          <option value="">浦东</option>
+        </select>
+        <select>
+          <option value="">请选择</option>
+          <option value="1">北蔡</option>
+          <option value="2">花木</option>
+        </select>
+        <input type="text" value="" placeholder='详细地址' />
+      </li>
+      <li>
+        <p class="song_tit">收(取)货时间</p>
+        <p class="song_text">
+          <input type="text" value="" placeholder='2018-01-01' />
+        </p>
+      </li>
+    </ul>
   </div>
 
 </div>
