@@ -3,7 +3,7 @@ ${require('./head.tpl')}
 </head>
 <body>
 
-<div class="page">
+<div class="page_a">
 
   <p class="page_tit">商品确认</p>
 
@@ -69,31 +69,27 @@ ${require('./head.tpl')}
           </select>
         </p>
       </li>
-      <li>
+      <li style="display: none;" id="receivAddress">
         <p class="song_tit">收货地址</p>
-        <p class="song_text"><a href="javascript:;">添加地址</a></p>
-      </li>
-      <li>
-        <select disabled="disabled">
-          <option value="">上海</option>
-        </select>
-        <select disabled="disabled">
-          <option value="">浦东</option>
-        </select>
-        <select>
-          <option value="">请选择</option>
-          <option value="1">北蔡</option>
-          <option value="2">花木</option>
-        </select>
-        <input type="text" value="" placeholder='详细地址' />
+        <p class="song_text">
+          <input type="text" value="" placeholder='收货详细地址' />
+        </p>
       </li>
       <li>
         <p class="song_tit">收(取)货时间</p>
         <p class="song_text">
-          <input type="text" value="" placeholder='2018-01-01' />
+          <input type="time" value="" placeholder='2018-01-01' />
         </p>
       </li>
     </ul>
+  </div>
+
+  <!-- 底部 -->
+  <div class="page_footer">
+    <div class="footer_box">
+      <p class="bottom_cart" id="viewCart"><span><i>￥</i>100.00</span></p>
+      <p class="buy">提交订单</p>
+    </div>
   </div>
 
 </div>
