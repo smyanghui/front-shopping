@@ -1,14 +1,15 @@
-webpackJsonp([3],[
+webpackJsonp([4],[
 /* 0 */,
-/* 1 */
+/* 1 */,
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(2);
-module.exports = __webpack_require__(5);
+__webpack_require__(3);
+module.exports = __webpack_require__(6);
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -214,6 +215,11 @@ var Page = function (_Controller) {
       // 清空购物车
       $("#cleanCart").click(function () {
         return _this3.cleanCart();
+      });
+
+      // 去结算
+      $("#settlement").click(function () {
+        return _this3.settlement();
       });
     }
 
@@ -540,15 +546,11 @@ var Page = function (_Controller) {
           var item = this.arrItem[i][j];
           if (item.isSpec == 1) item.selectSpec = [];
           item.num = 0;
-          $("#item_" + item.itemId).find("strong").text('0');
         }
       }
       this.arrCart = {};
-      // this.renderItem();
       this.saveSession();
-      $("#cartMask").hide();
-      $("#cartOutBox").css("bottom", '-80%');
-
+      window.location.reload();
       // 登录状态更新服务端数据
       if (!this.token) return;
       _controller2.default.ajax({
@@ -558,6 +560,22 @@ var Page = function (_Controller) {
       }, function (res) {
         console.log(res);
       });
+    }
+
+    // 去结算
+
+  }, {
+    key: 'settlement',
+    value: function settlement() {
+      if (!this.token) window.location.href = './login.html';
+      window.location.href = './confirm.html';
+      // Controller.ajax({
+      //   url: '/cart/clearall',
+      //   type: 'POST',
+      //   data: {token: this.token, shopid: ''},
+      // }, (res) => {
+      //   console.log(res);
+      // });
     }
 
     // 暂存数据
@@ -578,12 +596,12 @@ var Page = function (_Controller) {
 new Page();
 
 /***/ }),
-/* 3 */,
 /* 4 */,
-/* 5 */
+/* 5 */,
+/* 6 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ })
-],[1]);
+],[2]);

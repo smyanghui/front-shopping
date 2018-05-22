@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		5: 0
+/******/ 		6: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -98,7 +98,7 @@
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -115,7 +115,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _modal = __webpack_require__(3);
+var _modal = __webpack_require__(4);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -256,11 +256,12 @@ var Controller = function () {
   }, {
     key: 'formatMoney',
     value: function formatMoney(val) {
-      var branch = parseInt(val);
-      if (branch <= 0) return '0.00';
-      var yuan = branch / 100;
-      return String(yuan).indexOf('.') > -1 ? yuan + '' : yuan + '.00';
-      // let arrYuan = String(yuan).split('.');
+      var rVal = parseInt(val);
+      if (!rVal || rVal <= 0) return '0.00';
+      var sVal = String(rVal);
+      if (sVal.length == 1) sVal = '00' + sVal;
+      if (sVal.length == 2) sVal = '0' + sVal;
+      return sVal.replace(/(\d+)(\d{2})$/, '$1.$2');
     }
 
     // 获取url参数对象
@@ -291,16 +292,16 @@ exports.default = Controller;
 
 /***/ }),
 
-/***/ 19:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(20);
-module.exports = __webpack_require__(21);
+__webpack_require__(23);
+module.exports = __webpack_require__(24);
 
 
 /***/ }),
 
-/***/ 20:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -385,14 +386,14 @@ new Page();
 
 /***/ }),
 
-/***/ 21:
+/***/ 24:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 3:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -405,7 +406,7 @@ exports.Loading = exports.Tips = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jquery = __webpack_require__(4);
+var _jquery = __webpack_require__(5);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -498,7 +499,7 @@ exports.Loading = Loading;
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /***/ (function(module, exports) {
 
 module.exports = window.$;
