@@ -124,17 +124,15 @@ class Page extends Controller {
     // 当前规格商品
     this.curSpec = null;
 
-    // return;
-
     // 初始化数据
-    if (sessionStorage.arrItem) {
-      this.arrSort = JSON.parse(sessionStorage.arrSort) || {};
-      this.arrItem = JSON.parse(sessionStorage.arrItem) || {};
-      this.arrCart = JSON.parse(sessionStorage.arrCart) || {};
+    this.arrSort = JSON.parse(sessionStorage.arrSort || '{}');
+    this.arrItem = JSON.parse(sessionStorage.arrItem || '{}');
+    this.arrCart = JSON.parse(sessionStorage.arrCart || '{}');
+    if ($.isEmptyObject(this.arrSort) || $.isEmptyObject(this.arrItem)) {
+      this.rItems();
+    } else {
       this.renderSort();
       this.renderItem();
-    } else {
-      this.rItems();
     }
   }
 
@@ -515,15 +513,43 @@ class Page extends Controller {
 
   // 去结算
   settlement() {
+    let arrItem = [];
+    for (let i in this.arrCart) {
+      let item = this.arrCart[i];
+      let cartItem = {goods_id: i, cart_num: item.num};
+      if (item.isSpec == 1) {
+        for (let j in item.selectSpec) {
+          let specItem = item.selectSpec[j];
+          cartItem.spec_ids = specItem.id;
+          cartItem.cart_num = specItem.num;
+          arrItem.push(cartItem);
+        }
+      } else {
+        arrItem.push(cartItem);
+      }
+    }
+    if (arrItem.length == 0) {
+      Controller.showMessage("购物车中还没有商品！");
+      return;
+    }
     if (!this.token) window.location.href = './login.html';
-    window.location.href = './confirm.html';
-    // Controller.ajax({
-    //   url: '/cart/clearall',
-    //   type: 'POST',
-    //   data: {token: this.token, shopid: ''},
-    // }, (res) => {
-    //   console.log(res);
-    // });
+    let param = {
+      token: this.token,
+      goods_info_type: 2, // 1常规字符串，2json格式字符串
+      goods_info: JSON.stringify(arrItem),
+      is_allow_fail: '', // 是否允许部分失败 0允许(默认)，1不允许
+    }
+    Controller.ajax({
+      url: '/cart/batchadd',
+      type: 'POST',
+      data: param,
+      dataType: "json",
+    }, (res) => {
+      this.arrItem = {};
+      this.arrCart = {};
+      this.saveSession();
+      window.location.href = './confirm.html';
+    });
   }
 
   // 暂存数据
