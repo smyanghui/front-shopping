@@ -192,6 +192,9 @@ class Page extends Controller {
     // 清空购物车
     $("#cleanCart").click(() => this.cleanCart());
 
+    // 去结算
+    $("#settlement").click(() => this.settlement());
+
   }
 
   // 获取商品数据
@@ -508,6 +511,19 @@ class Page extends Controller {
     }, (res) => {
       console.log(res);
     });
+  }
+
+  // 去结算
+  settlement() {
+    if (!this.token) window.location.href = './login.html';
+    window.location.href = './confirm.html';
+    // Controller.ajax({
+    //   url: '/cart/clearall',
+    //   type: 'POST',
+    //   data: {token: this.token, shopid: ''},
+    // }, (res) => {
+    //   console.log(res);
+    // });
   }
 
   // 暂存数据

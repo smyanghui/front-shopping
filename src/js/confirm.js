@@ -1,65 +1,91 @@
 
 import Controller from './utils/controller';
+import Validate from './utils/validate';
 
 class Page extends Controller {
 
   constructor() {
     super();
-    // this.init();
-    // this.bindEvent();
+    this.init();
+    this.bindEvent();
   }
 
   init() {
+    this.token = window.TOKEN;
 
-    // this.getItems();
-    // this.iScrollMenu = new IScroll('#iScrollDetail', { disableMouse: true, click: true, tap: true });
   }
 
   bindEvent() {
     const _this = this;
-
-
+    $("#orderSubmit").click(() => this.orderSubmit());
   }
 
-  // 获取商品数据
-  getItems() {
+  // 获取订单详情
+  rOrder() {
     Controller.ajax({
-      url: '/index/goods',
-      type: 'POST',
+      url: '/order/view',
+      type: 'GET',
     }, (res) => {
-      const listArr = res.data.goods || [];
-      for (let i in listArr) {
-        const items = listArr[i].items || [];
-        if (items.length == 0) continue;
-        this.arrSort[listArr[i].category_id] = {name: listArr[i].category_name};
-        let arrItem = [];
-        for (let j in items) {
-          let itemsArr = items[j];
-          arrItem.push({
-            itemId: 23,
-            name: itemsArr.goods_name,
-            num: 0,
-            imgUrl: '/src/images/item.png', // itemsArr.goods_logo
-            text: '送蜡烛10支，每个账号限买一个', // itemsArr.goods_desc
-            price: itemsArr.goods_price,
-          });
-        }
-        this.arrItem[listArr[i].category_id] = arrItem;
-      }
-
-      this.renderSort();
-
-      // setTimeout()
-
-      // this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
-      // this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
-
-      
+      this.renderOrder(res.result);
     });
   }
 
-  // 渲染分类
-  renderSort() {
+  // 提交订单
+  orderSubmit() {
+    let param = this.checkData;
+    if (!param) return;
+    Controller.ajax({
+      url: '/order/add',
+      type: 'POST',
+      data: param,
+    }, (res) => {
+      console.log(res);
+    });
+  }
+
+  // 数据验证
+  checkData() {
+    const receiverName = $("#receiverName").val();
+    if (Validate.isBlank(receiverName)) {
+      Controller.showMessage("收货人姓名不能为空！");
+      return false;
+    }
+    if (!Validate.isName(receiverName)) {
+      Controller.showMessage("收货人姓名格式不正确！");
+      return false;
+    }
+    const receiverMobile = $("#receiverMobile").val();
+    if (Validate.isBlank(receiverMobile)) {
+      Controller.showMessage("收货人手机号码不能为空！");
+      return false;
+    }
+    if (!Validate.isMobile(receiverMobile)) {
+      Controller.showMessage("收货人手机号码格式不正确！");
+      return false;
+    }
+    const receiverAddress = $("#receiverAddress").val();
+    if (Validate.isBlank(receiverAddress)) {
+      Controller.showMessage("收货人地址不能为空！");
+      return false;
+    }
+    const remarks = $("#remarks").val();
+    return {
+      token: this.token,
+      cart_ids: '',
+      receiver_name: receiverName,
+      receiver_mobile: receiverMobile,
+      receiver_address: receiverAddress,
+      receiver_zip: '', // 邮编
+      beizhu: remarks, // 客户备注
+      wallet_price: '', // 选择余额支付金额
+      pay_type: '', // 支付方式
+      is_invoice: '', // 是否需要发票
+      invoice_info: '' // 发票信息
+    }
+  }
+
+  // 初始化订单信息
+  renderOrder() {
     let itemHTML = '';
     for (let i in this.arrSort) {
       let item = this.arrSort[i];
