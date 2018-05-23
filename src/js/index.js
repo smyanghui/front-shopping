@@ -87,7 +87,7 @@ class Page extends Controller {
     // 点击空白隐藏购物车
     $("#cartMask").click(function(){
       $(this).hide();
-      $("#cartOutBox").css("bottom", '-80%');
+      $("#cartOutBox").css("bottom", '-100%');
     });
 
     // 选择分类滚动到对应商品
