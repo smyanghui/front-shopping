@@ -14,108 +14,45 @@ class Page extends Controller {
 
     // 分类数据
     this.arrSort = {
-      11: {name: '优惠'},
-      12: {name: '招牌'},
-      13: {name: '吃货最爱'},
-      14: {name: '卡通生日蛋糕'},
-      21: {name: '优惠'},
-      22: {name: '招牌'},
-      23: {name: '吃货最爱'},
-      24: {name: '卡通生日蛋糕'},
-      31: {name: '优惠'},
-      32: {name: '招牌'},
-      33: {name: '吃货最爱'},
-      34: {name: '卡通生日蛋糕'},
+      // 11: {name: '优惠'},
+      // 12: {name: '招牌'},
     };
 
     // 商品数据
     this.arrItem = {
-      11: [
-        {
-          itemId: 12,
-          name: '精品生日水果蛋糕12',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: [],
-        },
-        {
-          itemId: 13,
-          name: '精品生日水果蛋糕13',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 1,
-          groupId: '', // 只存放在this.curSpec中
-          selectSpec: [
-            {id: '12,14', price: '123', num: 2, specTxt: '12寸/咸味'},
-            {id: '11,14', price: '120', num: 1, specTxt: '13寸/甜味'},
-          ],
-          spec: [{
-            "spec_group_id": 11,
-            "spec_group_name": "尺寸",
-            "spec_group_beizhu": "蛋糕尺寸",
-            "spec_group_list": [
-              {"spec_id": "13", "spec_name": "8寸"},
-              {"spec_id": "12", "spec_name": "6寸"},
-              {"spec_id": "14", "spec_name": "10寸"},
-              {"spec_id": "15", "spec_name": "12寸"}
-            ]
-          }],
-          group: {
-            13: {"skuid": 1, "price": 112},
-            12: {"skuid": 1, "price": 113},
-            14: {"skuid": 1, "price": 116},
-          },
-        },
-      ],
-      21: [
-        {
-          itemId: 22,
-          name: '精品生日水果蛋糕22',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: [],
-        },
-        {
-          itemId: 23,
-          name: '精品生日水果蛋糕23',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: [],
-        },
-      ],
-      31: [
-        {
-          itemId: 32,
-          name: '精品生日水果蛋糕32',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: [],
-        },
-        {
-          itemId: 33,
-          name: '精品生日水果蛋糕33',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: [],
-        },
-      ],
+      // // key为分类ID
+      // 11: [
+      //   {
+      //     itemId: 13,
+      //     name: '精品生日水果蛋糕13',
+      //     num: 0,
+      //     imgUrl: '/src/images/item.png',
+      //     text: '送蜡烛10支，每个账号限买一个',
+      //     price: '100.00',
+      //     isSpec: 1,
+      //     groupId: '', // 只存放在this.curSpec中
+      //     selectSpec: [
+      //       {id: '12,14', price: '123', num: 2, specTxt: '12寸/咸味'},
+      //       {id: '11,14', price: '120', num: 1, specTxt: '13寸/甜味'},
+      //     ],
+      //     spec: [{
+      //       "spec_group_id": 11,
+      //       "spec_group_name": "尺寸",
+      //       "spec_group_beizhu": "蛋糕尺寸",
+      //       "spec_group_list": [
+      //         {"spec_id": "13", "spec_name": "8寸"},
+      //         {"spec_id": "12", "spec_name": "6寸"},
+      //         {"spec_id": "14", "spec_name": "10寸"},
+      //         {"spec_id": "15", "spec_name": "12寸"}
+      //       ]
+      //     }],
+      //     group: {
+      //       '13': {"skuid": 1, "price": 112},
+      //       '12': {"skuid": 1, "price": 113},
+      //       '14,16': {"skuid": 1, "price": 116},
+      //     },
+      //   }
+      // ],
     };
 
     // 购物车数据
@@ -128,6 +65,7 @@ class Page extends Controller {
     this.arrSort = JSON.parse(sessionStorage.arrSort || '{}');
     this.arrItem = JSON.parse(sessionStorage.arrItem || '{}');
     this.arrCart = JSON.parse(sessionStorage.arrCart || '{}');
+    // 为空去获取数据，有数据则直接渲染
     if ($.isEmptyObject(this.arrSort) || $.isEmptyObject(this.arrItem)) {
       this.rItems();
     } else {
@@ -139,27 +77,30 @@ class Page extends Controller {
   bindEvent() {
     const _this = this;
 
-    $("#viewCart").click(function(){
-      _this.renderCart();
+    // 查看购物车
+    $("#viewCart").click(() => {
+      this.renderCart();
       $("#cartMask").show();
       $("#cartOutBox").css("bottom", 45);
     });
 
     // 点击空白隐藏购物车
-    $("#cartMask").click(function(e){
+    $("#cartMask").click(function(){
       $(this).hide();
       $("#cartOutBox").css("bottom", '-80%');
     });
 
-    // 滚动
+    // 选择分类滚动到对应商品
     $("#iScrollSort").on('click', 'li', function(){
       const sid = $(this).data("sortid");
+      $(this).addClass('cur').siblings('li').removeClass();
       _this.iScrollItem.scrollToElement("#itemarr_"+ sid, 500);
     });
 
-    // 加减商品
+    // 选择商品列表中商品
     $("#iScrollItem").on('click', ".J_item_choice i", function(){
       const isAdd = $(this).hasClass("icon-add");
+      console.log(isAdd);
       const curLi = $(this).closest('li');
       _this.changeCart(curLi.data('sortid'), curLi.data('itemid'), isAdd);
     });
@@ -209,7 +150,7 @@ class Page extends Controller {
   // 获取购物车数据
   rCart() {
     let param = {
-      token: TOKEN,
+      token: this.token,
       shopid: '',
       is_check: '',
     };

@@ -10,48 +10,44 @@ class Page extends Controller {
   }
 
   init() {
-    this.token = Controller.getCookie('token');
-    if (this.token == '') {
-      window.location.href= './login.html';
-      return;
-    }
+    this.token = window.TOKEN;
+    if (!this.token) window.location.href = './login.html';
     this.rOrder();
   }
 
   bindEvent() {
     const _this = this;
 
-
   }
 
   // 获取订单列表
   rOrder() {
-    let param = {
-      page: '',
-      perpage: '',
-      id: '',
-      token: this.token,
-    };
     Controller.ajax({
       url: '/order/list',
       type: 'POST',
-      data: param,
+      data: {token: this.token},
     }, (res) => {
-      // this.renderOrder();
+      this.renderOrder(res.data);
     });
   }
 
   // 渲染订单列表
-  renderOrder() {
-    let itemHTML = '';
-    for (let i in this.arrSort) {
-      let item = this.arrSort[i];
-      itemHTML += `<li data-sortid="${i}" id="sort_${i}"><p>${item.name}</p></li>`;
+  renderOrder(data) {
+    let orderHTML = '';
+    for (let i in data.items) {
+      let order = data.items[i];
+      orderHTML += `<ul>
+        <li><span>订单号：</span>${order.orderno}</li>
+        <li><span>订单状态：</span><i class="end">订单已完成</i></li>
+        <li><span>下单时间：</span>2018-05-01 12:01:01</li>
+        <li><span>提货时间：</span>2018-05-01 13:01:01</li>
+        <li><span>结算金额：</span><i class="price">￥${order.wallet_price}</i></li>
+      </ul>`;
     }
-    $("#sortBox").html(itemHTML);
-    // setTimeout(() => {
-    //   this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
-    // }, 200);
+    $("#orderList").html(orderHTML);
+    setTimeout(() => {
+      new IScroll('#iScrollOrder', { disableMouse: true, click: true, tap: true });
+    }, 200);
   }
 
 
