@@ -45,11 +45,8 @@ var Page = function (_Controller) {
   _createClass(Page, [{
     key: 'init',
     value: function init() {
-      this.token = _controller2.default.getCookie('token');
-      if (this.token == '') {
-        window.location.href = './login.html';
-        return;
-      }
+      this.token = window.TOKEN;
+      if (!this.token) window.location.href = './login.html';
       this.rOrder();
     }
   }, {
@@ -63,18 +60,14 @@ var Page = function (_Controller) {
   }, {
     key: 'rOrder',
     value: function rOrder() {
-      var param = {
-        page: '',
-        perpage: '',
-        id: '',
-        token: this.token
-      };
+      var _this3 = this;
+
       _controller2.default.ajax({
         url: '/order/list',
         type: 'POST',
-        data: param
+        data: { token: this.token }
       }, function (res) {
-        // this.renderOrder();
+        _this3.renderOrder(res.data);
       });
     }
 
@@ -82,16 +75,16 @@ var Page = function (_Controller) {
 
   }, {
     key: 'renderOrder',
-    value: function renderOrder() {
-      var itemHTML = '';
-      for (var i in this.arrSort) {
-        var item = this.arrSort[i];
-        itemHTML += '<li data-sortid="' + i + '" id="sort_' + i + '"><p>' + item.name + '</p></li>';
+    value: function renderOrder(data) {
+      var orderHTML = '';
+      for (var i in data.items) {
+        var order = data.items[i];
+        orderHTML += '<ul>\n        <li><span>\u8BA2\u5355\u53F7\uFF1A</span>' + order.orderno + '</li>\n        <li><span>\u8BA2\u5355\u72B6\u6001\uFF1A</span><i class="end">\u8BA2\u5355\u5DF2\u5B8C\u6210</i></li>\n        <li><span>\u4E0B\u5355\u65F6\u95F4\uFF1A</span>2018-05-01 12:01:01</li>\n        <li><span>\u63D0\u8D27\u65F6\u95F4\uFF1A</span>2018-05-01 13:01:01</li>\n        <li><span>\u7ED3\u7B97\u91D1\u989D\uFF1A</span><i class="price">\uFFE5' + order.wallet_price + '</i></li>\n      </ul>';
       }
-      $("#sortBox").html(itemHTML);
-      // setTimeout(() => {
-      //   this.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
-      // }, 200);
+      $("#orderList").html(orderHTML);
+      setTimeout(function () {
+        new IScroll('#iScrollOrder', { disableMouse: true, click: true, tap: true });
+      }, 200);
     }
   }]);
 

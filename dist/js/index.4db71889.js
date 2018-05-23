@@ -49,91 +49,45 @@ var Page = function (_Controller) {
 
       // 分类数据
       this.arrSort = {
-        11: { name: '优惠' },
-        12: { name: '招牌' },
-        13: { name: '吃货最爱' },
-        14: { name: '卡通生日蛋糕' },
-        21: { name: '优惠' },
-        22: { name: '招牌' },
-        23: { name: '吃货最爱' },
-        24: { name: '卡通生日蛋糕' },
-        31: { name: '优惠' },
-        32: { name: '招牌' },
-        33: { name: '吃货最爱' },
-        34: { name: '卡通生日蛋糕' }
+        // 11: {name: '优惠'},
+        // 12: {name: '招牌'},
       };
 
       // 商品数据
       this.arrItem = {
-        11: [{
-          itemId: 12,
-          name: '精品生日水果蛋糕12',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: []
-        }, {
-          itemId: 13,
-          name: '精品生日水果蛋糕13',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 1,
-          groupId: '', // 只存放在this.curSpec中
-          selectSpec: [{ id: '12,14', price: '123', num: 2, specTxt: '12寸/咸味' }, { id: '11,14', price: '120', num: 1, specTxt: '13寸/甜味' }],
-          spec: [{
-            "spec_group_id": 11,
-            "spec_group_name": "尺寸",
-            "spec_group_beizhu": "蛋糕尺寸",
-            "spec_group_list": [{ "spec_id": "13", "spec_name": "8寸" }, { "spec_id": "12", "spec_name": "6寸" }, { "spec_id": "14", "spec_name": "10寸" }, { "spec_id": "15", "spec_name": "12寸" }]
-          }],
-          group: {
-            13: { "skuid": 1, "price": 112 },
-            12: { "skuid": 1, "price": 113 },
-            14: { "skuid": 1, "price": 116 }
-          }
-        }],
-        21: [{
-          itemId: 22,
-          name: '精品生日水果蛋糕22',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: []
-        }, {
-          itemId: 23,
-          name: '精品生日水果蛋糕23',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: []
-        }],
-        31: [{
-          itemId: 32,
-          name: '精品生日水果蛋糕32',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: []
-        }, {
-          itemId: 33,
-          name: '精品生日水果蛋糕33',
-          num: 0,
-          imgUrl: '/src/images/item.png',
-          text: '送蜡烛10支，每个账号限买一个',
-          price: '100.00',
-          isSpec: 0,
-          spec: []
-        }]
+        // // key为分类ID
+        // 11: [
+        //   {
+        //     itemId: 13,
+        //     name: '精品生日水果蛋糕13',
+        //     num: 0,
+        //     imgUrl: '/src/images/item.png',
+        //     text: '送蜡烛10支，每个账号限买一个',
+        //     price: '100.00',
+        //     isSpec: 1,
+        //     groupId: '', // 只存放在this.curSpec中
+        //     selectSpec: [
+        //       {id: '12,14', price: '123', num: 2, specTxt: '12寸/咸味'},
+        //       {id: '11,14', price: '120', num: 1, specTxt: '13寸/甜味'},
+        //     ],
+        //     spec: [{
+        //       "spec_group_id": 11,
+        //       "spec_group_name": "尺寸",
+        //       "spec_group_beizhu": "蛋糕尺寸",
+        //       "spec_group_list": [
+        //         {"spec_id": "13", "spec_name": "8寸"},
+        //         {"spec_id": "12", "spec_name": "6寸"},
+        //         {"spec_id": "14", "spec_name": "10寸"},
+        //         {"spec_id": "15", "spec_name": "12寸"}
+        //       ]
+        //     }],
+        //     group: {
+        //       '13': {"skuid": 1, "price": 112},
+        //       '12': {"skuid": 1, "price": 113},
+        //       '14,16': {"skuid": 1, "price": 116},
+        //     },
+        //   }
+        // ],
       };
 
       // 购物车数据
@@ -146,6 +100,7 @@ var Page = function (_Controller) {
       this.arrSort = JSON.parse(sessionStorage.arrSort || '{}');
       this.arrItem = JSON.parse(sessionStorage.arrItem || '{}');
       this.arrCart = JSON.parse(sessionStorage.arrCart || '{}');
+      // 为空去获取数据，有数据则直接渲染
       if ($.isEmptyObject(this.arrSort) || $.isEmptyObject(this.arrItem)) {
         this.rItems();
       } else {
@@ -160,27 +115,30 @@ var Page = function (_Controller) {
 
       var _this = this;
 
+      // 查看购物车
       $("#viewCart").click(function () {
-        _this.renderCart();
+        _this3.renderCart();
         $("#cartMask").show();
         $("#cartOutBox").css("bottom", 45);
       });
 
       // 点击空白隐藏购物车
-      $("#cartMask").click(function (e) {
+      $("#cartMask").click(function () {
         $(this).hide();
         $("#cartOutBox").css("bottom", '-80%');
       });
 
-      // 滚动
+      // 选择分类滚动到对应商品
       $("#iScrollSort").on('click', 'li', function () {
         var sid = $(this).data("sortid");
+        $(this).addClass('cur').siblings('li').removeClass();
         _this.iScrollItem.scrollToElement("#itemarr_" + sid, 500);
       });
 
-      // 加减商品
+      // 选择商品列表中商品
       $("#iScrollItem").on('click', ".J_item_choice i", function () {
         var isAdd = $(this).hasClass("icon-add");
+        console.log(isAdd);
         var curLi = $(this).closest('li');
         _this.changeCart(curLi.data('sortid'), curLi.data('itemid'), isAdd);
       });
@@ -232,29 +190,8 @@ var Page = function (_Controller) {
         url: '/index/goods',
         type: 'GET'
       }, function (res) {
-        var listArr = res.data.goods || [];
+        var listArr = res.data && res.data.goods || [];
         _this4.formatItems(listArr);
-      });
-    }
-
-    // 获取购物车数据
-
-  }, {
-    key: 'rCart',
-    value: function rCart() {
-      var _this5 = this;
-
-      var param = {
-        token: TOKEN,
-        shopid: '',
-        is_check: ''
-      };
-      _controller2.default.ajax({
-        url: '/cart/list',
-        type: 'POST',
-        data: param
-      }, function (res) {
-        _this5.renderCart();
       });
     }
 
@@ -284,8 +221,7 @@ var Page = function (_Controller) {
           var group = {};
           for (var k in itemsList.goods_skuid) {
             var sku = itemsList.goods_skuid[k];
-            var groupId = sku.spec_ids_ary.join(',');
-            group[groupId] = { skuid: sku.skuid, price: sku.goods_price };
+            group[sku.spec_ids] = { skuid: sku.skuid, price: sku.goods_price };
           }
           arrItem.push({
             itemId: itemsList.id,
@@ -307,40 +243,21 @@ var Page = function (_Controller) {
       this.renderItem();
     }
 
-    // 获取选中的规格
-
-  }, {
-    key: 'curChoiseSpec',
-    value: function curChoiseSpec() {
-      var specIds = [];
-      $("#specBox span.cur").map(function () {
-        var specid = $(this).data('specid');
-        specIds.push(specid);
-      });
-      // 获取组合价格
-      var groupId = specIds.join(',');
-      this.curSpec['groupId'] = groupId;
-      var group = this.curSpec.group[groupId];
-      var groupPrice = '缺货';
-      if (group) groupPrice = _controller2.default.formatMoney(group.price);
-      $("#choiceSpecPrice").html('<i>\uFFE5</i>' + groupPrice);
-    }
-
     // 渲染分类
 
   }, {
     key: 'renderSort',
     value: function renderSort() {
-      var _this6 = this;
+      var _this5 = this;
 
       var itemHTML = '';
       for (var i in this.arrSort) {
         var item = this.arrSort[i];
-        itemHTML += '<li data-sortid="' + i + '" id="sort_' + i + '"><p>' + item.name + '</p></li>';
+        itemHTML += '<li data-sortid="' + i + '" id="sort_' + i + '"' + (i == 0 ? ' class="cur"' : '') + '><p>' + item.name + '</p></li>';
       }
       $("#sortBox").html(itemHTML);
       setTimeout(function () {
-        _this6.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
+        _this5.iScrollMenu = new IScroll('#iScrollSort', { disableMouse: true, click: true, tap: true });
       }, 200);
     }
 
@@ -349,30 +266,52 @@ var Page = function (_Controller) {
   }, {
     key: 'renderItem',
     value: function renderItem() {
-      var _this7 = this;
+      var _this6 = this;
 
       var itemHTML = '';
       for (var i in this.arrItem) {
         var arrItem = this.arrItem[i] || [];
         if (arrItem.length == 0) continue;
-        itemHTML += '<ul id="itemarr_' + i + '" data-itemarrid="' + i + '">';
+        // 点击左侧分类定位用
+        itemHTML += '<ul id="itemarr_' + i + '">';
         for (var j in arrItem) {
           var item = arrItem[j];
-          // 格式价格
+          // 格式化价格
           var price = _controller2.default.formatMoney(item.price);
           var priceHtml = '<i>\uFFE5</i>' + price;
           if (item.isSpec == 1) priceHtml += '<i>起</i>';
           // 是否需要选规格
           var choiceHtml = '<i class="iconfont icon-minus"></i><strong>' + item.num + '</strong><i class="iconfont icon-add"></i>';
           if (item.isSpec == 1) choiceHtml = '<span>选规格</span>';
-          itemHTML += '<li id="item_' + item.itemId + '" data-sortid="' + i + '" data-itemid="' + item.itemId + '">\n          <p class="item_img_box">\n            <a href="detail.html"><img src="' + item.imgUrl + '" /></a>\n          </p>\n          <div class="item_infor_box">\n            <p class="item_name">' + item.name + '</p>\n            <div class="item_remark">' + item.text + '</div>\n            <div class="price_box">\n              <p class="item_choice J_item_choice">' + choiceHtml + '</p>\n              <p class="item_price">' + priceHtml + '</p>\n            </div>\n          </div>\n        </li>';
+          itemHTML += '<li id="item_' + item.itemId + '" data-sortid="' + i + '" data-itemid="' + item.itemId + '">\n          <p class="item_img_box"><a href="detail.html"><img src="' + item.imgUrl + '" /></a></p>\n          <div class="item_infor_box">\n            <p class="item_name">' + item.name + '</p>\n            <div class="item_remark">' + item.text + '</div>\n            <div class="price_box">\n              <p class="item_choice J_item_choice">' + choiceHtml + '</p>\n              <p class="item_price">' + priceHtml + '</p>\n            </div>\n          </div>\n        </li>';
         }
         itemHTML += '</ul>';
       }
       $("#itemBox").html(itemHTML);
       setTimeout(function () {
-        _this7.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
+        _this6.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
       }, 200);
+    }
+
+    // 获取购物车数据
+
+  }, {
+    key: 'rCart',
+    value: function rCart() {
+      var _this7 = this;
+
+      var param = {
+        token: this.token,
+        shopid: '',
+        is_check: ''
+      };
+      _controller2.default.ajax({
+        url: '/cart/list',
+        type: 'POST',
+        data: param
+      }, function (res) {
+        _this7.renderCart();
+      });
     }
 
     // 渲染购物车
@@ -445,12 +384,10 @@ var Page = function (_Controller) {
     value: function openSpec(sortid, itemid) {
       var arrItem = this.arrItem[sortid];
       for (var i in arrItem) {
-        if (arrItem[i].itemId == itemid) {
-          this.curSpec = arrItem[i];
-          break;
-        }
+        if (arrItem[i].itemId == itemid) this.curSpec = arrItem[i];
       }
       this.curSpec['sortId'] = sortid;
+      console.log(this.curSpec);
       var specHTML = '';
       for (var _i2 in this.curSpec.spec) {
         var spec = this.curSpec.spec[_i2];
@@ -467,6 +404,25 @@ var Page = function (_Controller) {
       $("#specBox").html(specHTML);
       this.curChoiseSpec();
       $("#choiceSpec").show();
+    }
+
+    // 选择规格更新curSpec和价格
+
+  }, {
+    key: 'curChoiseSpec',
+    value: function curChoiseSpec() {
+      var specIds = [];
+      $("#specBox span.cur").map(function () {
+        var specid = $(this).data('specid');
+        specIds.push(specid);
+      });
+      // 获取组合价格
+      var groupId = specIds.join(',');
+      this.curSpec['groupId'] = groupId;
+      var group = this.curSpec.group[groupId];
+      var groupPrice = '缺货';
+      if (group) groupPrice = _controller2.default.formatMoney(group.price);
+      $("#choiceSpecPrice").html('<i>\uFFE5</i>' + groupPrice);
     }
 
     // 确认规格
@@ -489,10 +445,7 @@ var Page = function (_Controller) {
       // 更新购物车和商品列表信息
       var arrItem = this.arrItem[curSpec.sortId];
       for (var _i3 in arrItem) {
-        if (arrItem[_i3].itemId == curSpec.itemId) {
-          this.arrItem[curSpec.sortId][_i3] = this.curSpec;
-          break;
-        }
+        if (arrItem[_i3].itemId == curSpec.itemId) this.arrItem[curSpec.sortId][_i3] = this.curSpec;
       }
       this.arrCart[curSpec.itemId] = this.curSpec;
       this.saveSession();
@@ -550,14 +503,14 @@ var Page = function (_Controller) {
       this.saveSession();
       window.location.reload();
       // 登录状态更新服务端数据
-      if (!this.token) return;
-      _controller2.default.ajax({
-        url: '/cart/clearall',
-        type: 'POST',
-        data: { token: this.token, shopid: '' }
-      }, function (res) {
-        console.log(res);
-      });
+      // if (!this.token) return;
+      // Controller.ajax({
+      //   url: '/cart/clearall',
+      //   type: 'POST',
+      //   data: {token: this.token, shopid: ''},
+      // }, (res) => {
+      //   console.log(res);
+      // });
     }
 
     // 去结算
@@ -614,7 +567,6 @@ var Page = function (_Controller) {
       sessionStorage.arrSort = JSON.stringify(this.arrSort);
       sessionStorage.arrItem = JSON.stringify(this.arrItem);
       sessionStorage.arrCart = JSON.stringify(this.arrCart);
-      // $.isEmptyObject(aa); 判断是否为空对象
     }
   }]);
 

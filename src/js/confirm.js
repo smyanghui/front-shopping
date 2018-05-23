@@ -59,7 +59,8 @@ class Page extends Controller {
       type: 'POST',
       data: param,
     }, (res) => {
-      this.rPay(res.data.id, param.pay_type);
+      window.location.href = './order.html';
+      // this.rPay(res.data.id, param.pay_type);
     });
   }
 

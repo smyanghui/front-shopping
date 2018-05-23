@@ -206,6 +206,9 @@ var Page = function (_Controller) {
     key: 'init',
     value: function init() {
       this.token = window.TOKEN;
+      if (!this.token) window.location.href = './login.html';
+      this.rCart();
+      this.rUser();
     }
   }, {
     key: 'bindEvent',
@@ -218,18 +221,41 @@ var Page = function (_Controller) {
       });
     }
 
-    // 获取订单详情
+    // 获取购物车确认数据
 
   }, {
-    key: 'rOrder',
-    value: function rOrder() {
+    key: 'rCart',
+    value: function rCart() {
       var _this4 = this;
 
       _controller2.default.ajax({
-        url: '/order/view',
-        type: 'GET'
+        url: '/cart/list',
+        type: 'POST',
+        data: {
+          token: this.token,
+          shopid: '',
+          is_check: 1
+        }
       }, function (res) {
-        _this4.renderOrder(res.result);
+        _this4.renderItem(res.data || {});
+      });
+    }
+
+    // 获取用户信息
+
+  }, {
+    key: 'rUser',
+    value: function rUser() {
+      var _this5 = this;
+
+      _controller2.default.ajax({
+        url: '/user/info',
+        type: 'POST',
+        data: {
+          token: this.token
+        }
+      }, function (res) {
+        _this5.renderUser(res.data || {});
       });
     }
 
@@ -238,12 +264,27 @@ var Page = function (_Controller) {
   }, {
     key: 'orderSubmit',
     value: function orderSubmit() {
-      var param = this.checkData;
+      var param = this.checkData();
       if (!param) return;
       _controller2.default.ajax({
         url: '/order/add',
         type: 'POST',
         data: param
+      }, function (res) {
+        window.location.href = './order.html';
+        // this.rPay(res.data.id, param.pay_type);
+      });
+    }
+
+    // 去支付
+
+  }, {
+    key: 'rPay',
+    value: function rPay(id, ptype) {
+      _controller2.default.ajax({
+        url: '/pay/index',
+        type: 'POST',
+        data: { token: this.token, orderid: id, pay_type: ptype }
       }, function (res) {
         console.log(res);
       });
@@ -278,32 +319,47 @@ var Page = function (_Controller) {
         return false;
       }
       var remarks = $("#remarks").val();
+      var payType = $("#payType").val();
       return {
         token: this.token,
-        cart_ids: '',
+        cart_ids: this.cartIds.join(','),
         receiver_name: receiverName,
         receiver_mobile: receiverMobile,
         receiver_address: receiverAddress,
         receiver_zip: '', // 邮编
         beizhu: remarks, // 客户备注
         wallet_price: '', // 选择余额支付金额
-        pay_type: '', // 支付方式
+        pay_type: payType, // 支付方式
         is_invoice: '', // 是否需要发票
         invoice_info: '' // 发票信息
       };
     }
 
-    // 初始化订单信息
+    // 初始化商品信息
 
   }, {
-    key: 'renderOrder',
-    value: function renderOrder() {
+    key: 'renderItem',
+    value: function renderItem(data) {
       var itemHTML = '';
-      for (var i in this.arrSort) {
-        var item = this.arrSort[i];
-        itemHTML += '<li data-sortid="' + i + '" id="sort_' + i + '"><p>' + item.name + '</p></li>';
+      this.cartIds = [];
+      for (var i in data.items) {
+        var item = data.items[i];
+        this.cartIds.push(item.id);
+        var price = _controller2.default.formatMoney(item.goods_price);
+        itemHTML += '<li>\n        <p class="item_img"><img src="' + item.goods_logo + '" /></p>\n        <div class="item_text">\n          <p class="item_name">' + item.goods_name + '</p>\n          <p class="item_sm">' + item.cart_num + '</p>\n        </div>\n        <p class="item_num">x' + item.cart_num + '</p>\n        <p class="item_price"><i>\uFFE5</i>' + price + '</p>\n      </li>';
       }
-      $("#sortBox").html(itemHTML);
+      $("#itemList").html(itemHTML);
+      var totalPrice = _controller2.default.formatMoney(data.total_pirce);
+      $("#itemTotal").html('\u603B\u8BA1\uFF1A<i>\uFFE5</i>' + totalPrice);
+    }
+
+    // 初始化用户信息
+
+  }, {
+    key: 'renderUser',
+    value: function renderUser(data) {
+      if (data.nickname) $("#receiverName").val(data.nickname);
+      if (data.mobile) $("#receiverMobile").val(data.mobile);
     }
   }]);
 
