@@ -142,24 +142,8 @@ class Page extends Controller {
       url: '/index/goods',
       type: 'GET',
     }, (res) => {
-      const listArr = res.data.goods || [];
+      const listArr = res.data && res.data.goods || [];
       this.formatItems(listArr);
-    });
-  }
-
-  // 获取购物车数据
-  rCart() {
-    let param = {
-      token: this.token,
-      shopid: '',
-      is_check: '',
-    };
-    Controller.ajax({
-      url: '/cart/list',
-      type: 'POST',
-      data: param,
-    }, (res) => {
-      this.renderCart();
     });
   }
 
@@ -186,8 +170,7 @@ class Page extends Controller {
         let group = {};
         for (let k in itemsList.goods_skuid) {
           let sku = itemsList.goods_skuid[k];
-          let groupId = sku.spec_ids_ary.join(',');
-          group[groupId] = {skuid: sku.skuid, price: sku.goods_price};
+          group[sku.spec_ids] = {skuid: sku.skuid, price: sku.goods_price};
         }
         arrItem.push({
           itemId: itemsList.id,
@@ -209,28 +192,12 @@ class Page extends Controller {
     this.renderItem();
   }
 
-  // 获取选中的规格
-  curChoiseSpec() {
-    let specIds = [];
-    $("#specBox span.cur").map(function() {
-      let specid = $(this).data('specid');
-      specIds.push(specid);
-    });
-    // 获取组合价格
-    let groupId = specIds.join(',');
-    this.curSpec['groupId'] = groupId;
-    let group = this.curSpec.group[groupId];
-    let groupPrice = '缺货';
-    if (group) groupPrice = Controller.formatMoney(group.price);
-    $("#choiceSpecPrice").html(`<i>￥</i>${groupPrice}`);
-  }
-
   // 渲染分类
   renderSort() {
     let itemHTML = '';
     for (let i in this.arrSort) {
       let item = this.arrSort[i];
-      itemHTML += `<li data-sortid="${i}" id="sort_${i}"><p>${item.name}</p></li>`;
+      itemHTML += `<li data-sortid="${i}" id="sort_${i}"${i == 0 ? ' class="cur"' : ''}><p>${item.name}</p></li>`;
     }
     $("#sortBox").html(itemHTML);
     setTimeout(() => {
@@ -244,10 +211,11 @@ class Page extends Controller {
     for (let i in this.arrItem) {
       const arrItem = this.arrItem[i] || [];
       if (arrItem.length == 0) continue;
-      itemHTML += `<ul id="itemarr_${i}" data-itemarrid="${i}">`;
+      // 点击左侧分类定位用
+      itemHTML += `<ul id="itemarr_${i}">`;
       for (let j in arrItem) {
         let item = arrItem[j];
-        // 格式价格
+        // 格式化价格
         let price = Controller.formatMoney(item.price);
         let priceHtml = `<i>￥</i>${price}`;
         if (item.isSpec == 1) priceHtml += '<i>起</i>';
@@ -255,9 +223,7 @@ class Page extends Controller {
         let choiceHtml = `<i class="iconfont icon-minus"></i><strong>${item.num}</strong><i class="iconfont icon-add"></i>`;
         if (item.isSpec == 1) choiceHtml = '<span>选规格</span>';
         itemHTML += `<li id="item_${item.itemId}" data-sortid="${i}" data-itemid="${item.itemId}">
-          <p class="item_img_box">
-            <a href="detail.html"><img src="${item.imgUrl}" /></a>
-          </p>
+          <p class="item_img_box"><a href="detail.html"><img src="${item.imgUrl}" /></a></p>
           <div class="item_infor_box">
             <p class="item_name">${item.name}</p>
             <div class="item_remark">${item.text}</div>
@@ -274,6 +240,22 @@ class Page extends Controller {
     setTimeout(() => {
       this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
     }, 200);
+  }
+
+  // 获取购物车数据
+  rCart() {
+    let param = {
+      token: this.token,
+      shopid: '',
+      is_check: '',
+    };
+    Controller.ajax({
+      url: '/cart/list',
+      type: 'POST',
+      data: param,
+    }, (res) => {
+      this.renderCart();
+    });
   }
 
   // 渲染购物车
@@ -293,7 +275,7 @@ class Page extends Controller {
           }
         }
       } else {
-        cartList.push(item)
+        cartList.push(item);
       }
     }
     // 渲染列表
@@ -347,12 +329,10 @@ class Page extends Controller {
   openSpec(sortid, itemid) {
     const arrItem = this.arrItem[sortid];
     for (let i in arrItem) {
-      if (arrItem[i].itemId == itemid) {
-        this.curSpec = arrItem[i];
-        break;
-      }
+      if (arrItem[i].itemId == itemid) this.curSpec = arrItem[i];
     }
     this.curSpec['sortId'] = sortid;
+    console.log(this.curSpec);
     let specHTML = '';
     for (let i in this.curSpec.spec) {
       let spec = this.curSpec.spec[i];
@@ -369,6 +349,22 @@ class Page extends Controller {
     $("#specBox").html(specHTML);
     this.curChoiseSpec();
     $("#choiceSpec").show();
+  }
+
+  // 选择规格更新curSpec和价格
+  curChoiseSpec() {
+    let specIds = [];
+    $("#specBox span.cur").map(function() {
+      let specid = $(this).data('specid');
+      specIds.push(specid);
+    });
+    // 获取组合价格
+    let groupId = specIds.join(',');
+    this.curSpec['groupId'] = groupId;
+    let group = this.curSpec.group[groupId];
+    let groupPrice = '缺货';
+    if (group) groupPrice = Controller.formatMoney(group.price);
+    $("#choiceSpecPrice").html(`<i>￥</i>${groupPrice}`);
   }
 
   // 确认规格
@@ -388,10 +384,7 @@ class Page extends Controller {
     // 更新购物车和商品列表信息
     const arrItem = this.arrItem[curSpec.sortId];
     for (let i in arrItem) {
-      if (arrItem[i].itemId == curSpec.itemId) {
-        this.arrItem[curSpec.sortId][i] = this.curSpec;
-        break;
-      }
+      if (arrItem[i].itemId == curSpec.itemId) this.arrItem[curSpec.sortId][i] = this.curSpec;
     }
     this.arrCart[curSpec.itemId] = this.curSpec;
     this.saveSession();
@@ -442,14 +435,14 @@ class Page extends Controller {
     this.saveSession();
     window.location.reload();
     // 登录状态更新服务端数据
-    if (!this.token) return;
-    Controller.ajax({
-      url: '/cart/clearall',
-      type: 'POST',
-      data: {token: this.token, shopid: ''},
-    }, (res) => {
-      console.log(res);
-    });
+    // if (!this.token) return;
+    // Controller.ajax({
+    //   url: '/cart/clearall',
+    //   type: 'POST',
+    //   data: {token: this.token, shopid: ''},
+    // }, (res) => {
+    //   console.log(res);
+    // });
   }
 
   // 去结算
@@ -498,7 +491,6 @@ class Page extends Controller {
     sessionStorage.arrSort = JSON.stringify(this.arrSort);
     sessionStorage.arrItem = JSON.stringify(this.arrItem);
     sessionStorage.arrCart = JSON.stringify(this.arrCart);
-    // $.isEmptyObject(aa); 判断是否为空对象
   }
 
 }
