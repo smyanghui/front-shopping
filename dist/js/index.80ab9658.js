@@ -107,6 +107,7 @@ var Page = function (_Controller) {
         this.renderSort();
         this.renderItem();
       }
+      this.renderCart();
     }
   }, {
     key: 'bindEvent',
@@ -117,7 +118,6 @@ var Page = function (_Controller) {
 
       // 查看购物车
       $("#viewCart").click(function () {
-        _this3.renderCart();
         $("#cartMask").show();
         $("#cartOutBox").css("bottom", 45);
       });
@@ -125,7 +125,7 @@ var Page = function (_Controller) {
       // 点击空白隐藏购物车
       $("#cartMask").click(function () {
         $(this).hide();
-        $("#cartOutBox").css("bottom", '-80%');
+        $("#cartOutBox").css("bottom", '-100%');
       });
 
       // 选择分类滚动到对应商品
@@ -138,7 +138,6 @@ var Page = function (_Controller) {
       // 选择商品列表中商品
       $("#iScrollItem").on('click', ".J_item_choice i", function () {
         var isAdd = $(this).hasClass("icon-add");
-        console.log(isAdd);
         var curLi = $(this).closest('li');
         _this.changeCart(curLi.data('sortid'), curLi.data('itemid'), isAdd);
       });
@@ -165,7 +164,7 @@ var Page = function (_Controller) {
       $("#cartItemBox").on('click', '.J_cart_choice i', function () {
         var isAdd = $(this).hasClass("icon-add");
         var curLi = $(this).closest('li');
-        _this.updateCart(curLi.data('sortid'), curLi.data('itemid'), isAdd);
+        _this.updateCart(curLi.data('sortid'), curLi.data('itemid'), curLi.data('specid'), isAdd, $(this).siblings('strong'));
       });
 
       // 清空购物车
@@ -207,17 +206,6 @@ var Page = function (_Controller) {
         var arrItem = [];
         for (var j in items) {
           var itemsList = items[j];
-          // if (itemsList.is_spec == 1) {
-          //   for (let k in itemsList.goods_spec_data) {
-          //     let specData = itemsList.goods_spec_data[k];
-          //     let specItems = [];
-          //     for (let l in specData.spec_group_items) {
-          //       let sItem = specData.spec_group_items[l];
-          //       specItems.push({id: sItem.spec_id, name: sItem.spec_name, price: sItem.goods_price})
-          //     }
-          //     arrSpec.push({ id: specData.spec_group_id, specName: specData.spec_group_name, specItems: specItems})
-          //   }
-          // }
           var group = {};
           for (var k in itemsList.goods_skuid) {
             var sku = itemsList.goods_skuid[k];
@@ -319,8 +307,9 @@ var Page = function (_Controller) {
   }, {
     key: 'renderCart',
     value: function renderCart() {
-      // 规格组合商品提到外层
-      var cartList = [];
+      var itemHTML = '';
+      var totalNum = 0;
+      var totalPrice = 0;
       for (var i in this.arrCart) {
         var item = this.arrCart[i];
         if (!item) continue;
@@ -329,22 +318,33 @@ var Page = function (_Controller) {
             var select = item.selectSpec[j];
             if (select.num > 0) {
               item.price = select.price || '0';
-              item.smTxt = select.price || 'aaa';
-              cartList.push(item);
+              item.num = select.num;
+              item.specId = select.id || 'aaa';
+              totalNum += parseInt(select.num);
+              totalPrice += parseInt(select.price) * parseInt(select.num);
+              itemHTML += this.cartHtml(item);
             }
           }
-        } else {
-          cartList.push(item);
+        }
+        if (item.isSpec != 1 && item.num > 0) {
+          totalNum += parseInt(item.num);
+          totalPrice += parseInt(item.price) * parseInt(item.num);
+          itemHTML += this.cartHtml(item);
         }
       }
-      // 渲染列表
-      var itemHTML = '';
-      for (var _i in cartList) {
-        var _item = cartList[_i];
-        itemHTML += '<li data-sortid="' + _item.sortId + '" id="cart_' + _i + '" data-itemid="' + _i + '">\n        <div class="cart_item">\n          <p class="cart_item_tit">' + _item.name + '</p>\n          <p class="cart_item_sm">' + _item.price + '</p>\n        </div>\n        <div class="cart_choice J_cart_choice">\n          <i class="iconfont icon-minus"></i>\n          <strong>' + _item.num + '</strong>\n          <i class="iconfont icon-add"></i>\n        </div>\n      </li>';
-      }
-      if (itemHTML == '') itemHTML = '<li>空空如也！</li>';
+      if (itemHTML == '') itemHTML = '<li>无商品！</li>';
       $("#cartItemBox").html(itemHTML);
+      totalPrice = _controller2.default.formatMoney(totalPrice);
+      $("#viewCart").html('\u8D2D' + totalNum + ' <span>\uFFE5' + totalPrice + '</span>');
+    }
+
+    // 购物车HTML
+
+  }, {
+    key: 'cartHtml',
+    value: function cartHtml(item) {
+      var price = _controller2.default.formatMoney(item.price);
+      return '<li data-sortid="' + item.sortId + '" data-itemid="' + item.itemId + '" data-specid="' + (item.isSpec == 1 ? item.specId : '0') + '">\n      <div class="cart_item">\n        <p class="cart_item_tit">' + item.name + '</p>\n        <p class="cart_item_sm">' + price + '</p>\n      </div>\n      <div class="cart_choice J_cart_choice">\n        <i class="iconfont icon-minus"></i>\n        <strong>' + item.num + '</strong>\n        <i class="iconfont icon-add"></i>\n      </div>\n    </li>';
     }
 
     // 加入/移出购物车
@@ -375,6 +375,7 @@ var Page = function (_Controller) {
       }
       this.saveSession();
       $("#item_" + cid).find("strong").text(resNum);
+      this.renderCart();
     }
 
     // 打开选规格
@@ -387,10 +388,9 @@ var Page = function (_Controller) {
         if (arrItem[i].itemId == itemid) this.curSpec = arrItem[i];
       }
       this.curSpec['sortId'] = sortid;
-      console.log(this.curSpec);
       var specHTML = '';
-      for (var _i2 in this.curSpec.spec) {
-        var spec = this.curSpec.spec[_i2];
+      for (var _i in this.curSpec.spec) {
+        var spec = this.curSpec.spec[_i];
         specHTML += '<p>' + spec.spec_group_name + '</p>';
         specHTML += '<p>';
         for (var j in spec.spec_group_list) {
@@ -444,45 +444,42 @@ var Page = function (_Controller) {
       }
       // 更新购物车和商品列表信息
       var arrItem = this.arrItem[curSpec.sortId];
-      for (var _i3 in arrItem) {
-        if (arrItem[_i3].itemId == curSpec.itemId) this.arrItem[curSpec.sortId][_i3] = this.curSpec;
+      for (var _i2 in arrItem) {
+        if (arrItem[_i2].itemId == curSpec.itemId) this.arrItem[curSpec.sortId][_i2] = this.curSpec;
       }
       this.arrCart[curSpec.itemId] = this.curSpec;
       this.saveSession();
       $("#choiceSpec").hide();
+      this.renderCart();
     }
 
     // 修改购物车
 
   }, {
     key: 'updateCart',
-    value: function updateCart(aid, cid, isadd) {
-      var curNum = parseInt(this.arrCart[cid].num);
+    value: function updateCart(aid, cid, sid, isadd, cartdom) {
+      var curNum = parseInt(cartdom.text());
       var resNum = isadd ? ++curNum : --curNum;
-      if (resNum == 0) {
-        var isDel = confirm('是否从购物车中删除？');
-        if (!isDel) return;
-        this.arrCart[cid] = null;
-        $("#item_" + cid).find("strong").text(resNum);
-        this.renderCart();
-      } else {
-        var itemIndex = -1,
-            specIndex = -1;
-        for (var i in this.arrItem[aid]) {
-          var itemList = this.arrItem[aid][i];
-          if (itemList.itemId == cid) itemIndex = i;
-          // 查找规格商品
-          if (itemList.itemId == cid && itemList.isSpec == 1) {
-            for (var j in itemList.selectSpec) {
-              if (itemList.selectSpec[j].id == itemList.groupId) specIndex = j;
-            }
-            this.arrItem[aid][itemIndex].selectSpec[specIndex].num = resNum;
+      // let isDel = confirm('是否从购物车中删除？');
+      // if (!isDel) return;
+      var itemIndex = -1,
+          specIndex = -1;
+      for (var i in this.arrItem[aid]) {
+        var itemList = this.arrItem[aid][i];
+        if (itemList.itemId == cid) itemIndex = i;
+        // 查找规格商品
+        if (itemList.itemId == cid && itemList.isSpec == 1) {
+          for (var j in itemList.selectSpec) {
+            if (itemList.selectSpec[j].id == sid) specIndex = j;
           }
         }
-        this.arrCart[cid].num = this.arrItem[aid][itemIndex].num = resNum;
-        $("#cart_" + cid + ", #item_" + cid).find("strong").text(resNum);
       }
+      if (specIndex > -1) this.arrItem[aid][itemIndex].selectSpec[specIndex].num = resNum;
+      this.arrCart[cid].num = this.arrItem[aid][itemIndex].num = resNum;
+      $("#item_" + cid).find("strong").text(resNum);
+      // cartdom.text(resNum);
       this.saveSession();
+      this.renderCart();
     }
 
     // 清空购物车
@@ -523,16 +520,14 @@ var Page = function (_Controller) {
       var arrItem = [];
       for (var i in this.arrCart) {
         var item = this.arrCart[i];
-        var cartItem = { goods_id: i, cart_num: item.num };
         if (item.isSpec == 1) {
           for (var j in item.selectSpec) {
-            var specItem = item.selectSpec[j];
-            cartItem.spec_ids = specItem.id;
-            cartItem.cart_num = specItem.num;
-            arrItem.push(cartItem);
+            var spec = item.selectSpec[j];
+            if (spec.num > 0) arrItem.push({ goods_id: i, spec_ids: spec.id, cart_num: spec.num });
           }
-        } else {
-          arrItem.push(cartItem);
+        }
+        if (item.isSpec != 1 && item.num > 0) {
+          arrItem.push({ goods_id: i, spec_ids: 0, cart_num: item.num });
         }
       }
       if (arrItem.length == 0) {

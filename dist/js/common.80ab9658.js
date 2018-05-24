@@ -337,7 +337,7 @@ var Page = function (_Controller) {
   _createClass(Page, [{
     key: 'init',
     value: function init() {
-      this.menuTop = [['选蛋糕', '/index.html'], ['我的订单', '/order.html'], ['商家详情', '/detail.html']];
+      this.menuTop = [['选蛋糕', '/index.html'], ['我的订单', '/order.html'], ['商家详情', '/seller.html']];
       this.renderHeader();
       this.isLogin();
     }
