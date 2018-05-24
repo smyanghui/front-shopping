@@ -72,6 +72,7 @@ class Page extends Controller {
       this.renderSort();
       this.renderItem();
     }
+    this.renderCart();
   }
 
   bindEvent() {
@@ -79,7 +80,6 @@ class Page extends Controller {
 
     // 查看购物车
     $("#viewCart").click(() => {
-      this.renderCart();
       $("#cartMask").show();
       $("#cartOutBox").css("bottom", 45);
     });
@@ -100,7 +100,6 @@ class Page extends Controller {
     // 选择商品列表中商品
     $("#iScrollItem").on('click', ".J_item_choice i", function(){
       const isAdd = $(this).hasClass("icon-add");
-      console.log(isAdd);
       const curLi = $(this).closest('li');
       _this.changeCart(curLi.data('sortid'), curLi.data('itemid'), isAdd);
     });
@@ -250,9 +249,11 @@ class Page extends Controller {
   // 渲染购物车
   renderCart() {
     let itemHTML = '';
+    let totalNum = 0;
+    let totalPrice = 0;
     for (let i in this.arrCart) {
       let item = this.arrCart[i];
-      if (!item || item.num == 0) continue;
+      if (!item) continue;
       if (item.isSpec == 1) {
         for (let j in item.selectSpec) {
           let select = item.selectSpec[j];
@@ -260,21 +261,28 @@ class Page extends Controller {
             item.price = select.price || '0';
             item.num = select.num;
             item.specId = select.id || 'aaa';
+            totalNum += parseInt(select.num);
+            totalPrice += parseInt(select.price) * parseInt(select.num);
             itemHTML += this.cartHtml(item);
           }
         }
-      } else {
+      }
+      if (item.isSpec != 1 && item.num > 0) {
+        totalNum += parseInt(item.num);
+        totalPrice += parseInt(item.price) * parseInt(item.num);
         itemHTML += this.cartHtml(item);
       }
     }
     if (itemHTML == '') itemHTML = '<li>无商品！</li>';
     $("#cartItemBox").html(itemHTML);
+    totalPrice = Controller.formatMoney(totalPrice);
+    $("#viewCart").html(`购${totalNum} <span>￥${totalPrice}</span>`);
   }
 
   // 购物车HTML
   cartHtml(item) {
     let price = Controller.formatMoney(item.price);
-    return `<li data-sortid="${item.sortId}" data-itemid="${item.id}" data-specid="${item.isSpec == 1 ? item.specId : '0'}">
+    return `<li data-sortid="${item.sortId}" data-itemid="${item.itemId}" data-specid="${item.isSpec == 1 ? item.specId : '0'}">
       <div class="cart_item">
         <p class="cart_item_tit">${item.name}</p>
         <p class="cart_item_sm">${price}</p>
@@ -312,6 +320,7 @@ class Page extends Controller {
     }
     this.saveSession();
     $("#item_"+ cid).find("strong").text(resNum);
+    this.renderCart();
   }
 
   // 打开选规格
@@ -321,7 +330,6 @@ class Page extends Controller {
       if (arrItem[i].itemId == itemid) this.curSpec = arrItem[i];
     }
     this.curSpec['sortId'] = sortid;
-    console.log(this.curSpec);
     let specHTML = '';
     for (let i in this.curSpec.spec) {
       let spec = this.curSpec.spec[i];
@@ -378,6 +386,7 @@ class Page extends Controller {
     this.arrCart[curSpec.itemId] = this.curSpec;
     this.saveSession();
     $("#choiceSpec").hide();
+    this.renderCart();
   }
 
   // 修改购物车
@@ -395,14 +404,14 @@ class Page extends Controller {
         for (let j in itemList.selectSpec) {
           if (itemList.selectSpec[j].id == sid) specIndex = j;
         }
-        this.arrItem[aid][itemIndex].selectSpec[specIndex].num = resNum;
       }
     }
+    if (specIndex > -1) this.arrItem[aid][itemIndex].selectSpec[specIndex].num = resNum;
     this.arrCart[cid].num = this.arrItem[aid][itemIndex].num = resNum;
     $("#item_"+ cid).find("strong").text(resNum);
-    cartdom.text(resNum);
-    if (resNum == 0) this.renderCart();
+    // cartdom.text(resNum);
     this.saveSession();
+    this.renderCart();
   }
 
   // 清空购物车
@@ -438,7 +447,7 @@ class Page extends Controller {
       if (item.isSpec == 1) {
         for (let j in item.selectSpec) {
           let spec = item.selectSpec[j];
-          if (spec.num > 0) arrItem.push({goods_id: i, spec_ids: spec.spec_ids, cart_num: spec.num});
+          if (spec.num > 0) arrItem.push({goods_id: i, spec_ids: spec.id, cart_num: spec.num});
         }
       }
       if (item.isSpec != 1 && item.num > 0) {
