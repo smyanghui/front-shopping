@@ -47,7 +47,7 @@ class Controller {
       } else {
         if (data.code == 100008) {
           // Controller.showMessage('登录超时，请重新登录！');
-          window.location.href='/login.html';
+          window.location.href = '/login.html';
         } else {
           Controller.showMessage(data.msg);
         }
@@ -87,6 +87,23 @@ class Controller {
       path = "/";
     }
     document.cookie = name + "=;path=" + path + ";" + (domain ? ("domain=" + domain + ";") : '') + "expires=Thu, 01-Jan-70 00:00:01 GMT";
+  }
+
+  // 登录用户调用
+  static isLogin(fun) {
+    window.Token = '';
+    const Token = this.getCookie('token');
+    if (Token == '') return;
+    let nFun = fun || function(){};
+    this.ajax({
+      url: `/check/token?token=${Token}`,
+      type: 'GET',
+    }, (res) => {
+      if (res.data.islogin == 1) {
+        window.Token = Token;
+        nFun();
+      }
+    });
   }
 
   // 获取url指定参数的值

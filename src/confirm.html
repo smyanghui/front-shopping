@@ -5,13 +5,11 @@ ${require('./head.tpl')}
 
 <div class="page">
 
-  <p class="page_tit">商品确认</p>
-
   <!-- 商品列表 -->
   <div class="confirm_box">
     <p class="box_tit">商品信息</p>
     <ul class="item_list" id="itemList">
-      <li>
+      <!-- <li>
         <p class="item_img"><img src="/src/images/item.png" /></p>
         <div class="item_text">
           <p class="item_name">精品生日水果蛋糕精品生日水果蛋糕</p>
@@ -37,10 +35,10 @@ ${require('./head.tpl')}
         </div>
         <p class="item_num">x1</p>
         <p class="item_price"><i>￥</i>100.00</p>
-      </li>
+      </li> -->
     </ul>
     <div class="total_box" id="itemTotal">
-      总计：<i>￥</i>1000.00
+      <!-- 总计：<i>￥</i>1000.00 -->
     </div>
   </div>
 
@@ -88,17 +86,17 @@ ${require('./head.tpl')}
           <input type="text" value="" id="receiverAddress" placeholder='收货详细地址' />
         </p>
       </li>
-      <li>
+      <!-- <li>
         <p class="song_tit">收(取)货时间</p>
         <p class="song_text">
           <input type="date" value="" />
           <input type="time" value="" />
         </p>
-      </li>
+      </li> -->
       <li>
         <p class="song_tit">备注</p>
         <p class="song_text">
-          <textarea id="remarks" cols="30" rows="5"></textarea>
+          <textarea id="remarks" class="wide100" rows="3" placeholder='备注信息'></textarea>
         </p>
       </li>
     </ul>
@@ -107,7 +105,7 @@ ${require('./head.tpl')}
   <!-- 底部 -->
   <div class="page_footer">
     <div class="footer_box">
-      <p class="order_price" id="orderPrice"><i>￥</i>100.00</p>
+      <p class="order_price" id="orderPrice"><!-- <i>￥</i>100.00 --></p>
       <p class="order_submit" id="orderSubmit">提交订单</p>
     </div>
   </div>

@@ -7,13 +7,12 @@ class Page extends Controller {
     super();
     this.init();
     // this.bindEvent();
+    Controller.isLogin(() => {
+      this.rOrder();
+    });
   }
 
-  init() {
-    this.token = window.TOKEN;
-    if (!this.token) window.location.href = './login.html';
-    this.rOrder();
-  }
+  init() {}
 
   bindEvent() {
     const _this = this;
@@ -25,7 +24,7 @@ class Page extends Controller {
     Controller.ajax({
       url: '/order/list',
       type: 'POST',
-      data: {token: this.token},
+      data: {token: window.Token},
     }, (res) => {
       this.renderOrder(res.data);
     });

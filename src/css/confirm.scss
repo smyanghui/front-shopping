@@ -41,10 +41,11 @@
     display: table; width: 100%; padding: 10px;
     border-bottom: 1px dashed #ddd;
   }
-  .song_tit, .song_text { display: table-cell;}
+  .song_tit, .song_text { display: table-cell; vertical-align: top;}
   .song_tit { width: 100px;}
-  select, input { appearance: none; background-color: inherit; border: 0;}
+  select, input, textarea { appearance: none; background-color: inherit; border: 0;}
   .wide100 { width: 100%;}
+  .text_remarks {}
 }
 
 // 底部

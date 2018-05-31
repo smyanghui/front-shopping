@@ -8,14 +8,13 @@ class Page extends Controller {
     super();
     this.init();
     this.bindEvent();
+    Controller.isLogin(() => {
+      this.rCart();
+      this.rUser();
+    });
   }
 
-  init() {
-    this.token = window.TOKEN;
-    if (!this.token) window.location.href = './login.html';
-    this.rCart();
-    this.rUser();
-  }
+  init() {}
 
   bindEvent() {
     const _this = this;
@@ -28,7 +27,7 @@ class Page extends Controller {
       url: '/cart/list',
       type: 'POST',
       data: {
-        token: this.token,
+        token: window.Token,
         shopid: '',
         is_check: 1,
       },
@@ -43,7 +42,7 @@ class Page extends Controller {
       url: '/user/info',
       type: 'POST',
       data: {
-        token: this.token
+        token: window.Token
       },
     }, (res) => {
       this.renderUser(res.data || {});
@@ -69,7 +68,7 @@ class Page extends Controller {
     Controller.ajax({
       url: '/pay/index',
       type: 'POST',
-      data: {token: this.token, orderid: id, pay_type: ptype},
+      data: {token: window.Token, orderid: id, pay_type: ptype},
     }, (res) => {
       console.log(res);
     });
@@ -103,7 +102,7 @@ class Page extends Controller {
     const remarks = $("#remarks").val();
     const payType = $("#payType").val();
     return {
-      token: this.token,
+      token: window.Token,
       cart_ids: this.cartIds.join(','),
       receiver_name: receiverName,
       receiver_mobile: receiverMobile,
@@ -138,6 +137,7 @@ class Page extends Controller {
     $("#itemList").html(itemHTML);
     let totalPrice = Controller.formatMoney(data.total_pirce);
     $("#itemTotal").html(`总计：<i>￥</i>${totalPrice}`);
+    $("#orderPrice").html(`<i>￥</i>${totalPrice}`);
   }
 
   // 初始化用户信息
@@ -145,7 +145,6 @@ class Page extends Controller {
     if (data.nickname) $("#receiverName").val(data.nickname);
     if (data.mobile) $("#receiverMobile").val(data.mobile);
   }
-
 
 }
 

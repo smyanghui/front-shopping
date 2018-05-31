@@ -7,11 +7,12 @@ class Page extends Controller {
     super();
     this.init();
     this.bindEvent();
+    Controller.isLogin(() => {
+      this.rCart();
+    });
   }
 
   init() {
-    this.token = window.TOKEN;
-
     // 分类数据
     this.arrSort = {
       // 11: {name: '优惠'},
@@ -77,17 +78,19 @@ class Page extends Controller {
 
   bindEvent() {
     const _this = this;
+    const cartMask = $("#cartMask");
+    const cartOutBox = $("#cartOutBox");
 
     // 查看购物车
     $("#viewCart").click(() => {
-      $("#cartMask").show();
-      $("#cartOutBox").css("bottom", 45);
+      cartMask.show();
+      cartOutBox.css("bottom", 45);
     });
 
     // 点击空白隐藏购物车
-    $("#cartMask").click(function(){
-      $(this).hide();
-      $("#cartOutBox").css("bottom", '-100%');
+    cartMask.click(() => {
+      cartMask.hide();
+      cartOutBox.css("bottom", '-100%');
     });
 
     // 选择分类滚动到对应商品
@@ -97,7 +100,7 @@ class Page extends Controller {
       _this.iScrollItem.scrollToElement("#itemarr_"+ sid, 500);
     });
 
-    // 选择商品列表中商品
+    // 加减商品列表中商品
     $("#iScrollItem").on('click', ".J_item_choice i", function(){
       const isAdd = $(this).hasClass("icon-add");
       const curLi = $(this).closest('li');
@@ -232,17 +235,16 @@ class Page extends Controller {
 
   // 获取购物车数据
   rCart() {
-    let param = {
-      token: this.token,
-      shopid: '',
-      is_check: '',
-    };
     Controller.ajax({
       url: '/cart/list',
       type: 'POST',
-      data: param,
+      data: {
+        token: window.Token,
+        shopid: '',
+        is_check: '',
+      },
     }, (res) => {
-      this.renderCart();
+      // this.renderCart();
     });
   }
 
@@ -458,9 +460,9 @@ class Page extends Controller {
       Controller.showMessage("购物车中还没有商品！");
       return;
     }
-    if (!this.token) window.location.href = './login.html';
+    if (window.Token == '') window.location.href = './login.html';
     let param = {
-      token: this.token,
+      token: window.Token,
       goods_info_type: 2, // 1常规字符串，2json格式字符串
       goods_info: JSON.stringify(arrItem),
       is_allow_fail: '', // 是否允许部分失败 0允许(默认)，1不允许

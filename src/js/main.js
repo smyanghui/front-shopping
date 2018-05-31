@@ -16,23 +16,10 @@ class Page extends Controller {
       ['商家详情', '/seller.html'],
     ];
     this.renderHeader();
-    this.isLogin();
   }
 
   bindEvent() {
     const _this = this;
-  }
-
-  // 检查是否登录
-  isLogin() {
-    window.TOKEN = Controller.getCookie('token');
-    if (TOKEN == '') return;
-    Controller.ajax({
-      url: `/check/token?token=${TOKEN}`,
-      type: 'GET',
-    }, (res) => {
-      if (res.data.islogin == 0) window.TOKEN = '';
-    });
   }
 
   // 渲染顶部导航
