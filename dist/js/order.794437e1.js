@@ -39,16 +39,17 @@ var Page = function (_Controller) {
 
     _this2.init();
     // this.bindEvent();
+    _controller2.default.isLogin(function () {
+      _this2.rOrder();
+    }, function () {
+      window.location.href = '/login.html';
+    });
     return _this2;
   }
 
   _createClass(Page, [{
     key: 'init',
-    value: function init() {
-      this.token = window.TOKEN;
-      if (!this.token) window.location.href = './login.html';
-      this.rOrder();
-    }
+    value: function init() {}
   }, {
     key: 'bindEvent',
     value: function bindEvent() {
@@ -65,7 +66,7 @@ var Page = function (_Controller) {
       _controller2.default.ajax({
         url: '/order/list',
         type: 'POST',
-        data: { token: this.token }
+        data: { token: window.Token }
       }, function (res) {
         _this3.renderOrder(res.data);
       });

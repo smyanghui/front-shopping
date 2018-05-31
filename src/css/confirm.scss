@@ -1,12 +1,11 @@
 @charset "utf-8";
 
-.page { background-color: #fafafa; padding-bottom: 50px; overflow: auto;}
-.page_tit { text-align: center; font-size: 18px; padding: 15px 0;}
+.page { background-color: #fafafa; overflow: auto;}
 
 .confirm_box {
    background-color: #fff; margin: 0 10px 5px 10px;
   .box_tit {
-    padding: 10px; border-bottom: 1px solid #ddd;
+    padding: 10px; border-bottom: 1px solid #ddd; font-size: 18px;
   }
 }
 
@@ -29,11 +28,15 @@
   }
   .item_num { width: 40px; vertical-align: middle; text-align: right;}
   .item_price {
-    font-size: 14px; width: 80px; vertical-align: middle; text-align: right;
+    font-size: 14px; width: 80px; vertical-align: middle;
+    text-align: right; color: #f60;
     i { font-size: 10px;}
   }
 }
-.total_box { padding: 15px 10px; font-size: 24px; text-align: right;}
+.total_box {
+  padding: 10px; font-size: 18px; text-align: right; color: #f60;
+  i { font-size: 14px;}
+}
 
 // 配送信息
 .song_box {
@@ -48,21 +51,8 @@
   .text_remarks {}
 }
 
-// 底部
-.page_footer {
-  position: fixed; bottom: 0; left: 0; z-index: 2;
-  width: 100%; height: 45px; line-height: 45px;
-  .footer_box {
-    display: table; width: 100%; max-width: 800px; color: #fff; margin: 0 auto;
-  }
-  .order_price, .order_submit { display: table-cell;}
-  .order_price {
-    background-color: #3E3E40; padding-left: 20px;
-  }
-  .order_submit {
-    width: 30%; background-color: #59D178;
-    text-align: center; font-size: 18px;
-  }
+.order_submit {
+  line-height: 45px; background-color: #59D178; color: #fff;
+  text-align: center; font-size: 18px;
 }
-
 

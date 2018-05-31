@@ -136,7 +136,7 @@ class Page extends Controller {
     }
     $("#itemList").html(itemHTML);
     let totalPrice = Controller.formatMoney(data.total_pirce);
-    $("#itemTotal").html(`总计：<i>￥</i>${totalPrice}`);
+    $("#itemTotal").html(`<i>￥</i>${totalPrice}`);
     $("#orderPrice").html(`<i>￥</i>${totalPrice}`);
   }
 

@@ -90,18 +90,18 @@ class Controller {
   }
 
   // 登录用户调用
-  static isLogin(fun) {
-    window.Token = '';
+  static isLogin(success, nologin) {
     const Token = this.getCookie('token');
-    if (Token == '') return;
-    let nFun = fun || function(){};
     this.ajax({
       url: `/check/token?token=${Token}`,
       type: 'GET',
     }, (res) => {
       if (res.data.islogin == 1) {
         window.Token = Token;
-        nFun();
+        success && success();
+      } else {
+        window.Token = '';
+        nologin && nologin();
       }
     });
   }

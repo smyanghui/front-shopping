@@ -243,6 +243,26 @@ var Controller = function () {
       document.cookie = name + "=;path=" + path + ";" + (domain ? "domain=" + domain + ";" : '') + "expires=Thu, 01-Jan-70 00:00:01 GMT";
     }
 
+    // 登录用户调用
+
+  }, {
+    key: 'isLogin',
+    value: function isLogin(success, nologin) {
+      var Token = this.getCookie('token');
+      this.ajax({
+        url: '/check/token?token=' + Token,
+        type: 'GET'
+      }, function (res) {
+        if (res.data.islogin == 1) {
+          window.Token = Token;
+          success && success();
+        } else {
+          window.Token = '';
+          nologin && nologin();
+        }
+      });
+    }
+
     // 获取url指定参数的值
 
   }, {
@@ -339,27 +359,11 @@ var Page = function (_Controller) {
     value: function init() {
       this.menuTop = [['选蛋糕', '/index.html'], ['我的订单', '/order.html'], ['商家详情', '/seller.html']];
       this.renderHeader();
-      this.isLogin();
     }
   }, {
     key: 'bindEvent',
     value: function bindEvent() {
       var _this = this;
-    }
-
-    // 检查是否登录
-
-  }, {
-    key: 'isLogin',
-    value: function isLogin() {
-      window.TOKEN = _controller2.default.getCookie('token');
-      if (TOKEN == '') return;
-      _controller2.default.ajax({
-        url: '/check/token?token=' + TOKEN,
-        type: 'GET'
-      }, function (res) {
-        if (res.data.islogin == 0) window.TOKEN = '';
-      });
     }
 
     // 渲染顶部导航

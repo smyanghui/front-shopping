@@ -39,14 +39,15 @@ var Page = function (_Controller) {
 
     _this2.init();
     _this2.bindEvent();
+    _controller2.default.isLogin(function () {
+      _this2.rCart();
+    });
     return _this2;
   }
 
   _createClass(Page, [{
     key: 'init',
     value: function init() {
-      this.token = window.TOKEN;
-
       // 分类数据
       this.arrSort = {
         // 11: {name: '优惠'},
@@ -115,17 +116,19 @@ var Page = function (_Controller) {
       var _this3 = this;
 
       var _this = this;
+      var cartMask = $("#cartMask");
+      var cartOutBox = $("#cartOutBox");
 
       // 查看购物车
       $("#viewCart").click(function () {
-        $("#cartMask").show();
-        $("#cartOutBox").css("bottom", 45);
+        cartMask.show();
+        cartOutBox.css("bottom", 45);
       });
 
       // 点击空白隐藏购物车
-      $("#cartMask").click(function () {
-        $(this).hide();
-        $("#cartOutBox").css("bottom", '-100%');
+      cartMask.click(function () {
+        cartMask.hide();
+        cartOutBox.css("bottom", '-100%');
       });
 
       // 选择分类滚动到对应商品
@@ -135,7 +138,7 @@ var Page = function (_Controller) {
         _this.iScrollItem.scrollToElement("#itemarr_" + sid, 500);
       });
 
-      // 选择商品列表中商品
+      // 加减商品列表中商品
       $("#iScrollItem").on('click', ".J_item_choice i", function () {
         var isAdd = $(this).hasClass("icon-add");
         var curLi = $(this).closest('li');
@@ -286,19 +289,16 @@ var Page = function (_Controller) {
   }, {
     key: 'rCart',
     value: function rCart() {
-      var _this7 = this;
-
-      var param = {
-        token: this.token,
-        shopid: '',
-        is_check: ''
-      };
       _controller2.default.ajax({
         url: '/cart/list',
         type: 'POST',
-        data: param
+        data: {
+          token: window.Token,
+          shopid: '',
+          is_check: ''
+        }
       }, function (res) {
-        _this7.renderCart();
+        // this.renderCart();
       });
     }
 
@@ -515,7 +515,7 @@ var Page = function (_Controller) {
   }, {
     key: 'settlement',
     value: function settlement() {
-      var _this8 = this;
+      var _this7 = this;
 
       var arrItem = [];
       for (var i in this.arrCart) {
@@ -534,9 +534,9 @@ var Page = function (_Controller) {
         _controller2.default.showMessage("购物车中还没有商品！");
         return;
       }
-      if (!this.token) window.location.href = './login.html';
+      if (window.Token == '') window.location.href = './login.html';
       var param = {
-        token: this.token,
+        token: window.Token,
         goods_info_type: 2, // 1常规字符串，2json格式字符串
         goods_info: JSON.stringify(arrItem),
         is_allow_fail: '' // 是否允许部分失败 0允许(默认)，1不允许
@@ -547,9 +547,9 @@ var Page = function (_Controller) {
         data: param,
         dataType: "json"
       }, function (res) {
-        _this8.arrItem = {};
-        _this8.arrCart = {};
-        _this8.saveSession();
+        _this7.arrItem = {};
+        _this7.arrCart = {};
+        _this7.saveSession();
         window.location.href = './confirm.html';
       });
     }

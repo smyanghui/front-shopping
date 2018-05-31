@@ -9,6 +9,8 @@ class Page extends Controller {
     // this.bindEvent();
     Controller.isLogin(() => {
       this.rOrder();
+    }, () => {
+      window.location.href = '/login.html';
     });
   }
 

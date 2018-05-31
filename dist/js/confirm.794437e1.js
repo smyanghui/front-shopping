@@ -199,17 +199,16 @@ var Page = function (_Controller) {
 
     _this2.init();
     _this2.bindEvent();
+    _controller2.default.isLogin(function () {
+      _this2.rCart();
+      _this2.rUser();
+    });
     return _this2;
   }
 
   _createClass(Page, [{
     key: 'init',
-    value: function init() {
-      this.token = window.TOKEN;
-      if (!this.token) window.location.href = './login.html';
-      this.rCart();
-      this.rUser();
-    }
+    value: function init() {}
   }, {
     key: 'bindEvent',
     value: function bindEvent() {
@@ -232,7 +231,7 @@ var Page = function (_Controller) {
         url: '/cart/list',
         type: 'POST',
         data: {
-          token: this.token,
+          token: window.Token,
           shopid: '',
           is_check: 1
         }
@@ -252,7 +251,7 @@ var Page = function (_Controller) {
         url: '/user/info',
         type: 'POST',
         data: {
-          token: this.token
+          token: window.Token
         }
       }, function (res) {
         _this5.renderUser(res.data || {});
@@ -284,7 +283,7 @@ var Page = function (_Controller) {
       _controller2.default.ajax({
         url: '/pay/index',
         type: 'POST',
-        data: { token: this.token, orderid: id, pay_type: ptype }
+        data: { token: window.Token, orderid: id, pay_type: ptype }
       }, function (res) {
         console.log(res);
       });
@@ -321,7 +320,7 @@ var Page = function (_Controller) {
       var remarks = $("#remarks").val();
       var payType = $("#payType").val();
       return {
-        token: this.token,
+        token: window.Token,
         cart_ids: this.cartIds.join(','),
         receiver_name: receiverName,
         receiver_mobile: receiverMobile,
@@ -350,7 +349,8 @@ var Page = function (_Controller) {
       }
       $("#itemList").html(itemHTML);
       var totalPrice = _controller2.default.formatMoney(data.total_pirce);
-      $("#itemTotal").html('\u603B\u8BA1\uFF1A<i>\uFFE5</i>' + totalPrice);
+      $("#itemTotal").html('<i>\uFFE5</i>' + totalPrice);
+      $("#orderPrice").html('<i>\uFFE5</i>' + totalPrice);
     }
 
     // 初始化用户信息
