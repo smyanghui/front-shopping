@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+.page { background-color: #fafafa; overflow: auto;}
+
+// 商品列表
+.item_list {
+  padding-top: 5px;
+  li {
+    padding: 0 10px;
+    margin-bottom: 5px; border-bottom: 1px solid #ddd;
+  }
+
+}

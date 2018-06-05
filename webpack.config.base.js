@@ -8,6 +8,7 @@ var config = {
     'index': ['./src/js/index.js', './src/css/index.scss'],
     'confirm': ['./src/js/confirm.js', './src/css/confirm.scss'],
     'detail': ['./src/js/detail.js', './src/css/detail.scss'],
+    'my': ['./src/js/my.js', './src/css/my.scss'],
     'order': ['./src/js/order.js', './src/css/order.scss'],
     'order_detail': ['./src/js/order_detail.js', './src/css/confirm.scss'],
     'seller': ['./src/js/seller.js', './src/css/seller.scss'],
