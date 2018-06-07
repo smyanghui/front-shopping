@@ -361,7 +361,7 @@ class Page extends Controller {
     let groupId = specIds.join(',');
     this.curSpec['groupId'] = groupId;
     let group = this.curSpec.group[groupId];
-    let groupPrice = '缺货';
+    let groupPrice = '售罄';
     if (group) groupPrice = Controller.formatMoney(group.price);
     $("#choiceSpecPrice").html(`<i>￥</i>${groupPrice}`);
   }
@@ -473,9 +473,9 @@ class Page extends Controller {
       data: param,
       dataType: "json",
     }, (res) => {
-      this.arrItem = {};
-      this.arrCart = {};
-      this.saveSession();
+      // this.arrItem = {};
+      // this.arrCart = {};
+      // this.saveSession();
       window.location.href = './confirm.html';
     });
   }
