@@ -19,4 +19,13 @@
     &.end { color: #22c81a;}
     &.error { color: #999;}
   }
+  .order_btn {
+    text-align: right;
+    a {
+      display: inline-block; color: #fff;
+      border-radius: 5px; padding: 0 5px;
+    }
+    a.view { background-color: #59D178;}
+    a.pay { background-color: #f60;}
+  }
 }

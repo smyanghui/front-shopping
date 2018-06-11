@@ -33,6 +33,9 @@ class Page extends Controller {
       },
     }, (res) => {
       this.renderItem(res.data || {});
+      setTimeout(() => {
+        this.iScrollItem = new IScroll('#iScrollItem', { disableMouse: true, click: true, tap: true });
+      }, 200);
     });
   }
 
@@ -58,6 +61,8 @@ class Page extends Controller {
       type: 'POST',
       data: param,
     }, (res) => {
+      sessionStorage.arrItem = JSON.stringify({});
+      sessionStorage.arrCart = JSON.stringify({});
       window.location.href = './order.html';
       // this.rPay(res.data.id, param.pay_type);
     });

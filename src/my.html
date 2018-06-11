@@ -5,12 +5,41 @@ ${require('./head.tpl')}
 
 <div class="page">
 
-  <!-- 商品列表 -->
-  <div class="confirm_box">
-    <ul class="item_list">
-      <li><a href="./order.html">我的订单</a></li>
+  <!-- 顶部 -->
+  <div class="page_header">
+    <ul id="headerBox">
+      <!-- <li class="cur">选蛋糕</li>
+      <li><a href="order.html">我的订单</a></li>
+      <li><a href="seller.html">商家详情</a></li> -->
     </ul>
+  </div>
 
+  <div class="my_info">
+    <a href="#">退出</a>
+    <i class="iconfont icon-gerenshimingrz"></i> <span id="userName">15112345678</span>
+  </div>
+
+  <!-- 商品列表 -->
+  <div class="my_box" id="iScrollMy">
+    <div class="myscroll_box">
+
+      <div class="wallet">
+        <ul class="w_list">
+          <li><p>100</p>积分</li>
+          <li><p>2</p>优惠券</li>
+          <li><p>0</p>红包</li>
+        </ul>
+      </div>
+
+      <div class="my_list">
+        <ul>
+          <li><a href="./order.html"><i class="iconfont icon-wxbbaobiao"></i> 我的订单</a></li>
+          <li><i class="iconfont icon-wxbzhanghu"></i> 当前用户</li>
+          <li><i class="iconfont icon-map"></i> 收货地址</li>
+        </ul>
+      </div>
+
+    </div>
   </div>
 
 </div>

@@ -7,18 +7,36 @@ class Page extends Controller {
     super();
     this.init();
     // this.bindEvent();
+  }
+
+  init() {
     Controller.isLogin(() => {
-      // this.rOrderDetail();
+      this.rUser();
     }, () => {
       window.location.href = '/login.html';
     });
+    setTimeout(() => {
+      new IScroll('#iScrollMy', { disableMouse: true, click: true, tap: true });
+    }, 200);
   }
-
-  init() {}
 
   bindEvent() {
     const _this = this;
+  }
 
+
+  // 获取用户信息
+  rUser() {
+    Controller.ajax({
+      url: '/user/info',
+      type: 'POST',
+      data: {
+        token: window.Token
+      },
+    }, (res) => {
+      console.log(res.data);
+      // $("#userName").val(data.nickname);
+    });
   }
 
   // 获取订单列表

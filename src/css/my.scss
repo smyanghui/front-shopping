@@ -1,13 +1,47 @@
 @charset "utf-8";
 
-.page { background-color: #fafafa; overflow: auto;}
+.page { overflow: auto;}
+.my_box {
+  position: absolute; top: 105px; bottom: 0; left: 0; z-index: 1;
+  width: 100%; background-color: #f8f8f8; overflow: hidden;
+}
+.myscroll_box {
+  position: absolute; z-index: 2; width: 100%; padding: 10px;
+  transform: translateZ(0); user-select: none; text-size-adjust: none;
+}
 
-// 商品列表
-.item_list {
-  padding-top: 5px;
-  li {
-    padding: 0 10px;
-    margin-bottom: 5px; border-bottom: 1px solid #ddd;
+.my_info {
+  background-color: #59D178; margin-top: 45px;
+  height: 60px; line-height: 60px; padding: 0 20px; color: #fff; font-size: 24px;
+  i { font-size: 24px;}
+  a { font-size: 14px; float: right; color: #fff;}
+}
+
+// 我的钱包
+.wallet {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  .w_tit {
+    line-height: 35px; padding: 0 10px;
+    border-bottom: 1px solid #ddd;
   }
+  .w_list {
+    padding: 10px 0;
+    p { color: #f00;}
+    li {
+      display: inline-block; width: 30%;
+      text-align: center; border-right: 1px solid #ddd;
+      &:last-child { border-right: 0;}
+    }
+    a { display: block;}
+  }
+}
 
+// 我的信息列表
+.my_list {
+  background-color: #fff; margin-top: 10px; font-size: 18px;
+  li {
+    padding: 15px; border-bottom: 1px solid #ddd;
+  }
+  a { display: block;}
 }

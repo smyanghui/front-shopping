@@ -79,7 +79,16 @@
   }
   .bottom_cart {
     flex: 1; background-color: #3E3E40; padding-left: 20px;
-    span { font-size: 18px; margin-left: 10px;}
+    span { font-size: 24px;}
+    i, b { display: inline-block;}
+    i { font-size: 24px; position: relative; margin-right: 10px;}
+    $ic: 20px;
+    b {
+      font-size: 14px; position: absolute; top: -5px; right: -10px; color: #fff;
+      height: $ic; min-width: $ic; line-height: $ic; border-radius: $ic;
+      background-color: #59D178; padding: 0 5px; text-align: center;
+      
+    }
   }
   .buy {
     width: 30%; background-color: #59D178;

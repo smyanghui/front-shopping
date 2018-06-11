@@ -13,7 +13,7 @@ class Page extends Controller {
     this.menuTop = [
       ['选蛋糕', '/index.html'],
       ['我的', '/my.html'],
-      ['商家详情', '/seller.html'],
+      ['商家', '/seller.html'],
     ];
     this.renderHeader();
   }

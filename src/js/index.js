@@ -278,7 +278,7 @@ class Page extends Controller {
     if (itemHTML == '') itemHTML = '<li>无商品！</li>';
     $("#cartItemBox").html(itemHTML);
     totalPrice = Controller.formatMoney(totalPrice);
-    $("#viewCart").html(`购${totalNum} <span>￥${totalPrice}</span>`);
+    $("#viewCart").html(`<i class="iconfont icon-gouwuche"><b>${totalNum}</b></i>￥<span>${totalPrice}</span>`);
   }
 
   // 购物车HTML

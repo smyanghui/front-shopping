@@ -43,6 +43,10 @@ class Page extends Controller {
         <li><span>下单时间：</span>2018-05-01 12:01:01</li>
         <li><span>提货时间：</span>2018-05-01 13:01:01</li>
         <li><span>结算金额：</span><i class="price">￥${order.wallet_price}</i></li>
+        <li class="order_btn">
+          <a class="view" href="order_detail.html?oid=${order.id}">查看详情</a>
+          <a class="pay" href="order_detail.html?oid=1">去支付</a>
+        </li>
       </ul>`;
     }
     $("#orderList").html(orderHTML);
