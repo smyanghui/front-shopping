@@ -1,13 +1,13 @@
 {
-  "name": "easywebpackes6",
-  "version": "1.0.0",
+  "name": "front-shopping",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --config webpack.config.dev.js --progress --colors",
     "build": "rm -rf dist && webpack --config webpack.config.prd.js --progress --colors"
   },
-  "author": "yh",
+  "author": "smyanghui@sina.com",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
